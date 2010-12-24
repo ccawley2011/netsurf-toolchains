@@ -22,7 +22,7 @@ along with GCC; see the file COPYING.  If not, write to
 the Free Software Foundation, 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.  */
 
-//use the motorola syntax, other mode is broken.
+/* use the motorola syntax, other mode is broken. */
 
 #undef TARGET_VERSION
 #define TARGET_VERSION fprintf (stderr, " (68k, Motorola syntax)")
@@ -30,9 +30,9 @@ Boston, MA 02111-1307, USA.  */
 #undef MOTOROLA
 #define MOTOROLA 1
 
-//#define IRA_COVER_CLASSES
+/* #define IRA_COVER_CLASSES */
 
-// disable 80 bit and 128 bit floats, dont work in libgcc
+/* disable 80 bit and 128 bit floats, dont work in libgcc */
 
 #undef LIBGCC2_HAS_XF_MODE
 #define LIBGCC2_HAS_XF_MODE 0
@@ -58,8 +58,8 @@ Boston, MA 02111-1307, USA.  */
    On most systems they are not needed.
    When they are needed, also define ALTERNATE_ALLOCATE_STACK (see m68k.md)
    to perform the necessary actions.  */
-//#undef TARGET_ALTERNATE_ALLOCATE_STACK
-//#define TARGET_ALTERNATE_ALLOCATE_STACK 0  
+/* #undef TARGET_ALTERNATE_ALLOCATE_STACK 
+#define TARGET_ALTERNATE_ALLOCATE_STACK 0 */ 
 
       
 /* Specs, switches.  */
@@ -94,7 +94,7 @@ Boston, MA 02111-1307, USA.  */
 
 /* Inform the program which CPU we compile for.  */
 
-//#undef TARGET_CPU_CPP_BUILTINS
+/* #undef TARGET_CPU_CPP_BUILTINS */
 /*
  use --with-cpu=mc68040 etc.. instead on config. code was after #define TARGET_CPU_CPP_BUILTINS()
       if (TARGET_68040_ONLY)						\
@@ -133,23 +133,28 @@ Boston, MA 02111-1307, USA.  */
    Differentiate between libnix and ixemul.  */
 
 #define CPP_SPEC							\
-  "%{m68881:-D__HAVE_68881__} "						\
+  "%{m68881:-D__HAVE_68881__}"
+/*
   "%{noixemul:%{!ansi:%{!std=*:-Dlibnix}%{std=gnu*:-Dlibnix}} -D__libnix -D__libnix__} " \
   "%{!noixemul:%{!ansi:%{!std=*:-Dixemul}%{std=gnu*:-Dixemul}} -D__ixemul -D__ixemul__}"
+*/
 
 /* Translate '-resident' to '-fbaserel' (they differ in linking stage only).
    Don't put function addresses in registers for PC-relative code.  */
 
+/*
 #define CC1_SPEC							\
   "%{resident:-fbaserel} "						\
   "%{resident32:-fbaserel32} "						\
   "%{msmall-code:-fno-function-cse}"
+*/
 
 /* Various -m flags require special flags to the assembler.  */
 
 #undef ASM_SPEC
 #define ASM_SPEC							\
-  "%(asm_cpu) %(asm_cpu_default) %{msmall-code:-sc}"
+  "%(asm_cpu) %(asm_cpu_default)"
+/* %{msmall-code:-sc}" */
 
 #undef ASM_CPU_SPEC
 #define ASM_CPU_SPEC							\
@@ -168,12 +173,17 @@ Boston, MA 02111-1307, USA.  */
    commandline options.  */
 
 #define LINK_SPEC							\
-  "%{noixemul:-fl libnix} "						\
+  "%{g:-amiga-debug-hunk} "						\
+  "%(link_cpu)"
+
+/*
   "%{resident*:-amiga-datadata-reloc} "					\
   "%{resident|fbaserel:-m amiga_bss -fl libb} "				\
   "%{resident32|fbaserel32:-m amiga_bss -fl libb32} "			\
   "%{g:-amiga-debug-hunk} "						\
   "%(link_cpu)"
+  "%{noixemul:-fl libnix} " 
+*/
 
 #define LINK_CPU_SPEC							\
   "%{m6802*|mc68020|m68030|m68040|m68060:-fl libm020} "			\
@@ -184,6 +194,8 @@ Boston, MA 02111-1307, USA.  */
    32-bit versions, libnix, profiling or plain crt0.o.  */
 
 #define STARTFILE_SPEC							\
+  "ncrt0.o%s"
+/*
   "%{!noixemul:"							\
     "%{fbaserel:%{!resident:bcrt0.o%s}}"				\
     "%{resident:rcrt0.o%s}"						\
@@ -194,10 +206,13 @@ Boston, MA 02111-1307, USA.  */
   "%{noixemul:"								\
     "%{resident:libnix/nrcrt0.o%s} "					\
     "%{!resident:%{fbaserel:libnix/nbcrt0.o%s}%{!fbaserel:libnix/ncrt0.o%s}}}"
+*/
 
+/* 
 #define ENDFILE_SPEC							\
   "%{noixemul:-lstubs}"
-  
+*/
+
 /* put return values in FPU build in FP0 Reg */  
 #undef FUNCTION_VALUE_REGNO_P
 #define FUNCTION_VALUE_REGNO_P(N) \
@@ -218,11 +233,13 @@ Boston, MA 02111-1307, USA.  */
    example) calls like sprintf come from -lamiga rather than -lc. */
 
 #define LIB_SPEC							\
-  "%{!noixemul:"							\
+  "%{!nostdlib:-lc -lamiga -lm -lc}"
+/*  "%{!noixemul:"							\
     "%{p|pg:-lc_p}"							\
     "%{!p:%{!pg:-lc -lamiga -lc}}}"					\
   "%{noixemul:"								\
     "-lnixmain -lnix -lamiga %{mstackcheck|mstackextend:-lstack}}"
+*/
 
 /* This macro defines names of additional specifications to put in the specs
    that can be used in various specifications like CC1_SPEC.  Its definition
@@ -248,8 +265,8 @@ Boston, MA 02111-1307, USA.  */
   || lookup_attribute ("stackext",					\
 		       TYPE_ATTRIBUTES (TREE_TYPE (current_function_decl))))
 
-///* Compile with stack checking.  */
-//
+/* Compile with stack checking.  */
+
 #define MASK_STACKCHECK 0x20000000 /* 1 << 29 */
 #define TARGET_STACKCHECK ((target_flags & MASK_STACKCHECK)		\
   && !(target_flags & MASK_STACKEXTEND)					\
@@ -350,15 +367,16 @@ while (0)
    with an error code above the `error' or even `failure' level
    (which is configurable with the FAILAT command)).  */
 
-//+2004-06-24  Ulrich Weigand  <uweigand@de.ibm.com>
-//+
-//+	* c-decl.c (finish_function): Do not check for DEFAULT_MAIN_RETURN.
-//+	* system.h (DEFAULT_MAIN_RETURN): Poison.
-//+	* doc/tm.texi (DEFAULT_MAIN_RETURN): Remove documentation.
-//+
+/* +2004-06-24  Ulrich Weigand  <uweigand@de.ibm.com>
++
++	* c-decl.c (finish_function): Do not check for DEFAULT_MAIN_RETURN.
++	* system.h (DEFAULT_MAIN_RETURN): Poison.
++	* doc/tm.texi (DEFAULT_MAIN_RETURN): Remove documentation.
++
 
-//poison VAR
-//#define DEFAULT_MAIN_RETURN c_expand_return (integer_zero_node)
+poison VAR
+#define DEFAULT_MAIN_RETURN c_expand_return (integer_zero_node)
+*/
 
 #undef WCHAR_TYPE
 #define WCHAR_TYPE "unsigned int"
@@ -449,8 +467,8 @@ while (0)
 
 /* Select and switch to a section for EXP.  */
 
-//#undef TARGET_ASM_SELECT_SECTION
-//#define TARGET_ASM_SELECT_SECTION amigaos_select_section
+/* #undef TARGET_ASM_SELECT_SECTION
+#define TARGET_ASM_SELECT_SECTION amigaos_select_section */
 
 /* Preserve A4 for baserel code if necessary.  */
 
@@ -615,25 +633,27 @@ struct amigaos_args
 
 #define ALTERNATE_RETURN(STREAM)
 
-//#define HAVE_restore_stack_nonlocal TARGET_STACKEXTEND
-//#define gen_restore_stack_nonlocal gen_stack_cleanup_call
+/*
+#define HAVE_restore_stack_nonlocal TARGET_STACKEXTEND
+#define gen_restore_stack_nonlocal gen_stack_cleanup_call
 
-//#define HAVE_restore_stack_function TARGET_STACKEXTEND
-//#define gen_restore_stack_function gen_stack_cleanup_call
+#define HAVE_restore_stack_function TARGET_STACKEXTEND
+#define gen_restore_stack_function gen_stack_cleanup_call
 
-//#define HAVE_restore_stack_block TARGET_STACKEXTEND
-//#define gen_restore_stack_block gen_stack_cleanup_call
+#define HAVE_restore_stack_block TARGET_STACKEXTEND
+#define gen_restore_stack_block gen_stack_cleanup_call
 
-//#undef TARGET_ALTERNATE_ALLOCATE_STACK
-//#define TARGET_ALTERNATE_ALLOCATE_STACK 1
-//
-//#define ALTERNATE_ALLOCATE_STACK(OPERANDS)				\
-//do									\
-//  {									\
-//    amigaos_alternate_allocate_stack (OPERANDS);			\
-//    DONE;								\
-//  }									\
-//while (0)
+#undef TARGET_ALTERNATE_ALLOCATE_STACK
+#define TARGET_ALTERNATE_ALLOCATE_STACK 1
+
+#define ALTERNATE_ALLOCATE_STACK(OPERANDS)				\
+do									\
+  {									\
+    amigaos_alternate_allocate_stack (OPERANDS);			\
+    DONE;								\
+  }									\
+while (0)
+*/
 
 /* begin-GG-local: dynamic libraries */
 
@@ -648,7 +668,7 @@ extern void amigaos_postlink_hook (const char *);
    We need a few special ones, like stripping after linking.  */
 
 #define DO_COLLECTING (do_collecting || amigaos_do_collecting())
-#define COLLECT2_POSTLINK_HOOK(OUTPUT_FILE) amigaos_postlink_hook(OUTPUT_FILE) //new
+#define COLLECT2_POSTLINK_HOOK(OUTPUT_FILE) amigaos_postlink_hook(OUTPUT_FILE) /* new */
 
 /* This macro is called in collect2 for every GCC argument name.
    ARG is a part of commandline (without '\0' at the end).  */

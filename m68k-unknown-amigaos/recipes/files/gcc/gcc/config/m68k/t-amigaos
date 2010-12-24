@@ -28,3 +28,9 @@ LIBGCC_MULTI =	.; \
 #	$(CC) -c $(ALL_CFLAGS) $(ALL_CPPFLAGS) $(INCLUDES) \
 #	-DA2IXDIR_PREFIX=\"$(prefix)/share/a2ixlibrary\" $< $(OUTPUT_OPTION)
 ### end-GG-local
+
+# Prevent fixincludes clobbering our limits.h
+LIMITS_H_TEST = true
+
+# Prevent installation of GCC's limits.h
+INSTALL_LIMITS_H = false

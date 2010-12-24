@@ -1,6 +1,6 @@
-UPSTREAM_VERSION := 4.5.1
-UPSTREAM_TARBALL := gcc-$(UPSTREAM_VERSION).tar.bz2
-UPSTREAM_URI := http://ftp.gnu.org/gnu/gcc/gcc-$(UPSTREAM_VERSION)/$(UPSTREAM_TARBALL)
+UPSTREAM_GCC_VERSION := 4.5.1
+UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION).tar.bz2
+UPSTREAM_GCC_URI := http://ftp.gnu.org/gnu/gcc/gcc-$(UPSTREAM_GCC_VERSION)/$(UPSTREAM_GCC_TARBALL)
 
 UPSTREAM_BINUTILS_VERSION := 2.14
 # Not a tarball; so sue me
@@ -20,41 +20,92 @@ UPSTREAM_MPC_VERSION := 0.8.2
 UPSTREAM_MPC_TARBALL := mpc-$(UPSTREAM_MPC_VERSION).tar.gz
 UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TARBALL)
 
+UPSTREAM_CLIB2_TARBALL := clib2
+UPSTREAM_CLIB2_URI := anonymous@clib2.cvs.sourceforge.net:/cvsroot/clib2
+
+UPSTREAM_NDK_TARBALL := ndk-3.9-includes.tar.bz2
+UPSTREAM_NDK_URI := http://www.zerohero.se/cross/files/m68k-amigaos/ndk-3.9-includes.tar.bz2
+
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
 BUILDSTEPS := $(TOP)/build-steps
 SRCDIR := $(TOP)/srcdir
+BINUTILS_SRCDIR := $(TOP)/binutils-srcdir
 BUILDDIR := $(TOP)/builddir
 
 PREFIX ?= /usr/local/netsurf/cross/amiga68k/
 
 TARGET_NAME := m68k-unknown-amigaos
 
-.PHONY: all install
-all: $(BUILDSTEPS)/toolchain.d
+.PHONY: all
+all: $(BUILDSTEPS)/stage2.d
 
-install: $(BUILDSTEPS)/install.d
+###
+# Rules to build the full compiler
+###
 
-$(BUILDSTEPS)/install.d: $(BUILDSTEPS)/toolchain.d
-	cd $(BUILDDIR)/binutils/target && make install
-	cd $(BUILDDIR) && make install
-	touch $@
-
-$(BUILDSTEPS)/toolchain.d: $(BUILDSTEPS)/make.d $(BUILDSTEPS)/binutils.d
-	touch $@
-
-$(BUILDSTEPS)/make.d: $(BUILDSTEPS)/configure.d
-	cd $(BUILDDIR) && PATH="$(BUILDDIR)/binutils/bootstrap/prefix/bin:$(PATH)" make all
-	touch $@
-
-$(BUILDSTEPS)/configure.d: $(BUILDSTEPS)/srcdir-step3.d
-	cd $(BUILDDIR) && PATH="$(BUILDDIR)/binutils/bootstrap/prefix/bin:$(PATH)" $(SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) \
+$(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/clib2.d
+	rm -fr $(BUILDDIR)
+	mkdir -p $(BUILDDIR)
+	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) \
 			--with-cpu=m68040 --disable-threads --disable-nls --disable-c-mbchar \
 			--enable-languages=c --enable-checking=no --enable-c99 --with-cross-host \
-			--enable-multilib --without-x --enable-maintainer-mode
+			--disable-multilib --without-x --enable-maintainer-mode --disable-shared
+	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all
+	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install
 	touch $@
 
-$(BUILDSTEPS)/srcdir-step3.d: $(BUILDSTEPS)/srcdir-step2.d $(UPSTREAM_GMP_TARBALL) $(UPSTREAM_MPFR_TARBALL) $(UPSTREAM_MPC_TARBALL)
+###
+# Rules to build and install Clib2
+###
+
+$(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(UPSTREAM_CLIB2_TARBALL)
+	cp -r $(UPSTREAM_CLIB2_TARBALL) $(BUILDDIR)/clib2
+	for p in `ls $(RECIPES)/patches/clib2/*.p` ; do patch -d $(BUILDDIR)/clib2 -p0 <$$p ; done
+	for dir in `find $(RECIPES)/files/clib2/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do mkdir -p $(BUILDDIR)/clib2$$dir ; done
+	for file in `find $(RECIPES)/files/clib2/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do cp -p $(RECIPES)/files/clib2$$file $(BUILDDIR)/clib2$$file ; done
+	cd $(BUILDDIR)/clib2 && PATH="$(PREFIX)/bin:$(PATH)" make -f GNUmakefile.68k
+	cp -r $(BUILDDIR)/clib2/include $(PREFIX)/$(TARGET_NAME)
+	cp -r $(BUILDDIR)/clib2/lib $(PREFIX)/$(TARGET_NAME)
+	touch $@
+
+###
+# Rules to install the NDK
+###
+
+$(BUILDSTEPS)/ndk.d: $(UPSTREAM_NDK_TARBALL)
+	mkdir -p $(PREFIX)/$(TARGET_NAME)
+	tar -C $(PREFIX)/$(TARGET_NAME) --strip-components=2 -xjf $(UPSTREAM_NDK_TARBALL)
+	for p in `ls $(RECIPES)/patches/ndk/*.p` ; do patch -d $(PREFIX)/$(TARGET_NAME) -p0 <$$p ; done
+	for dir in `find $(RECIPES)/files/ndk/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/ndk##'` ; do mkdir -p $(PREFIX)/$(TARGET_NAME)$$dir ; done
+	for file in `find $(RECIPES)/files/ndk/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/ndk##'` ; do cp -p $(RECIPES)/files/ndk$$file $(PREFIX)/$(TARGET_NAME)$$file ; done
+	touch $@
+
+###
+# Rules to build and install the bootstrap compiler
+###
+
+$(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d
+	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) \
+			--with-cpu=m68040 --disable-threads --disable-nls --disable-c-mbchar \
+			--enable-languages=c --enable-checking=no --enable-c99 --with-cross-host \
+			--disable-multilib --without-x --enable-maintainer-mode --disable-shared \
+			--without-headers
+	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all-gcc
+	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install-gcc
+	touch $@
+
+###
+# Rules to create the GCC source tree
+###
+
+$(BUILDSTEPS)/srcdir-step3.d: $(BUILDSTEPS)/srcdir-step2.d
+	for p in `ls $(RECIPES)/patches/gcc/*.p` ; do patch -d $(SRCDIR) -p0 <$$p ; done
+	for dir in `find $(RECIPES)/files/gcc/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/gcc##'` ; do mkdir -p $(SRCDIR)$$dir ; done
+	for file in `find $(RECIPES)/files/gcc/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/gcc##'` ; do cp -p $(RECIPES)/files/gcc$$file $(SRCDIR)$$file ; done
+	touch $@
+
+$(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d $(UPSTREAM_GMP_TARBALL) $(UPSTREAM_MPFR_TARBALL) $(UPSTREAM_MPC_TARBALL)
 	tar xjf $(UPSTREAM_GMP_TARBALL)
 	mv gmp-$(UPSTREAM_GMP_VERSION) $(SRCDIR)/gmp
 	tar xjf $(UPSTREAM_MPFR_TARBALL)
@@ -63,41 +114,38 @@ $(BUILDSTEPS)/srcdir-step3.d: $(BUILDSTEPS)/srcdir-step2.d $(UPSTREAM_GMP_TARBAL
 	mv mpc-$(UPSTREAM_MPC_VERSION) $(SRCDIR)/mpc
 	touch $@
 
-$(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d
-	for p in `ls $(RECIPES)/patches/gcc/*.p` ; do patch -d $(SRCDIR) -p0 <$$p ; done
-	for dir in `find $(RECIPES)/files -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/##'` ; do mkdir -p $(SRCDIR)/$$dir ; done
-	for file in `find $(RECIPES)/files -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/##'` ; do cp -p $(RECIPES)/files/$$file $(SRCDIR)/$$file ; done
+$(BUILDSTEPS)/srcdir-step1.d: $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d
+	tar xjf $(UPSTREAM_GCC_TARBALL)
+	mv gcc-$(UPSTREAM_GCC_VERSION) srcdir
 	touch $@
 
-$(BUILDSTEPS)/srcdir-step1.d: $(BUILDSTEPS)/orig.gcc.d $(BUILDSTEPS)/bootstrap-binutils.d
-	ln -s orig.gcc $(SRCDIR)
+$(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d: $(BUILDSTEPS)/buildsteps.d $(UPSTREAM_GCC_TARBALL)
 	touch $@
 
-$(BUILDSTEPS)/orig.gcc.d: $(BUILDSTEPS)/orig.gcc-$(UPSTREAM_TARBALL).d
-	tar xjf orig.gcc-$(UPSTREAM_TARBALL)
-	mv gcc-$(UPSTREAM_VERSION) orig.gcc
-	touch $@
-
-$(BUILDSTEPS)/orig.gcc-$(UPSTREAM_TARBALL).d: $(BUILDSTEPS)/buildsteps.d orig.gcc-$(UPSTREAM_TARBALL)
-	touch $@
-
-orig.gcc-$(UPSTREAM_TARBALL):
-	wget -q -O $@ $(UPSTREAM_URI)
+###
+# Rules to build and install binutils
+###
 
 # Ugh. Upstream binutils is not remotely 64-bit safe.
 # Build a 32bit binary until this gets fixed
-$(BUILDSTEPS)/binutils.d: $(UPSTREAM_BINUTILS_TARBALL)
-	mkdir -p $(BUILDDIR)/binutils/target
-	cd $(BUILDDIR)/binutils/target && CFLAGS="-m32" LDFLAGS="-m32" $(TOP)/binutils-$(UPSTREAM_BINUTILS_VERSION)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME)
-	cd $(BUILDDIR)/binutils/target && make
+$(BUILDSTEPS)/binutils.d: $(BUILDSTEPS)/binutils-srcdir.d
+	mkdir -p $(BUILDDIR)/binutils
+	cd $(BUILDDIR)/binutils && CFLAGS="-m32" LDFLAGS="-m32" $(BINUTILS_SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) --disable-nls
+	cd $(BUILDDIR)/binutils && make
+	cd $(BUILDDIR)/binutils && make install
 	touch $@
 
-$(BUILDSTEPS)/bootstrap-binutils.d: $(UPSTREAM_BINUTILS_TARBALL)
-	mkdir -p $(BUILDDIR)/binutils/bootstrap
-	cd $(BUILDDIR)/binutils/bootstrap && CFLAGS="-m32" LDFLAGS="-m32" $(TOP)/binutils-$(UPSTREAM_BINUTILS_VERSION)/configure --prefix=$(BUILDDIR)/binutils/bootstrap/prefix --target=$(TARGET_NAME)
-	cd $(BUILDDIR)/binutils/bootstrap && make
-	cd $(BUILDDIR)/binutils/bootstrap && make install
+$(BUILDSTEPS)/binutils-srcdir.d: $(UPSTREAM_BINUTILS_TARBALL)
+	cp -r $(UPSTREAM_BINUTILS_TARBALL) $(BINUTILS_SRCDIR)
+	for p in `ls $(RECIPES)/patches/binutils/*.p` ; do patch -d $(BINUTILS_SRCDIR) -p0 <$$p ; done
 	touch $@
+
+###
+# Rules to fetch upstream sources
+###
+
+$(UPSTREAM_GCC_TARBALL):
+	wget -q -O $@ $(UPSTREAM_GCC_URI)
 
 $(UPSTREAM_GMP_TARBALL):
 	wget -q -O $@ $(UPSTREAM_GMP_URI)
@@ -110,6 +158,18 @@ $(UPSTREAM_MPC_TARBALL):
 
 $(UPSTREAM_BINUTILS_TARBALL):
 	svn co $(UPSTREAM_BINUTILS_URI) $@
+
+$(UPSTREAM_CLIB2_TARBALL):
+	cvs -Q -d:pserver:$(UPSTREAM_CLIB2_URI) login
+	cvs -z9 -d:pserver:$(UPSTREAM_CLIB2_URI) co library
+	mv library $@
+
+$(UPSTREAM_NDK_TARBALL):
+	wget -q -O $@ $(UPSTREAM_NDK_URI)
+
+###
+# Rule to create buildsteps dir
+###
 
 $(BUILDSTEPS)/buildsteps.d:
 	mkdir -p $(BUILDSTEPS)
