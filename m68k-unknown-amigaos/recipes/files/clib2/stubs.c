@@ -1,4 +1,5 @@
 #include <glob.h>
+#include <sys/resource.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -35,5 +36,15 @@ int glob(const char *pattern, int flags,
 
 void globfree(glob_t *pglob)
 {
+}
+
+int getrusage(int who, struct rusage *usage)
+{
+	usage->ru_utime.tv_secs = 0;
+	usage->ru_utime.tv_micro = 0;
+	usage->ru_stime.tv_secs = 0;
+	usage->ru_stime.tv_micro = 0;
+
+	return 0;
 }
 
