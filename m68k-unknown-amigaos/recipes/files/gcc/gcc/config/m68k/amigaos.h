@@ -233,7 +233,7 @@ Boston, MA 02111-1307, USA.  */
    example) calls like sprintf come from -lamiga rather than -lc. */
 
 #define LIB_SPEC							\
-  "%{!nostdlib:-lc -lamiga -lm -lc}"
+  "%{!nostdlib:-lc -lamiga -lnet -lunix -lm -lc}"
 /*  "%{!noixemul:"							\
     "%{p|pg:-lc_p}"							\
     "%{!p:%{!pg:-lc -lamiga -lc}}}"					\
