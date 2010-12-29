@@ -1,3 +1,4 @@
+#include <glob.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -23,5 +24,16 @@ int pipe(int pipefd[2])
 	__set_errno(ENFILE);
 
 	return -1;
+}
+
+int glob(const char *pattern, int flags,
+	int (*errfunc) (const char *epath, int eerrno),
+	glob_t *pglob)
+{
+	return GLOB_NOMATCH;
+}
+
+void globfree(glob_t *pglob)
+{
 }
 
