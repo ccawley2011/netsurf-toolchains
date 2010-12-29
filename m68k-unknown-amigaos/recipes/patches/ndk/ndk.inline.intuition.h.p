@@ -5,7 +5,7 @@
  
  #ifndef NO_INLINE_STDARG
 -__inline APTR NewObject(struct IClass * classPtr, CONST_STRPTR classID, ULONG tagList, ...)
-+__inline APTR NewObjectI(void *INTUITION_BASE_NAME, struct IClass * classPtr, CONST_STRPTR classID, ULONG tagList, ...)
++static __inline APTR NewObjectI(void *INTUITION_BASE_NAME, struct IClass * classPtr, CONST_STRPTR classID, ULONG tagList, ...)
  {
    return NewObjectA(classPtr, classID, (const struct TagItem *) &tagList);
  }
