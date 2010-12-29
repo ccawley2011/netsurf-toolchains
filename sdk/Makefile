@@ -35,9 +35,10 @@ export PKG_CONFIG_LIBDIR := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
 TARGET := $(shell $(CC) -dumpmachine)
 
 .PHONY: all
-all: $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2.d $(BUILDSTEPS)/openssl.d \
-	$(BUILDSTEPS)/libpng.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d \
-	$(BUILDSTEPS)/libmng.d $(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl.d
+all: $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libxml2.d \
+	$(BUILDSTEPS)/openssl.d $(BUILDSTEPS)/libpng.d $(BUILDSTEPS)/libjpeg.d \
+	$(BUILDSTEPS)/liblcms.d $(BUILDSTEPS)/libmng.d $(BUILDSTEPS)/libcares.d \
+	$(BUILDSTEPS)/libcurl.d
 
 # Sourcedir
 $(BUILDSTEPS)/sourcedir.d: $(BUILDSTEPS)/builddir.d
@@ -62,10 +63,21 @@ $(BUILDSTEPS)/zlib-src.d: $(BUILDSTEPS)/sourcedir.d
 	wget -q -O $(SOURCEDIR)/zlib-1.2.5.tar.bz2 http://zlib.net/zlib-1.2.5.tar.bz2
 	touch $@
 
-# libiconv?
+# libiconv
+$(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
+	mkdir -p $(BUILDDIR)/libiconv
+	cd $(BUILDDIR)/libiconv && tar xzf $(SOURCEDIR)/libiconv-1.13.1.tar.gz
+	for p in `ls $(RECIPES)/patches/libiconv/*.p` ; do patch -d $(BUILDDIR)/libiconv/libiconv-1.13.1 -p0 <$$p ; done
+	cd $(BUILDDIR)/libiconv/libiconv-1.13.1 && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libiconv/libiconv-1.13.1 && make install
+	touch $@
+
+$(BUILDSTEPS)/libiconv-src.d: $(BUILDSTEPS)/sourcedir.d
+	wget -q -O $(SOURCEDIR)/libiconv-1.13.1.tar.gz http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
+	touch $@
 
 # libXML2
-$(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2-src.d
+$(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libxml2-src.d
 	mkdir -p $(BUILDDIR)/libxml2
 	cd $(BUILDDIR)/libxml2 && tar xzf $(SOURCEDIR)/libxml2-2.7.8.tar.gz
 	cd $(BUILDDIR)/libxml2/libxml2-2.7.8 && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
