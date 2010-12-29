@@ -35,10 +35,10 @@ export PKG_CONFIG_LIBDIR := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
 TARGET := $(shell $(CC) -dumpmachine)
 
 .PHONY: all
-all: $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libxml2.d \
-	$(BUILDSTEPS)/openssl.d $(BUILDSTEPS)/libpng.d $(BUILDSTEPS)/libjpeg.d \
-	$(BUILDSTEPS)/liblcms.d $(BUILDSTEPS)/libmng.d $(BUILDSTEPS)/libcares.d \
-	$(BUILDSTEPS)/libcurl.d
+all: $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d \
+	$(BUILDSTEPS)/libxml2.d $(BUILDSTEPS)/openssl.d $(BUILDSTEPS)/libpng.d \
+	$(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d $(BUILDSTEPS)/libmng.d \
+	$(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl.d
 
 # Sourcedir
 $(BUILDSTEPS)/sourcedir.d: $(BUILDSTEPS)/builddir.d
@@ -74,6 +74,19 @@ $(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
 
 $(BUILDSTEPS)/libiconv-src.d: $(BUILDSTEPS)/sourcedir.d
 	wget -q -O $(SOURCEDIR)/libiconv-1.13.1.tar.gz http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
+	touch $@
+
+# regex
+$(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
+	mkdir -p $(BUILDDIR)/libtre
+	cd $(BUILDDIR)/libtre && tar xjf $(SOURCEDIR)/tre-0.8.0.tar.bz2
+	cd $(BUILDDIR)/libtre/tre-0.8.0 && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libtre/tre-0.8.0 && make install
+	cp $(RECIPES)/files/libtre/regex.h $(GCCSDK_INSTALL_ENV)/include/regex.h
+	touch $@
+
+$(BUILDSTEPS)/libtre-src.d: $(BUILDSTEPS)/sourcedir.d
+	wget -q -O $(SOURCEDIR)/tre-0.8.0.tar.bz2 http://laurikari.net/tre/tre-0.8.0.tar.bz2
 	touch $@
 
 # libXML2
