@@ -34,11 +34,27 @@ export PKG_CONFIG_LIBDIR := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
 # Target
 TARGET := $(shell $(CC) -dumpmachine)
 
+# Compute the SDK components
+SDK_ITEMS :=
+
+COMMON_SDK_ITEMS := $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2.d $(BUILDSTEPS)/openssl.d \
+		$(BUILDSTEPS)/libpng.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d \
+		$(BUILDSTEPS)/libmng.d $(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl.d
+
+ifeq ($(TARGET),m68k-unknown-amigaos)
+  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+endif
+
+#ifeq ($(TARGET),arm-unknown-riscos)
+#  SDK_ITEMS := $(COMMON_SDK_ITEMS)
+#endif
+
+ifeq ($(SDK_ITEMS),)
+  $(error Unable to compute SDK components for target $(TARGET))
+endif
+
 .PHONY: all
-all: $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d \
-	$(BUILDSTEPS)/libxml2.d $(BUILDSTEPS)/openssl.d $(BUILDSTEPS)/libpng.d \
-	$(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d $(BUILDSTEPS)/libmng.d \
-	$(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl.d
+all: $(SDK_ITEMS)
 
 # Sourcedir
 $(BUILDSTEPS)/sourcedir.d: $(BUILDSTEPS)/builddir.d
