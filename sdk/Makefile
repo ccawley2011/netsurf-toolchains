@@ -11,12 +11,6 @@ ifeq ($(GCCSDK_INSTALL_CROSSBIN),)
   $(error GCCSDK_INSTALL_CROSSBIN not set)
 endif
 
-# Environment
-RECIPES := $(CURDIR)/recipes
-SOURCEDIR := $(CURDIR)/sources
-BUILDDIR := $(CURDIR)/builddir
-BUILDSTEPS := $(BUILDDIR)/build-steps
-
 # Path
 export PATH := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
 
@@ -33,6 +27,12 @@ export PKG_CONFIG_LIBDIR := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
 
 # Target
 TARGET := $(shell $(CC) -dumpmachine)
+
+# Environment
+RECIPES := $(CURDIR)/recipes
+SOURCEDIR := $(CURDIR)/sources
+BUILDDIR := $(CURDIR)/builddir-$(TARGET)
+BUILDSTEPS := $(BUILDDIR)/build-steps
 
 # Compute the SDK components
 SDK_ITEMS :=
@@ -53,8 +53,15 @@ ifeq ($(SDK_ITEMS),)
   $(error Unable to compute SDK components for target $(TARGET))
 endif
 
-.PHONY: all
+.PHONY: all clean distclean
 all: $(SDK_ITEMS)
+
+clean:
+	rm -fr $(BUILDDIR)
+
+distclean:
+	rm -fr $(BUILDDIR)
+	rm -fr $(SOURCEDIR)
 
 # Sourcedir
 $(BUILDSTEPS)/sourcedir.d: $(BUILDSTEPS)/builddir.d
@@ -75,9 +82,11 @@ $(BUILDSTEPS)/zlib.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib-src.d
 	cd $(BUILDDIR)/zlib/zlib-1.2.5 && make install
 	touch $@
 
-$(BUILDSTEPS)/zlib-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/zlib-1.2.5.tar.bz2 http://zlib.net/zlib-1.2.5.tar.bz2
+$(BUILDSTEPS)/zlib-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/zlib-1.2.5.tar.bz2
 	touch $@
+
+$(SOURCEDIR)/zlib-1.2.5.tar.bz2:
+	wget -q -O $@ http://zlib.net/$(subst $(SOURCEDIR)/,,$@)
 
 # libiconv
 $(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
@@ -88,9 +97,11 @@ $(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
 	cd $(BUILDDIR)/libiconv/libiconv-1.13.1 && make install
 	touch $@
 
-$(BUILDSTEPS)/libiconv-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/libiconv-1.13.1.tar.gz http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.13.1.tar.gz
+$(BUILDSTEPS)/libiconv-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libiconv-1.13.1.tar.gz
 	touch $@
+
+$(SOURCEDIR)/libiconv-1.13.1.tar.gz:
+	wget -q -O $@ http://ftp.gnu.org/pub/gnu/libiconv/$(subst $(SOURCEDIR)/,,$@)
 
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
@@ -101,9 +112,11 @@ $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
 	cp $(RECIPES)/files/libtre/regex.h $(GCCSDK_INSTALL_ENV)/include/regex.h
 	touch $@
 
-$(BUILDSTEPS)/libtre-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/tre-0.8.0.tar.bz2 http://laurikari.net/tre/tre-0.8.0.tar.bz2
+$(BUILDSTEPS)/libtre-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/tre-0.8.0.tar.bz2
 	touch $@
+
+$(SOURCEDIR)/tre-0.8.0.tar.bz2:
+	wget -q -O $@ http://laurikari.net/tre/$(subst $(SOURCEDIR)/,,$@)
 
 # libXML2
 $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libxml2-src.d
@@ -113,9 +126,11 @@ $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	cd $(BUILDDIR)/libxml2/libxml2-2.7.8 && make install
 	touch $@
 
-$(BUILDSTEPS)/libxml2-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/libxml2-2.7.8.tar.gz ftp://xmlsoft.org/libxml2/libxml2-2.7.8.tar.gz
+$(BUILDSTEPS)/libxml2-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libxml2-2.7.8.tar.gz
 	touch $@
+
+$(SOURCEDIR)/libxml2-2.7.8.tar.gz:
+	wget -q -O $@ ftp://xmlsoft.org/libxml2/$(subst $(SOURCEDIR)/,,$@)
 
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
@@ -126,9 +141,11 @@ $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	cd $(BUILDDIR)/openssl/openssl-1.0.0c && make install
 	touch $@
 
-$(BUILDSTEPS)/openssl-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/openssl-1.0.0c.tar.gz http://openssl.org/source/openssl-1.0.0c.tar.gz
+$(BUILDSTEPS)/openssl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/openssl-1.0.0c.tar.gz
 	touch $@
+
+$(SOURCEDIR)/openssl-1.0.0c.tar.gz:
+	wget -q -O $@ http://openssl.org/source/$(subst $(SOURCEDIR)/,,$@)
 
 # libPNG
 $(BUILDSTEPS)/libpng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libpng-src.d
@@ -138,9 +155,11 @@ $(BUILDSTEPS)/libpng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTE
 	cd $(BUILDDIR)/libpng/libpng-1.4.5 && make install
 	touch $@
 
-$(BUILDSTEPS)/libpng-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/libpng-1.4.5.tar.gz ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.4.5.tar.gz
+$(BUILDSTEPS)/libpng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libpng-1.4.5.tar.gz
 	touch $@
+
+$(SOURCEDIR)/libpng-1.4.5.tar.gz:
+	wget -q -O $@ ftp://ftp.simplesystems.org/pub/libpng/png/src/$(subst $(SOURCEDIR)/,,$@)
 
 # libjpeg
 # TODO: rename the LOCAL/GLOBAL/EXTERN macros in jmorecfg.h
@@ -151,9 +170,11 @@ $(BUILDSTEPS)/libjpeg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-src.d
 	cd $(BUILDDIR)/libjpeg/jpeg-8b && make install
 	touch $@
 
-$(BUILDSTEPS)/libjpeg-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/jpegsrc.v8b.tar.gz http://ijg.org/files/jpegsrc.v8b.tar.gz
+$(BUILDSTEPS)/libjpeg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/jpegsrc.v8b.tar.gz
 	touch $@
+
+$(SOURCEDIR)/jpegsrc.v8b.tar.gz:
+	wget -q -O $@ http://ijg.org/files/$(subst $(SOURCEDIR)/,,$@)
 
 # liblcms
 $(BUILDSTEPS)/liblcms.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms-src.d
@@ -163,9 +184,11 @@ $(BUILDSTEPS)/liblcms.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	cd $(BUILDDIR)/liblcms/lcms2-2.1 && make install
 	touch $@
 
-$(BUILDSTEPS)/liblcms-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/lcms2-2.1.tar.gz http://downloads.sourceforge.net/project/lcms/lcms/2.1/lcms2-2.1.tar.gz
+$(BUILDSTEPS)/liblcms-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/lcms2-2.1.tar.gz
 	touch $@
+
+$(SOURCEDIR)/lcms2-2.1.tar.gz:
+	wget -q -O $@ http://downloads.sourceforge.net/project/lcms/lcms/2.1/$(subst $(SOURCEDIR)/,,$@)
 
 # libMNG
 $(BUILDSTEPS)/libmng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d $(BUILDSTEPS)/libmng-src.d
@@ -176,9 +199,11 @@ $(BUILDSTEPS)/libmng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTE
 	cd $(BUILDDIR)/libmng/libmng-1.0.10 && make install
 	touch $@
 
-$(BUILDSTEPS)/libmng-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/libmng-1.0.10.tar.gz http://downloads.sourceforge.net/project/libmng/libmng-devel/1.0.10/libmng-1.0.10.tar.gz
+$(BUILDSTEPS)/libmng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libmng-1.0.10.tar.gz
 	touch $@
+
+$(SOURCEDIR)/libmng-1.0.10.tar.gz:
+	wget -q -O $@ http://downloads.sourceforge.net/project/libmng/libmng-devel/1.0.10/$(subst $(SOURCEDIR)/,,$@)
 
 # libcares
 $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
@@ -188,9 +213,11 @@ $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
 	cd $(BUILDDIR)/libcares/c-ares-1.7.4 && make install
 	touch $@
 
-$(BUILDSTEPS)/libcares-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/c-ares-1.7.4.tar.gz http://c-ares.haxx.se/c-ares-1.7.4.tar.gz
+$(BUILDSTEPS)/libcares-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/c-ares-1.7.4.tar.gz
 	touch $@
+
+$(SOURCEDIR)/c-ares-1.7.4.tar.gz:
+	wget -q -O $@ http://c-ares.haxx.se/$(subst $(SOURCEDIR)/,,$@)
 
 # libcurl
 $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl.d $(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl-src.d
@@ -201,7 +228,9 @@ $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	cd $(BUILDDIR)/libcurl/curl-7.21.3 && make install
 	touch $@
 
-$(BUILDSTEPS)/libcurl-src.d: $(BUILDSTEPS)/sourcedir.d
-	wget -q -O $(SOURCEDIR)/curl-7.21.3.tar.bz2 http://curl.haxx.se/download/curl-7.21.3.tar.bz2
+$(BUILDSTEPS)/libcurl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/curl-7.21.3.tar.bz2
 	touch $@
+
+$(SOURCEDIR)/curl-7.21.3.tar.bz2:
+	wget -q -O $@ http://curl.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)
 
