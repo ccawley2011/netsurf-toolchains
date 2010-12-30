@@ -20,6 +20,7 @@ UPSTREAM_MPC_VERSION := 0.8.2
 UPSTREAM_MPC_TARBALL := mpc-$(UPSTREAM_MPC_VERSION).tar.gz
 UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TARBALL)
 
+UPSTREAM_CLIB2_VERSION := 2010-12-30
 UPSTREAM_CLIB2_TARBALL := clib2
 UPSTREAM_CLIB2_URI := anonymous@clib2.cvs.sourceforge.net:/cvsroot/clib2
 
@@ -163,7 +164,7 @@ $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL):
 
 $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL):
 	cvs -Q -d:pserver:$(UPSTREAM_CLIB2_URI) login
-	cvs -z9 -d:pserver:$(UPSTREAM_CLIB2_URI) co library
+	cvs -z9 -d:pserver:$(UPSTREAM_CLIB2_URI) checkout -D $(UPSTREAM_CLIB2_VERSION) library
 	mv library $@
 
 $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL):
