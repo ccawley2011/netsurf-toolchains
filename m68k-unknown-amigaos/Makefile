@@ -33,9 +33,9 @@ SRCDIR := $(TOP)/srcdir
 BINUTILS_SRCDIR := $(TOP)/binutils-srcdir
 BUILDDIR := $(TOP)/builddir
 
-PREFIX ?= /usr/local/netsurf/cross/amiga68k/
-
 TARGET_NAME := m68k-unknown-amigaos
+
+PREFIX ?= /opt/netsurf/$(TARGET_NAME)/cross
 
 .PHONY: all
 all: $(BUILDSTEPS)/stage2.d
@@ -45,12 +45,6 @@ all: $(BUILDSTEPS)/stage2.d
 ###
 
 $(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/clib2.d
-	rm -fr $(BUILDDIR)
-	mkdir -p $(BUILDDIR)
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) \
-			--with-cpu=m68040 --disable-threads --disable-nls --disable-c-mbchar \
-			--enable-languages=c --enable-checking=no --enable-c99 --with-cross-host \
-			--disable-multilib --without-x --enable-maintainer-mode --disable-shared
 	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all
 	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install
 	touch $@
