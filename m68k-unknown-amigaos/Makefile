@@ -28,17 +28,25 @@ UPSTREAM_NDK_URI := http://www.zerohero.se/cross/files/m68k-amigaos/ndk-3.9-incl
 
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
-BUILDSTEPS := $(TOP)/build-steps
-SRCDIR := $(TOP)/srcdir
-BINUTILS_SRCDIR := $(TOP)/binutils-srcdir
+SOURCESDIR := $(TOP)/sources
 BUILDDIR := $(TOP)/builddir
+BUILDSTEPS := $(BUILDDIR)/build-steps
+SRCDIR := $(BUILDDIR)/srcdir
+GCC_SRCDIR := $(SRCDIR)/gcc
+BINUTILS_SRCDIR := $(SRCDIR)/binutils
 
 TARGET_NAME := m68k-unknown-amigaos
 
 PREFIX ?= /opt/netsurf/$(TARGET_NAME)/cross
 
-.PHONY: all
+.PHONY: all clean distclean
 all: $(BUILDSTEPS)/stage2.d
+
+clean:
+	rm -fr $(BUILDDIR)
+
+distclean: clean
+	rm -fr $(SOURCESDIR)
 
 ###
 # Rules to build the full compiler
@@ -53,8 +61,8 @@ $(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/clib2.d
 # Rules to build and install Clib2
 ###
 
-$(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(UPSTREAM_CLIB2_TARBALL)
-	cp -r $(UPSTREAM_CLIB2_TARBALL) $(BUILDDIR)/clib2
+$(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL)
+	cp -r $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL) $(BUILDDIR)/clib2
 	for p in `ls $(RECIPES)/patches/clib2/*.p` ; do patch -d $(BUILDDIR)/clib2 -p0 <$$p ; done
 	for dir in `find $(RECIPES)/files/clib2/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do mkdir -p $(BUILDDIR)/clib2$$dir ; done
 	for file in `find $(RECIPES)/files/clib2/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do cp -p $(RECIPES)/files/clib2$$file $(BUILDDIR)/clib2$$file ; done
@@ -67,9 +75,9 @@ $(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(
 # Rules to install the NDK
 ###
 
-$(BUILDSTEPS)/ndk.d: $(UPSTREAM_NDK_TARBALL)
+$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL)
 	mkdir -p $(PREFIX)/$(TARGET_NAME)
-	tar -C $(PREFIX)/$(TARGET_NAME) --strip-components=2 -xjf $(UPSTREAM_NDK_TARBALL)
+	tar -C $(PREFIX)/$(TARGET_NAME) --strip-components=2 -xjf $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL)
 	for p in `ls $(RECIPES)/patches/ndk/*.p` ; do patch -d $(PREFIX)/$(TARGET_NAME) -p0 <$$p ; done
 	for dir in `find $(RECIPES)/files/ndk/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/ndk##'` ; do mkdir -p $(PREFIX)/$(TARGET_NAME)$$dir ; done
 	for file in `find $(RECIPES)/files/ndk/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/ndk##'` ; do cp -p $(RECIPES)/files/ndk$$file $(PREFIX)/$(TARGET_NAME)$$file ; done
@@ -80,7 +88,7 @@ $(BUILDSTEPS)/ndk.d: $(UPSTREAM_NDK_TARBALL)
 ###
 
 $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) \
+	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(GCC_SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) \
 			--with-cpu=m68040 --disable-threads --disable-nls --disable-c-mbchar \
 			--enable-languages=c --enable-checking=no --enable-c99 --with-cross-host \
 			--disable-multilib --without-x --enable-maintainer-mode --disable-shared \
@@ -94,26 +102,26 @@ $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/b
 ###
 
 $(BUILDSTEPS)/srcdir-step3.d: $(BUILDSTEPS)/srcdir-step2.d
-	for p in `ls $(RECIPES)/patches/gcc/*.p` ; do patch -d $(SRCDIR) -p0 <$$p ; done
-	for dir in `find $(RECIPES)/files/gcc/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/gcc##'` ; do mkdir -p $(SRCDIR)$$dir ; done
-	for file in `find $(RECIPES)/files/gcc/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/gcc##'` ; do cp -p $(RECIPES)/files/gcc$$file $(SRCDIR)$$file ; done
+	for p in `ls $(RECIPES)/patches/gcc/*.p` ; do patch -d $(GCC_SRCDIR) -p0 <$$p ; done
+	for dir in `find $(RECIPES)/files/gcc/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/gcc##'` ; do mkdir -p $(GCC_SRCDIR)$$dir ; done
+	for file in `find $(RECIPES)/files/gcc/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/gcc##'` ; do cp -p $(RECIPES)/files/gcc$$file $(GCC_SRCDIR)$$file ; done
 	touch $@
 
-$(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d $(UPSTREAM_GMP_TARBALL) $(UPSTREAM_MPFR_TARBALL) $(UPSTREAM_MPC_TARBALL)
-	tar xjf $(UPSTREAM_GMP_TARBALL)
-	mv gmp-$(UPSTREAM_GMP_VERSION) $(SRCDIR)/gmp
-	tar xjf $(UPSTREAM_MPFR_TARBALL)
-	mv mpfr-$(UPSTREAM_MPFR_VERSION) $(SRCDIR)/mpfr
-	tar xzf $(UPSTREAM_MPC_TARBALL)
-	mv mpc-$(UPSTREAM_MPC_VERSION) $(SRCDIR)/mpc
+$(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL)
+	tar xjf $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL)
+	mv gmp-$(UPSTREAM_GMP_VERSION) $(GCC_SRCDIR)/gmp
+	tar xjf $(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL)
+	mv mpfr-$(UPSTREAM_MPFR_VERSION) $(GCC_SRCDIR)/mpfr
+	tar xzf $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL)
+	mv mpc-$(UPSTREAM_MPC_VERSION) $(GCC_SRCDIR)/mpc
 	touch $@
 
 $(BUILDSTEPS)/srcdir-step1.d: $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d
-	tar xjf $(UPSTREAM_GCC_TARBALL)
-	mv gcc-$(UPSTREAM_GCC_VERSION) srcdir
+	tar xjf $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL)
+	mv gcc-$(UPSTREAM_GCC_VERSION) $(GCC_SRCDIR)
 	touch $@
 
-$(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d: $(BUILDSTEPS)/buildsteps.d $(UPSTREAM_GCC_TARBALL)
+$(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d: $(BUILDSTEPS)/buildsteps.d $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL)
 	touch $@
 
 ###
@@ -129,8 +137,8 @@ $(BUILDSTEPS)/binutils.d: $(BUILDSTEPS)/binutils-srcdir.d
 	cd $(BUILDDIR)/binutils && make install
 	touch $@
 
-$(BUILDSTEPS)/binutils-srcdir.d: $(UPSTREAM_BINUTILS_TARBALL)
-	cp -r $(UPSTREAM_BINUTILS_TARBALL) $(BINUTILS_SRCDIR)
+$(BUILDSTEPS)/binutils-srcdir.d: $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL)
+	cp -r $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL) $(BINUTILS_SRCDIR)
 	for p in `ls $(RECIPES)/patches/binutils/*.p` ; do patch -d $(BINUTILS_SRCDIR) -p0 <$$p ; done
 	touch $@
 
@@ -138,33 +146,39 @@ $(BUILDSTEPS)/binutils-srcdir.d: $(UPSTREAM_BINUTILS_TARBALL)
 # Rules to fetch upstream sources
 ###
 
-$(UPSTREAM_GCC_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL):
 	wget -q -O $@ $(UPSTREAM_GCC_URI)
 
-$(UPSTREAM_GMP_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL):
 	wget -q -O $@ $(UPSTREAM_GMP_URI)
 
-$(UPSTREAM_MPFR_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL):
 	wget -q -O $@ $(UPSTREAM_MPFR_URI)
 
-$(UPSTREAM_MPC_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL):
 	wget -q -O $@ $(UPSTREAM_MPC_URI)
 
-$(UPSTREAM_BINUTILS_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL):
 	svn co $(UPSTREAM_BINUTILS_URI) $@
 
-$(UPSTREAM_CLIB2_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL):
 	cvs -Q -d:pserver:$(UPSTREAM_CLIB2_URI) login
 	cvs -z9 -d:pserver:$(UPSTREAM_CLIB2_URI) co library
 	mv library $@
 
-$(UPSTREAM_NDK_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL):
 	wget -q -O $@ $(UPSTREAM_NDK_URI)
 
 ###
 # Rule to create buildsteps dir
 ###
 
-$(BUILDSTEPS)/buildsteps.d:
+$(BUILDSTEPS)/buildsteps.d: $(SOURCESDIR) $(SRCDIR)
 	mkdir -p $(BUILDSTEPS)
 	touch $@
+
+$(SOURCESDIR):
+	mkdir -p $@
+
+$(SRCDIR):
+	mkdir -p $@
