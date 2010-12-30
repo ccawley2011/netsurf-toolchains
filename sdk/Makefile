@@ -72,8 +72,7 @@ all: $(SDK_ITEMS)
 clean:
 	rm -fr $(BUILDDIR)
 
-distclean:
-	rm -fr $(BUILDDIR)
+distclean: clean
 	rm -fr $(SOURCEDIR)
 
 # Sourcedir
