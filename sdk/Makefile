@@ -23,25 +23,28 @@ VERSION_LIBLCMS := 2.1
 VERSION_LIBMNG := 1.0.10
 VERSION_LIBCARES := 1.7.4
 VERSION_LIBCURL := 7.21.3
+VERSION_RISCOS_OSLIB := 402
 
 # Path
-export PATH := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
+path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
 
 # Tools
-export CC := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
-export CXX := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*g++)
-export AR := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ar)
+cc__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
+cxx__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*g++)
+ar__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ar)
 
 # Flags
-export CFLAGS := -I$(GCCSDK_INSTALL_ENV)/include
-export CPPFLAGS := -I$(GCCSDK_INSTALL_ENV)/include
-export LDFLAGS := -L$(GCCSDK_INSTALL_ENV)/lib
-export PKG_CONFIG_LIBDIR := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
+cflags__ := -I$(GCCSDK_INSTALL_ENV)/include
+cppflags__ := -I$(GCCSDK_INSTALL_ENV)/include
+ldflags__ := -L$(GCCSDK_INSTALL_ENV)/lib
+pkg_config_libdir__ := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
 
 # Target
-TARGET := $(shell $(CC) -dumpmachine)
+TARGET := $(shell $(cc__) -dumpmachine)
 
 # Environment
+env := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" CFLAGS="$(cflags__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
+
 RECIPES := $(CURDIR)/recipes
 SOURCEDIR := $(CURDIR)/sources
 BUILDDIR := $(CURDIR)/builddir-$(TARGET)
@@ -58,9 +61,9 @@ ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
 endif
 
-#ifeq ($(TARGET),arm-unknown-riscos)
-#  SDK_ITEMS := $(COMMON_SDK_ITEMS)
-#endif
+ifeq ($(TARGET),arm-unknown-riscos)
+  SDK_ITEMS := $(BUILDSTEPS)/riscos-oslib.d $(COMMON_SDK_ITEMS)
+endif
 
 ifeq ($(SDK_ITEMS),)
   $(error Unable to compute SDK components for target $(TARGET))
@@ -90,8 +93,8 @@ $(BUILDSTEPS)/zlib.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib-src.d
 	mkdir -p $(BUILDDIR)/zlib
 	cd $(BUILDDIR)/zlib && tar xjf $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.bz2
 	for p in `ls $(RECIPES)/patches/zlib/*.p` ; do patch -d $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) -p0 <$$p ; done
-	cd $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) && ./configure --prefix=$(GCCSDK_INSTALL_ENV)
-	cd $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) && make install
+	cd $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV)
+	cd $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/zlib-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.bz2
@@ -105,8 +108,8 @@ $(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
 	mkdir -p $(BUILDDIR)/libiconv
 	cd $(BUILDDIR)/libiconv && tar xzf $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz
 	for p in `ls $(RECIPES)/patches/libiconv/*.p` ; do patch -d $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) -p0 <$$p ; done
-	cd $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) && make install
+	cd $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/libiconv-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz
@@ -119,8 +122,8 @@ $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz:
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
 	mkdir -p $(BUILDDIR)/libtre
 	cd $(BUILDDIR)/libtre && tar xjf $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2
-	cd $(BUILDDIR)/libtre/tre-$(VERSION_LIBTRE) && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(BUILDDIR)/libtre/tre-$(VERSION_LIBTRE) && make install
+	cd $(BUILDDIR)/libtre/tre-$(VERSION_LIBTRE) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libtre/tre-$(VERSION_LIBTRE) && $(env) make install
 	cp $(RECIPES)/files/libtre/regex.h $(GCCSDK_INSTALL_ENV)/include/regex.h
 	touch $@
 
@@ -131,11 +134,11 @@ $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2:
 	wget -q -O $@ http://laurikari.net/tre/$(subst $(SOURCEDIR)/,,$@)
 
 # libXML2
-$(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libxml2-src.d
+$(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2-src.d
 	mkdir -p $(BUILDDIR)/libxml2
 	cd $(BUILDDIR)/libxml2 && tar xzf $(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz
-	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && make install
+	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/libxml2-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz
@@ -149,8 +152,8 @@ $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	mkdir -p $(BUILDDIR)/openssl
 	cd $(BUILDDIR)/openssl && tar xzf $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz
 	for p in `ls $(RECIPES)/patches/openssl/*.p` ; do patch -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
-	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-asm no-threads
-	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && make install
+	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-asm no-threads
+	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/openssl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz
@@ -163,8 +166,8 @@ $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz:
 $(BUILDSTEPS)/libpng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libpng-src.d
 	mkdir -p $(BUILDDIR)/libpng
 	cd $(BUILDDIR)/libpng && tar xzf $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz
-	cd $(BUILDDIR)/libpng/libpng-$(VERSION_LIBPNG) && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(BUILDDIR)/libpng/libpng-$(VERSION_LIBPNG) && make install
+	cd $(BUILDDIR)/libpng/libpng-$(VERSION_LIBPNG) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libpng/libpng-$(VERSION_LIBPNG) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/libpng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz
@@ -178,8 +181,8 @@ $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz:
 $(BUILDSTEPS)/libjpeg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-src.d
 	mkdir -p $(BUILDDIR)/libjpeg
 	cd $(BUILDDIR)/libjpeg && tar xzf $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz
-	cd $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) && make install
+	cd $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/libjpeg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz
@@ -192,8 +195,8 @@ $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz:
 $(BUILDSTEPS)/liblcms.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms-src.d
 	mkdir -p $(BUILDDIR)/liblcms
 	cd $(BUILDDIR)/liblcms && tar xzf $(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz
-	cd $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) && make install
+	cd $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/liblcms-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz
@@ -208,7 +211,7 @@ $(BUILDSTEPS)/libmng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTE
 	cd $(BUILDDIR)/libmng && tar xzf $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz
 	for p in `ls $(RECIPES)/patches/libmng/*.p` ; do patch -d $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG) -p0 <$$p ; done
 	cp $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG)/makefiles/makefile.unix $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG)/Makefile
-	cd $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG) && make install
+	cd $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/libmng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz
@@ -221,8 +224,8 @@ $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz:
 $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
 	mkdir -p $(BUILDDIR)/libcares
 	cd $(BUILDDIR)/libcares && tar xzf $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz
-	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && make install
+	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/libcares-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz
@@ -236,8 +239,8 @@ $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	mkdir -p $(BUILDDIR)/libcurl
 	cd $(BUILDDIR)/libcurl && tar xjf $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2
 	for p in `ls $(RECIPES)/patches/libcurl/*.p` ; do patch -d $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) -p0 <$$p ; done
-	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn --enable-nonblocking --enable-ares=$(GCCSDK_INSTALL_ENV)/lib --without-random
-	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && make install
+	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn --enable-nonblocking --enable-ares=$(GCCSDK_INSTALL_ENV)/lib --without-random
+	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) make install
 	touch $@
 
 $(BUILDSTEPS)/libcurl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2
@@ -245,4 +248,17 @@ $(BUILDSTEPS)/libcurl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/curl-$(VERSI
 
 $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
 	wget -q -O $@ http://curl.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)
+
+# RISC OS OSLib
+$(BUILDSTEPS)/riscos-oslib.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/riscos-oslib-src.d
+	mkdir -p $(BUILDDIR)/riscos-oslib
+	cp -r $(SOURCEDIR)/riscos-oslib-$(VERSION_RISCOS_OSLIB) $(BUILDDIR)/riscos-oslib/
+	cd $(BUILDDIR)/riscos-oslib/riscos-oslib-$(VERSION_RISCOS_OSLIB) && GCCSDK_INSTALL_ENV=$(GCCSDK_INSTALL_ENV) GCCSDK_INSTALL_CROSSBIN=$(GCCSDK_INSTALL_CROSSBIN) make install
+	touch $@
+
+$(BUILDSTEPS)/riscos-oslib-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/riscos-oslib-$(VERSION_RISCOS_OSLIB)
+	touch $@
+
+$(SOURCEDIR)/riscos-oslib-$(VERSION_RISCOS_OSLIB):
+	svn co https://ro-oslib.svn.sourceforge.net/svnroot/ro-oslib/trunk/!OSLib@$(VERSION_RISCOS_OSLIB) $@
 
