@@ -93,7 +93,10 @@ $(BUILDSTEPS)/zlib.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib-src.d
 	mkdir -p $(BUILDDIR)/zlib
 	cd $(BUILDDIR)/zlib && tar xjf $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.bz2
 	for p in `ls $(RECIPES)/patches/zlib/*.p` ; do patch -d $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) -p0 <$$p ; done
-	cd $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV)
+ifneq ($(realpath $(RECIPES)/patches/zlib/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/zlib/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) -p0 <$$p ; done
+endif
+	cd $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --static
 	cd $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) && $(env) make install
 	touch $@
 
