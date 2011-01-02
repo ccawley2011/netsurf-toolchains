@@ -23,7 +23,6 @@ VERSION_LIBLCMS := 2.1
 VERSION_LIBMNG := 1.0.10
 VERSION_LIBCARES := 1.7.4
 VERSION_LIBCURL := 7.21.3
-VERSION_RISCOS_OSLIB := 402
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -62,7 +61,7 @@ ifeq ($(TARGET),m68k-unknown-amigaos)
 endif
 
 ifeq ($(TARGET),arm-unknown-riscos)
-  SDK_ITEMS := $(BUILDSTEPS)/riscos-oslib.d $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(COMMON_SDK_ITEMS)
 endif
 
 ifeq ($(SDK_ITEMS),)
@@ -251,17 +250,4 @@ $(BUILDSTEPS)/libcurl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/curl-$(VERSI
 
 $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
 	wget -q -O $@ http://curl.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)
-
-# RISC OS OSLib
-$(BUILDSTEPS)/riscos-oslib.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/riscos-oslib-src.d
-	mkdir -p $(BUILDDIR)/riscos-oslib
-	cp -r $(SOURCEDIR)/riscos-oslib-$(VERSION_RISCOS_OSLIB) $(BUILDDIR)/riscos-oslib/
-	cd $(BUILDDIR)/riscos-oslib/riscos-oslib-$(VERSION_RISCOS_OSLIB) && GCCSDK_INSTALL_ENV=$(GCCSDK_INSTALL_ENV) GCCSDK_INSTALL_CROSSBIN=$(GCCSDK_INSTALL_CROSSBIN) make install
-	touch $@
-
-$(BUILDSTEPS)/riscos-oslib-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/riscos-oslib-$(VERSION_RISCOS_OSLIB)
-	touch $@
-
-$(SOURCEDIR)/riscos-oslib-$(VERSION_RISCOS_OSLIB):
-	svn co https://ro-oslib.svn.sourceforge.net/svnroot/ro-oslib/trunk/!OSLib@$(VERSION_RISCOS_OSLIB) $@
 
