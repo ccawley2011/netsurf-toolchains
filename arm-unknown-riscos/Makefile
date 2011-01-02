@@ -13,6 +13,11 @@ UPSTREAM_CCRES_VERSION := 96
 UPSTREAM_CCRES_TARBALL := ccres
 UPSTREAM_CCRES_URI := svn://svn.riscos.info/ccres/trunk@$(UPSTREAM_CCRES_VERSION)
 
+# Ditto for Makerun
+UPSTREAM_MAKERUN_VERSION := 11186
+UPSTREAM_MAKERUN_TARBALL := makerun
+UPSTREAM_MAKERUN_URI := svn://svn.netsurf-browser.org/trunk/tools/makerun@$(UPSTREAM_MAKERUN_VERSION)
+
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
 BUILDSTEPS := $(TOP)/build-steps
@@ -22,7 +27,8 @@ TARGET_NAME := arm-unknown-riscos
 PREFIX ?= /opt/netsurf/$(TARGET_NAME)
 
 .PHONY: all clean distclean
-all: $(BUILDSTEPS)/buildsteps.d $(BUILDSTEPS)/gcc.d $(BUILDSTEPS)/oslib.d $(BUILDSTEPS)/ccres.d
+all: $(BUILDSTEPS)/buildsteps.d $(BUILDSTEPS)/gcc.d $(BUILDSTEPS)/oslib.d \
+	$(BUILDSTEPS)/ccres.d $(BUILDSTEPS)/makerun.d
 
 clean:
 	cd gcc4 && make clean
@@ -56,6 +62,11 @@ $(BUILDSTEPS)/ccres.d: $(BUILDSTEPS)/buildsteps.d $(BUILDSTEPS)/oslib.d $(UPSTRE
 	cd $(UPSTREAM_CCRES_TARBALL) && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
 	touch $@
 
+# Makerun
+$(BUILDSTEPS)/makerun.d: $(BUILDSTEPS)/buildsteps.d $(UPSTREAM_MAKERUN_TARBALL)
+	cd $(UPSTREAM_MAKERUN_TARBALL) && GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
+	touch $@
+
 ###
 # Rules to fetch upstream sources
 ###
@@ -68,3 +79,6 @@ $(UPSTREAM_OSLIB_TARBALL):
 
 $(UPSTREAM_CCRES_TARBALL):
 	svn co $(UPSTREAM_CCRES_URI) $@
+
+$(UPSTREAM_MAKERUN_TARBALL):
+	svn co $(UPSTREAM_MAKERUN_URI) $@
