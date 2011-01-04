@@ -79,6 +79,7 @@ $(BUILDSTEPS)/infozip.d: $(BUILDSTEPS)/buildsteps.d $(UPSTREAM_INFOZIP_TARBALL)
 	for p in `ls $(RECIPES)/patches/infozip/*.p` ; do patch -d zip$(UPSTREAM_INFOZIP_VERSION) -p0 <$$p ; done
 	cd zip$(UPSTREAM_INFOZIP_VERSION) && make -f unix/Makefile generic LOCAL_ZIP=-DFORRISCOS
 	cp zip$(UPSTREAM_INFOZIP_VERSION)/zip $(PREFIX)/cross/bin/zip
+	@# Yuck. Build host tooling should not be installed into the target environment
 	ln -fs $(PREFIX)/cross/bin/zip $(PREFIX)/env/bin/zip
 	touch $@
 
