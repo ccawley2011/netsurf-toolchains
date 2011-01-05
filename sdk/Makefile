@@ -179,10 +179,10 @@ $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz:
 	wget -q -O $@ http://downloads.sourceforge.net/project/libpng/libpng14/$(VERSION_LIBPNG)/$(subst $(SOURCEDIR)/,,$@)
 
 # libjpeg
-# TODO: rename the LOCAL/GLOBAL/EXTERN macros in jmorecfg.h
 $(BUILDSTEPS)/libjpeg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-src.d
 	mkdir -p $(BUILDDIR)/libjpeg
 	cd $(BUILDDIR)/libjpeg && tar xzf $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz
+	for p in `ls $(RECIPES)/patches/libjpeg/*.p` ; do patch -d $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) -p0 <$$p ; done
 	cd $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) && $(env) make install
 	touch $@
