@@ -27,6 +27,10 @@ UPSTREAM_CLIB2_URI := anonymous@clib2.cvs.sourceforge.net:/cvsroot/clib2
 UPSTREAM_NDK_TARBALL := ndk-3.9-includes.tar.bz2
 UPSTREAM_NDK_URI := http://www.zerohero.se/cross/files/m68k-amigaos/ndk-3.9-includes.tar.bz2
 
+UPSTREAM_OPENURL_VERSION := 7.8
+UPSTREAM_OPENURL_TARBALL := openurl
+UPSTREAM_OPENURL_URI := https://openurllib.svn.sourceforge.net/svnroot/openurllib/releases/$(UPSTREAM_OPENURL_VERSION)/developer/C
+
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
 SOURCESDIR := $(TOP)/sources
@@ -76,12 +80,13 @@ $(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(
 # Rules to install the NDK
 ###
 
-$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL)
+$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)
 	mkdir -p $(PREFIX)/$(TARGET_NAME)
 	tar -C $(PREFIX)/$(TARGET_NAME) --strip-components=2 -xjf $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL)
 	for p in `ls $(RECIPES)/patches/ndk/*.p` ; do patch -d $(PREFIX)/$(TARGET_NAME) -p0 <$$p ; done
 	for dir in `find $(RECIPES)/files/ndk/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/ndk##'` ; do mkdir -p $(PREFIX)/$(TARGET_NAME)$$dir ; done
 	for file in `find $(RECIPES)/files/ndk/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/ndk##'` ; do cp -p $(RECIPES)/files/ndk$$file $(PREFIX)/$(TARGET_NAME)$$file ; done
+	cp -r $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)/include/* $(PREFIX)/$(TARGET_NAME)/sys-include/
 	touch $@
 
 ###
@@ -169,6 +174,9 @@ $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL):
 
 $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL):
 	wget -q -O $@ $(UPSTREAM_NDK_URI)
+
+$(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL):
+	svn export $(UPSTREAM_OPENURL_URI) $@
 
 ###
 # Rule to create buildsteps dir
