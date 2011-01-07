@@ -4,6 +4,9 @@
 #ifndef EXEC_TYPES_H
 #include <exec/types.h>
 #endif
+#ifndef LIBRARIES_PICASSO96_H
+#include <libraries/Picasso96.h>
+#endif
 #if !defined(CLIB_PICASSO96_PROTOS_H) && !defined(__GNUC__)
 #include <clib/picasso96_protos.h>
 #endif
