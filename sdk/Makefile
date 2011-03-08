@@ -64,6 +64,10 @@ ifeq ($(TARGET),arm-unknown-riscos)
   SDK_ITEMS := $(COMMON_SDK_ITEMS)
 endif
 
+ifeq ($(TARGET),ppc-amigaos)
+  SDK_ITEMS := $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+endif
+
 ifeq ($(SDK_ITEMS),)
   $(error Unable to compute SDK components for target $(TARGET))
 endif
@@ -139,6 +143,10 @@ $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2:
 $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2-src.d
 	mkdir -p $(BUILDDIR)/libxml2
 	cd $(BUILDDIR)/libxml2 && tar xzf $(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz
+	for p in `ls $(RECIPES)/patches/libxml2/*.p` ; do patch -d $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/libxml2/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libxml2/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) -p0 <$$p ; done
+endif
 	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) make install
 	touch $@
@@ -154,6 +162,9 @@ $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	mkdir -p $(BUILDDIR)/openssl
 	cd $(BUILDDIR)/openssl && tar xzf $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz
 	for p in `ls $(RECIPES)/patches/openssl/*.p` ; do patch -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/openssl/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/openssl/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
+endif
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-asm no-threads
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) make install
 	touch $@
@@ -197,6 +208,10 @@ $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz:
 $(BUILDSTEPS)/liblcms.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms-src.d
 	mkdir -p $(BUILDDIR)/liblcms
 	cd $(BUILDDIR)/liblcms && tar xzf $(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz
+	for p in `ls $(RECIPES)/patches/liblcms/*.p` ; do patch -d $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/liblcms/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/liblcms/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) -p0 <$$p ; done
+endif
 	cd $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) && $(env) make install
 	touch $@
@@ -226,6 +241,10 @@ $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz:
 $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
 	mkdir -p $(BUILDDIR)/libcares
 	cd $(BUILDDIR)/libcares && tar xzf $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz
+	for p in `ls $(RECIPES)/patches/libcares/*.p` ; do patch -d $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/libcares/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libcares/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) -p0 <$$p ; done
+endif
 	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) make install
 	touch $@
