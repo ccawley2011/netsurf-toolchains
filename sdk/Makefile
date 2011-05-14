@@ -56,6 +56,11 @@ COMMON_SDK_ITEMS := $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2.d $(BUILDSTEPS)/o
 		$(BUILDSTEPS)/libpng.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d \
 		$(BUILDSTEPS)/libmng.d $(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl.d
 
+ifeq ($(TARGET),m68k-atari-mint)
+  EXTRAARGS_LIBXML := --enable-ipv6=no
+  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(COMMON_SDK_ITEMS)
+endif
+
 ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
 endif
@@ -147,7 +152,7 @@ $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 ifneq ($(realpath $(RECIPES)/patches/libxml2/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libxml2/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared $(EXTRAARGS_LIBXML)
 	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) make install
 	touch $@
 
@@ -179,6 +184,9 @@ $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz:
 $(BUILDSTEPS)/libpng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libpng-src.d
 	mkdir -p $(BUILDDIR)/libpng
 	cd $(BUILDDIR)/libpng && tar xzf $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz
+ifneq ($(realpath $(RECIPES)/patches/libpng/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libpng/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libpng/libpng-$(VERSION_LIBPNG) -p0 <$$p ; done
+endif
 	cd $(BUILDDIR)/libpng/libpng-$(VERSION_LIBPNG) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libpng/libpng-$(VERSION_LIBPNG) && $(env) make install
 	touch $@
