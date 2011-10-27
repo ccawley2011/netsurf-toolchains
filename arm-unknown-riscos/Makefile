@@ -25,79 +25,114 @@ UPSTREAM_INFOZIP_URI := ftp://ftp.info-zip.org/pub/infozip/src/$(UPSTREAM_INFOZI
 
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
-BUILDSTEPS := $(TOP)/build-steps
+SOURCESDIR := $(TOP)/sources
+BUILDDIR := $(TOP)/builddir
+BUILDSTEPS := $(BUILDDIR)/build-steps
 
 TARGET_NAME := arm-unknown-riscos
 
 PREFIX ?= /opt/netsurf/$(TARGET_NAME)
 
 .PHONY: all clean distclean
-all: $(BUILDSTEPS)/buildsteps.d $(BUILDSTEPS)/gcc.d $(BUILDSTEPS)/oslib.d \
-	$(BUILDSTEPS)/ccres.d $(BUILDSTEPS)/makerun.d $(BUILDSTEPS)/infozip.d
+all: $(BUILDSTEPS)/toolchain.d
 
 clean:
-	cd gcc4 && make clean
+	rm -fr $(BUILDDIR)
 
 distclean: clean
-	rm -fr $(UPSTREAM_GCCSDK_TARBALL)
-	rm -fr $(UPSTREAM_OSLIB_TARBALL)
-	rm -fr $(UPSTREAM_CCRES_TARBALL)
-	rm -fr $(UPSTREAM_INFOZIP_TARBALL) zip$(UPSTREAM_INFOZIP_VERSION)
-	rm -fr $(BUILDSTEPS)
+	rm -fr $(SOURCESDIR)
 
-# Buildsteps
-$(BUILDSTEPS)/buildsteps.d:
-	mkdir -p $(BUILDSTEPS)
+###
+# Rules to build the full toolchain
+###
+
+$(BUILDSTEPS)/toolchain.d: $(BUILDSTEPS)/ccres.d $(BUILDSTEPS)/makerun.d $(BUILDSTEPS)/infozip.d
 	touch $@
 
-# GCCSDK
-$(BUILDSTEPS)/gcc.d: $(UPSTREAM_GCC_TARBALL)
-	cp -p $(RECIPES)/files/gcc4/gccsdk-params gcc4/gccsdk-params
-	sed -i 's#{PREFIX}#$(PREFIX)#' gcc4/gccsdk-params
-	cd gcc4 && make
-	touch $@
+###
+# Rules to build and install Infozip
+###
 
-# OSLib
-$(BUILDSTEPS)/oslib.d: $(BUILDSTEPS)/buildsteps.d $(BUILDSTEPS)/gcc.d $(UPSTREAM_OSLIB_TARBALL)
-	cd $(UPSTREAM_OSLIB_TARBALL) && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
-	touch $@
-
-# CCRes
-$(BUILDSTEPS)/ccres.d: $(BUILDSTEPS)/buildsteps.d $(BUILDSTEPS)/oslib.d $(UPSTREAM_CCRES_TARBALL)
-	cd $(UPSTREAM_CCRES_TARBALL) && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make
-	cd $(UPSTREAM_CCRES_TARBALL) && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
-	touch $@
-
-# Makerun
-$(BUILDSTEPS)/makerun.d: $(BUILDSTEPS)/buildsteps.d $(UPSTREAM_MAKERUN_TARBALL)
-	cd $(UPSTREAM_MAKERUN_TARBALL) && GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
-	touch $@
-
-# Infozip
-$(BUILDSTEPS)/infozip.d: $(BUILDSTEPS)/buildsteps.d $(UPSTREAM_INFOZIP_TARBALL)
-	tar xzf $(UPSTREAM_INFOZIP_TARBALL)
-	for p in `ls $(RECIPES)/patches/infozip/*.p` ; do patch -d zip$(UPSTREAM_INFOZIP_VERSION) -p0 <$$p ; done
-	cd zip$(UPSTREAM_INFOZIP_VERSION) && make -f unix/Makefile generic LOCAL_ZIP=-DFORRISCOS
-	cp zip$(UPSTREAM_INFOZIP_VERSION)/zip $(PREFIX)/cross/bin/zip
+$(BUILDSTEPS)/infozip.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_INFOZIP_TARBALL)
+	tar -C $(BUILDDIR) -xzf $(SOURCESDIR)/$(UPSTREAM_INFOZIP_TARBALL)
+	for p in `ls $(RECIPES)/patches/infozip/*.p` ; do patch -d $(BUILDDIR)/zip$(UPSTREAM_INFOZIP_VERSION) -p0 <$$p ; done
+	cd $(BUILDDIR)/zip$(UPSTREAM_INFOZIP_VERSION) && make -f unix/Makefile generic LOCAL_ZIP=-DFORRISCOS
+	cp $(BUILDDIR)/zip$(UPSTREAM_INFOZIP_VERSION)/zip $(PREFIX)/cross/bin/zip
 	@# Yuck. Build host tooling should not be installed into the target environment
 	ln -fs $(PREFIX)/cross/bin/zip $(PREFIX)/env/bin/zip
+	touch $@
+
+###
+# Rules to build and install Makerun
+###
+
+$(BUILDSTEPS)/makerun.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_MAKERUN_TARBALL)
+	cp -r $(SOURCESDIR)/$(UPSTREAM_MAKERUN_TARBALL) $(BUILDDIR)/makerun
+	cd $(BUILDDIR)/makerun && GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
+	touch $@
+
+###
+# Rules to build and install CCRes
+###
+
+$(BUILDSTEPS)/ccres.d: $(BUILDSTEPS)/oslib.d $(SOURCESDIR)/$(UPSTREAM_CCRES_TARBALL)
+	cp -r $(SOURCESDIR)/$(UPSTREAM_CCRES_TARBALL) $(BUILDDIR)/ccres
+	cd $(BUILDDIR)/ccres && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make
+	cd $(BUILDDIR)/ccres && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
+	touch $@
+
+###
+# Rules to build and install OSLib
+###
+
+$(BUILDSTEPS)/oslib.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_OSLIB_TARBALL)
+	cp -r $(SOURCESDIR)/$(UPSTREAM_OSLIB_TARBALL) $(BUILDDIR)/oslib
+	for p in `ls $(RECIPES)/patches/oslib/*.p` ; do patch -d $(BUILDDIR)/oslib -p0 <$$p ; done
+	cd $(BUILDDIR)/oslib && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
+	touch $@
+
+###
+# Rules to build and install GCCSDK
+###
+
+$(BUILDSTEPS)/gcc.d: $(BUILDSTEPS)/gccsdk-srcdir.d
+	cd $(BUILDDIR)/gcc4 && make
+	touch $@
+
+$(BUILDSTEPS)/gccsdk-srcdir.d: $(BUILDSTEPS)/buildsteps.d $(SOURCESDIR)/$(UPSTREAM_GCCSDK_TARBALL)
+	cp -r $(SOURCESDIR)/$(UPSTREAM_GCCSDK_TARBALL) $(BUILDDIR)/gcc4
+	cp -p $(RECIPES)/files/gcc4/gccsdk-params $(BUILDDIR)/gcc4/gccsdk-params
+	sed -i 's#{PREFIX}#$(PREFIX)#' $(BUILDDIR)/gcc4/gccsdk-params
+	for p in `ls $(RECIPES)/patches/gcc4/*.p` ; do patch -d $(BUILDDIR)/gcc4 -p0 <$$p ; done
 	touch $@
 
 ###
 # Rules to fetch upstream sources
 ###
 
-$(UPSTREAM_GCCSDK_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_GCCSDK_TARBALL):
 	svn co $(UPSTREAM_GCCSDK_URI) $@
 
-$(UPSTREAM_OSLIB_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_OSLIB_TARBALL):
 	svn co $(UPSTREAM_OSLIB_URI) $@
 
-$(UPSTREAM_CCRES_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_CCRES_TARBALL):
 	svn co $(UPSTREAM_CCRES_URI) $@
 
-$(UPSTREAM_MAKERUN_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_MAKERUN_TARBALL):
 	svn co $(UPSTREAM_MAKERUN_URI) $@
 
-$(UPSTREAM_INFOZIP_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_INFOZIP_TARBALL):
 	wget -q -O $@ $(UPSTREAM_INFOZIP_URI)
+
+###
+# Rule to create buildsteps dir
+###
+
+$(BUILDSTEPS)/buildsteps.d: $(SOURCESDIR)
+	mkdir -p $(BUILDSTEPS)
+	touch $@
+
+$(SOURCESDIR):
+	mkdir -p $@
+
