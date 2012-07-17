@@ -1,42 +1,42 @@
---- configure.orig	2007-11-07 09:39:25.111922700 +0000
-+++ configure	2007-11-07 09:42:47.386922700 +0000
-@@ -260,18 +260,18 @@
-   TEST="all teststatic testshared"
- fi
+--- configure.orig	2012-05-02 05:17:08.000000000 +0100
++++ configure	2012-07-17 17:57:01.000000000 +0100
+@@ -381,18 +381,18 @@
+ echo >> configure.log
  
+ # check for large file support, and if none, check for fseeko()
 -cat > $test.c <<EOF
 -#include <sys/types.h>
 -off64_t dummy = 0;
 -EOF
--if test "`($CC -c $CFLAGS -D_LARGEFILE64_SOURCE=1 $test.c) 2>&1`" = ""; then
+-if try $CC -c $CFLAGS -D_LARGEFILE64_SOURCE=1 $test.c; then
 -  CFLAGS="${CFLAGS} -D_LARGEFILE64_SOURCE=1"
 -  SFLAGS="${SFLAGS} -D_LARGEFILE64_SOURCE=1"
 -  ALL="${ALL} all64"
 -  TEST="${TEST} test64"
--  echo "Checking for off64_t... Yes."
--  echo "Checking for fseeko... Yes."
+-  echo "Checking for off64_t... Yes." | tee -a configure.log
+-  echo "Checking for fseeko... Yes." | tee -a configure.log
 -else
 +#cat > $test.c <<EOF
 +##include <sys/types.h>
 +#off64_t dummy = 0;
 +#EOF
-+#if test "`($CC -c $CFLAGS -D_LARGEFILE64_SOURCE=1 $test.c) 2>&1`" = ""; then
++#if try $CC -c $CFLAGS -D_LARGEFILE64_SOURCE=1 $test.c; then
 +#  CFLAGS="${CFLAGS} -D_LARGEFILE64_SOURCE=1"
 +#  SFLAGS="${SFLAGS} -D_LARGEFILE64_SOURCE=1"
 +#  ALL="${ALL} all64"
 +#  TEST="${TEST} test64"
-+#  echo "Checking for off64_t... Yes."
-+#  echo "Checking for fseeko... Yes."
++#  echo "Checking for off64_t... Yes." | tee -a configure.log
++#  echo "Checking for fseeko... Yes." | tee -a configure.log
 +#else
-   echo "Checking for off64_t... No."
+   echo "Checking for off64_t... No." | tee -a configure.log
+   echo >> configure.log
    cat > $test.c <<EOF
- #include <stdio.h>
-@@ -287,7 +287,7 @@
+@@ -409,7 +409,7 @@
      SFLAGS="${SFLAGS} -DNO_FSEEKO"
-     echo "Checking for fseeko... No."
+     echo "Checking for fseeko... No." | tee -a configure.log
    fi
 -fi
-+#fi
++##fi
  
- cp -p zconf.h.in zconf.h
+ echo >> configure.log
  

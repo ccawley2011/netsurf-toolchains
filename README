@@ -1,0 +1,18 @@
+NetSurf Toolchain builds
+
+Pre-requisites for Debian systems
+---------------------------------
+
+	$ apt-get install build-essential autoconf automake autogen flex yacc
+
+RISC OS
+-------
+
+It is important that the output prefix (/opt/netsurf by default) is writable 
+ or use sudo to do the make
+
+	$ cd arm-unknown-riscos
+	$ make
+	$ cd ../sdk
+	$ GCCSDK_INSTALL_CROSSBIN=/opt/netsurf/arm-unknown-riscos/cross/bin GCCSDK_INSTALL_ENV=/opt/netsurf/arm-unknown-riscos/env make
+

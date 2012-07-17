@@ -59,6 +59,7 @@ $(BUILDSTEPS)/infozip.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_INFOZIP_TA
 	cd $(BUILDDIR)/zip$(UPSTREAM_INFOZIP_VERSION) && make -f unix/Makefile generic LOCAL_ZIP=-DFORRISCOS
 	cp $(BUILDDIR)/zip$(UPSTREAM_INFOZIP_VERSION)/zip $(PREFIX)/cross/bin/zip
 	@# Yuck. Build host tooling should not be installed into the target environment
+	mkdir -p $(PREFIX)/env/bin
 	ln -fs $(PREFIX)/cross/bin/zip $(PREFIX)/env/bin/zip
 	touch $@
 
@@ -97,6 +98,7 @@ $(BUILDSTEPS)/oslib.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_OSLIB_TARBAL
 
 $(BUILDSTEPS)/gcc.d: $(BUILDSTEPS)/gccsdk-srcdir.d
 	cd $(BUILDDIR)/gcc4 && make
+	cd $(BUILDDIR)/gcc4 && ./install-env
 	touch $@
 
 $(BUILDSTEPS)/gccsdk-srcdir.d: $(BUILDSTEPS)/buildsteps.d $(SOURCESDIR)/$(UPSTREAM_GCCSDK_TARBALL)

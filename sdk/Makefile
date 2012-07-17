@@ -12,16 +12,16 @@ ifeq ($(GCCSDK_INSTALL_CROSSBIN),)
 endif
 
 # Upstream package versions
-VERSION_ZLIB := 1.2.5
+VERSION_ZLIB := 1.2.7
 VERSION_LIBICONV := 1.13.1
 VERSION_LIBTRE := 0.8.0
 VERSION_LIBXML := 2.7.8
 VERSION_OPENSSL := 1.0.0c
-VERSION_LIBPNG := 1.4.5
+VERSION_LIBPNG := 1.4.12
 VERSION_LIBJPEG := 8b
 VERSION_LIBLCMS := 2.1
 VERSION_LIBMNG := 1.0.10
-VERSION_LIBCARES := 1.7.4
+VERSION_LIBCARES := 1.9.1
 VERSION_LIBCURL := 7.21.3
 
 # Path
@@ -152,7 +152,7 @@ $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 ifneq ($(realpath $(RECIPES)/patches/libxml2/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libxml2/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared $(EXTRAARGS_LIBXML)
+	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-python $(EXTRAARGS_LIBXML)
 	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) make install
 	touch $@
 
@@ -261,7 +261,7 @@ $(BUILDSTEPS)/libcares-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/c-ares-$(VE
 	touch $@
 
 $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz:
-	wget -q -O $@ http://c-ares.haxx.se/$(subst $(SOURCEDIR)/,,$@)
+	wget -q -O $@ http://c-ares.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)
 
 # libcurl
 $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl.d $(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl-src.d
