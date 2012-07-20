@@ -17,7 +17,7 @@ VERSION_LIBICONV := 1.13.1
 VERSION_LIBTRE := 0.8.0
 VERSION_LIBXML := 2.7.8
 VERSION_OPENSSL := 1.0.0c
-VERSION_LIBPNG := 1.4.12
+VERSION_LIBPNG := 1.5.12
 VERSION_LIBJPEG := 8b
 VERSION_LIBLCMS := 2.1
 VERSION_LIBMNG := 1.0.10
@@ -195,7 +195,7 @@ $(BUILDSTEPS)/libpng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libpng-$(VERS
 	touch $@
 
 $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz:
-	wget -q -O $@ http://downloads.sourceforge.net/project/libpng/libpng14/$(VERSION_LIBPNG)/$(subst $(SOURCEDIR)/,,$@)
+	wget -q -O $@ http://downloads.sourceforge.net/libpng/$(subst $(SOURCEDIR)/,,$@)
 
 # libjpeg
 $(BUILDSTEPS)/libjpeg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-src.d
