@@ -3,7 +3,7 @@ NetSurf Toolchain builds
 Pre-requisites for Debian systems
 ---------------------------------
 
-	$ apt-get install build-essential autoconf automake autogen flex yacc
+	$ apt-get install build-essential autoconf automake autogen flex bison
 
 RISC OS
 -------
