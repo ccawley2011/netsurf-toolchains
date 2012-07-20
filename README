@@ -4,6 +4,7 @@ Pre-requisites for Debian systems
 ---------------------------------
 
 	$ apt-get install build-essential autoconf automake autogen flex bison
+	$ apt-get install libtool texinfo help2man
 
 RISC OS
 -------
