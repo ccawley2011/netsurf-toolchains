@@ -22,7 +22,7 @@ VERSION_LIBJPEG := 8b
 VERSION_LIBLCMS := 2.1
 VERSION_LIBMNG := 1.0.10
 VERSION_LIBCARES := 1.9.1
-VERSION_LIBCURL := 7.21.3
+VERSION_LIBCURL := 7.26.0
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -60,18 +60,23 @@ COMMON_SDK_ITEMS := $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2.d $(BUILDSTEPS)/o
 ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
   SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
 endif
 
 ifeq ($(TARGET),arm-unknown-riscos)
   SDK_ITEMS := $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
   SDK_ITEMS := $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
+  VERSION_LIBCURL := 7.21.3
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
@@ -258,7 +263,7 @@ $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
 ifneq ($(realpath $(RECIPES)/patches/libcares/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libcares/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) $(EXTRAARGS_LIBCARES)
 	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) make install
 	touch $@
 
@@ -273,7 +278,7 @@ $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	mkdir -p $(BUILDDIR)/libcurl
 	cd $(BUILDDIR)/libcurl && tar xjf $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2
 	for p in `ls $(RECIPES)/patches/libcurl/*.p` ; do patch -d $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) -p0 <$$p ; done
-	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn --enable-nonblocking --enable-ares=$(GCCSDK_INSTALL_ENV)/lib --without-random
+	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn --enable-nonblocking --enable-ares --without-random
 	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) make install
 	touch $@
 
