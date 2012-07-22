@@ -3,11 +3,11 @@
 # mingw toolchain
 
 UPSTREAM_GCC_VERSION := 4.6.3
-UPSTREAM_GCC_TARBALL := gcc-core-$(UPSTREAM_GCC_VERSION).tar.gz
+UPSTREAM_GCC_TARBALL := gcc-core-$(UPSTREAM_GCC_VERSION).tar.bz2
 UPSTREAM_GCC_URI := http://ftpmirror.gnu.org/gcc/gcc-$(UPSTREAM_GCC_VERSION)/$(UPSTREAM_GCC_TARBALL)
 
 UPSTREAM_BINUTILS_VERSION := 2.22
-UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION).tar.gz
+UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION).tar.bz2
 UPSTREAM_BINUTILS_URI := http://ftpmirror.gnu.org/binutils/$(UPSTREAM_BINUTILS_TARBALL)
 
 UPSTREAM_GMP_VERSION := 4.3.2
@@ -25,7 +25,7 @@ UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TA
 
 UPSTREAM_MINGW_VERSION := 2.0.4
 UPSTREAM_MINGW_TARBALL := mingw-w64-v$(UPSTREAM_MINGW_VERSION).tar.gz
-UPSTREAM_MINGW_URI := "http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/${UPSTREAM_MINGW_URI}?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmingw-w64%2F&ts=1342830561&use_mirror=switch"
+UPSTREAM_MINGW_URI := "http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/$(UPSTREAM_MINGW_TARBALL)?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmingw-w64%2F&ts=1342830561&use_mirror=switch"
 
 
 TOP := $(CURDIR)
@@ -43,7 +43,7 @@ TARGET_NAME := x86_64-w64-mingw32
 PREFIX ?= /opt/netsurf/$(TARGET_NAME)/cross
 
 .PHONY: all clean distclean
-all: $(BUILDSTEPS)/stage2.d
+all: $(BUILDSTEPS)/gcc-final.d
 
 clean:
 	rm -fr $(BUILDDIR)
@@ -55,33 +55,47 @@ distclean: clean
 # Rules to build the full compiler
 ###
 
-$(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/mingw.d $(BUILDSTEPS)/binutils.d 
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(GCC_SRCDIR)/configure \
-		--prefix=$(PREFIX) --target=$(TARGET_NAME) --disable-nls \
-		--disable-c-mbchar --enable-languages=c --enable-checking=no \
-		--enable-c99 --with-cross-host --without-x \
-		--enable-maintainer-mode --enable-haifa \
-		--enable-sjlj-exceptions --disable-libstdcxx-pch \
-		--disable-tls --disable-libssp
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install
+
+$(BUILDSTEPS)/gcc-core.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d $(BUILDSTEPS)/mingw-headers.d
+	${RM} -rf $(BUILDDIR)/gcc
+	mkdir -p $(BUILDDIR)/gcc
+	cd $(BUILDDIR)/gcc && PATH="$(PREFIX)/bin:$(PATH)" $(GCC_SRCDIR)/configure \
+		--prefix=$(PREFIX) --target=$(TARGET_NAME) \
+		--enable-languages=c --with-system-zlib --disable-multilib \
+		--enable-shared --enable-fully-dynamic-string
+	cd $(BUILDDIR)/gcc && PATH="$(PREFIX)/bin:$(PATH)" make all-gcc -j 4
+	cd $(BUILDDIR)/gcc && PATH="$(PREFIX)/bin:$(PATH)" make install-gcc
 	touch $@
+
+$(BUILDSTEPS)/gcc-final.d: $(BUILDSTEPS)/buildsteps.d $(BUILDSTEPS)/gcc-core.d $(BUILDSTEPS)/mingw-crt.d
+	cd $(BUILDDIR)/gcc && PATH="$(PREFIX)/bin:$(PATH)" make 
+	cd $(BUILDDIR)/gcc && PATH="$(PREFIX)/bin:$(PATH)" make install
+	touch $@
+
 
 ###
 # Rules to install mingw
 ###
 
-$(BUILDSTEPS)/mingw.d: $(BUILDSTEPS)/mingw-srcdir.d
-	mkdir -p $(BUILDDIR)/mingw
-	cd $(BUILDDIR)/mingw && PATH="$(PREFIX)/bin:$(PATH)" $(MINGW_SRCDIR)/configure \
-	--prefix=$(PREFIX) --host=$(TARGET_NAME)
-	cd $(BUILDDIR)/mingw && make
-	cd $(BUILDDIR)/mingw && make install
+$(BUILDSTEPS)/mingw-headers.d: $(BUILDSTEPS)/mingw-srcdir.d
+	mkdir -p $(BUILDDIR)/mingw-headers
+	cd $(BUILDDIR)/mingw-headers && PATH="$(PREFIX)/bin:$(PATH)" $(MINGW_SRCDIR)/mingw-w64-headers/configure \
+	--prefix=$(PREFIX) --host=$(TARGET_NAME) 
+	cd $(BUILDDIR)/mingw-headers && PATH="$(PREFIX)/bin:$(PATH)" make
+	cd $(BUILDDIR)/mingw-headers && PATH="$(PREFIX)/bin:$(PATH)" make install
+	touch $@
+
+$(BUILDSTEPS)/mingw-crt.d: $(BUILDSTEPS)/mingw-srcdir.d
+	mkdir -p $(BUILDDIR)/mingw-crt
+	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" $(MINGW_SRCDIR)/configure \
+	--prefix=$(PREFIX) --host=$(TARGET_NAME) 
+	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" make
+	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" make install
 	touch $@
 
 $(BUILDSTEPS)/mingw-srcdir.d: $(SOURCESDIR)/$(UPSTREAM_MINGW_TARBALL)
-	tar xjf $(SOURCESDIR)/$(UPSTREAM_MINGW_TARBALL)
-	mv mingw-$(UPSTREAM_MINGW_VERSION) $(MINGW_SRCDIR)
+	tar xzf $(SOURCESDIR)/$(UPSTREAM_MINGW_TARBALL)
+	mv mingw-w64-v$(UPSTREAM_MINGW_VERSION) $(MINGW_SRCDIR)
 	touch $@
 
 ###
@@ -100,8 +114,8 @@ $(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d $(SOURCESDIR)/$(UPSTR
 	mv mpc-$(UPSTREAM_MPC_VERSION) $(GCC_SRCDIR)/mpc
 	touch $@
 
-$(BUILDSTEPS)/srcdir-step1.d: $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL)
-	tar xjf $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL)
+$(BUILDSTEPS)/srcdir-step1.d: $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL)
+	tar xjf $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL)
 	mv gcc-$(UPSTREAM_GCC_VERSION) $(GCC_SRCDIR)
 	touch $@
 
@@ -112,9 +126,8 @@ $(BUILDSTEPS)/srcdir-step1.d: $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL)
 
 $(BUILDSTEPS)/binutils.d: $(BUILDSTEPS)/binutils-srcdir.d
 	mkdir -p $(BUILDDIR)/binutils
-	cd $(BUILDDIR)/binutils && $(BINUTIL_SRCDIR)/configure \
-	--enable-targets=x86_64-w64-mingw32,i686-w64-mingw32 \
-	--with-sysroot=$(PREFIX) --prefix=$(PREFIX) --target=$(TARGET_NAME)
+	cd $(BUILDDIR)/binutils && $(BINUTILS_SRCDIR)/configure \
+	--prefix=$(PREFIX) --target=$(TARGET_NAME) --disable-multilib
 	cd $(BUILDDIR)/binutils && make
 	cd $(BUILDDIR)/binutils && make install
 	touch $@
@@ -128,34 +141,35 @@ $(BUILDSTEPS)/binutils-srcdir.d: $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL)
 # Rules to fetch upstream sources
 ###
 
-$(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL):
-	wget -q -O $@ $(UPSTREAM_GCC_URI) $@
+$(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL): $(SOURCESDIR)/sourcesdir.d
+	wget -q -O $@ $(UPSTREAM_GCC_URI) 
 
-$(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL): $(SOURCESDIR)/sourcesdir.d
 	wget -q -O $@ $(UPSTREAM_GMP_URI)
 
-$(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL): $(SOURCESDIR)/sourcesdir.d
 	wget -q -O $@ $(UPSTREAM_MPFR_URI)
 
-$(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL): $(SOURCESDIR)/sourcesdir.d
 	wget -q -O $@ $(UPSTREAM_MPC_URI)
 
-$(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL):
-	wget -q -O $@ $(UPSTREAM_BINUTILS_URI) $@
+$(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL): $(SOURCESDIR)/sourcesdir.d
+	wget -q -O $@ $(UPSTREAM_BINUTILS_URI) 
 
-$(SOURCESDIR)/$(UPSTREAM_MINGW_TARBALL):
+$(SOURCESDIR)/$(UPSTREAM_MINGW_TARBALL): $(SOURCESDIR)/sourcesdir.d
 	wget -q -O $@ $(UPSTREAM_MINGW_URI)
 
 ###
 # Rule to create buildsteps dir
 ###
 
-$(BUILDSTEPS)/buildsteps.d: $(SOURCESDIR) $(SRCDIR)
+$(BUILDSTEPS)/buildsteps.d: 
 	mkdir -p $(BUILDSTEPS)
+	mkdir -p $(SRCDIR)
 	touch $@
 
-$(SOURCESDIR):
-	mkdir -p $@
+$(SOURCESDIR)/sourcesdir.d:
+	mkdir -p $(SOURCESDIR)
+	${RM} $@
+	touch $@
 
-$(SRCDIR):
-	mkdir -p $@
