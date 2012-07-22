@@ -10,7 +10,7 @@ UPSTREAM_BINUTILS_VERSION := 2.22
 UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION).tar.bz2
 UPSTREAM_BINUTILS_URI := http://ftpmirror.gnu.org/binutils/$(UPSTREAM_BINUTILS_TARBALL)
 
-UPSTREAM_GMP_VERSION := 4.3.2
+UPSTREAM_GMP_VERSION := 5.0.5
 UPSTREAM_GMP_TARBALL := gmp-$(UPSTREAM_GMP_VERSION).tar.bz2
 UPSTREAM_GMP_URI := http://ftp.gnu.org/gnu/gmp/$(UPSTREAM_GMP_TARBALL)
 
@@ -142,22 +142,28 @@ $(BUILDSTEPS)/binutils-srcdir.d: $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL)
 ###
 
 $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL): $(SOURCESDIR)/sourcesdir.d
-	wget -q -O $@ $(UPSTREAM_GCC_URI) 
+	wget -q -O $@ $(UPSTREAM_GCC_URI)
+	touch $@
 
 $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL): $(SOURCESDIR)/sourcesdir.d
 	wget -q -O $@ $(UPSTREAM_GMP_URI)
+	touch $@
 
 $(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL): $(SOURCESDIR)/sourcesdir.d
 	wget -q -O $@ $(UPSTREAM_MPFR_URI)
+	touch $@
 
 $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL): $(SOURCESDIR)/sourcesdir.d
 	wget -q -O $@ $(UPSTREAM_MPC_URI)
+	touch $@
 
 $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL): $(SOURCESDIR)/sourcesdir.d
 	wget -q -O $@ $(UPSTREAM_BINUTILS_URI) 
+	touch $@
 
 $(SOURCESDIR)/$(UPSTREAM_MINGW_TARBALL): $(SOURCESDIR)/sourcesdir.d
 	wget -q -O $@ $(UPSTREAM_MINGW_URI)
+	touch $@
 
 ###
 # Rule to create buildsteps dir
