@@ -31,6 +31,7 @@ path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
 cc__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
 cxx__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*g++)
 ar__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ar)
+ranlib__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ranlib)
 
 # Flags
 cflags__ := -I$(GCCSDK_INSTALL_ENV)/include
@@ -42,7 +43,7 @@ pkg_config_libdir__ := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
 TARGET := $(shell $(cc__) -dumpmachine)
 
 # Environment
-env := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" CFLAGS="$(cflags__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
+env := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" RANLIB="$(ranlib__)" CFLAGS="$(cflags__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
 
 RECIPES := $(CURDIR)/recipes
 SOURCEDIR := $(CURDIR)/sources
@@ -71,6 +72,10 @@ endif
 
 ifeq ($(TARGET),ppc-amigaos)
   SDK_ITEMS := $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+endif
+
+ifeq ($(TARGET),i686-w64-mingw32)
+  SDK_ITEMS := $(COMMON_SDK_ITEMS)
 endif
 
 ifeq ($(SDK_ITEMS),)
