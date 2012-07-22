@@ -63,7 +63,7 @@ $(BUILDSTEPS)/gcc-core.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d 
 		--prefix=$(PREFIX) --target=$(TARGET_NAME) \
 		--enable-languages=c --with-system-zlib --disable-multilib \
 		--enable-shared --enable-fully-dynamic-string
-	cd $(BUILDDIR)/gcc && PATH="$(PREFIX)/bin:$(PATH)" make all-gcc -j 4
+	cd $(BUILDDIR)/gcc && PATH="$(PREFIX)/bin:$(PATH)" make all-gcc 
 	cd $(BUILDDIR)/gcc && PATH="$(PREFIX)/bin:$(PATH)" make install-gcc
 	touch $@
 
