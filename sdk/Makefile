@@ -80,7 +80,7 @@ ifeq ($(TARGET),ppc-amigaos)
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
-  SDK_ITEMS := $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(COMMON_SDK_ITEMS)
 endif
 
 ifeq ($(SDK_ITEMS),)
