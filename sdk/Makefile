@@ -23,6 +23,7 @@ VERSION_LIBLCMS := 2.1
 VERSION_LIBMNG := 1.0.10
 VERSION_LIBCARES := 1.9.1
 VERSION_LIBCURL := 7.26.0
+VERSION_LIBGNURX := 2.5.1
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -80,7 +81,7 @@ ifeq ($(TARGET),ppc-amigaos)
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
-  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libgnurx.d $(COMMON_SDK_ITEMS)
 endif
 
 ifeq ($(SDK_ITEMS),)
@@ -138,6 +139,22 @@ $(BUILDSTEPS)/libiconv-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libiconv-$(
 
 $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz:
 	wget -q -O $@ http://ftp.gnu.org/pub/gnu/libiconv/$(subst $(SOURCEDIR)/,,$@)
+
+# libgnurx
+$(BUILDSTEPS)/libgnurx.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libgnurx-src.d
+	mkdir -p $(BUILDDIR)/libgnurx
+	cd $(BUILDDIR)/libgnurx && tar xzf $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz
+	for p in `ls $(RECIPES)/patches/libgnurx/*.p` ; do patch -d $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) -p0 <$$p ; done
+	cd $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) 
+	cd $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) && $(env) make
+	cd $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) && $(env) make install
+	touch $@
+
+$(BUILDSTEPS)/libgnurx-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz
+	touch $@
+
+$(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz:
+	wget -q -O $@ "http://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmingw%2Ffiles%2FOther%2FUserContributed%2Fregex%2Fmingw-regex-2.5.1%2F&ts=1343071687&use_mirror=freefr"
 
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
