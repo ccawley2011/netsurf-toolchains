@@ -15,14 +15,14 @@ endif
 VERSION_ZLIB := 1.2.7
 VERSION_LIBICONV := 1.13.1
 VERSION_LIBTRE := 0.8.0
-VERSION_LIBXML := 2.7.8
-VERSION_OPENSSL := 1.0.0c
+VERSION_LIBXML := 2.8.0
+VERSION_OPENSSL := 1.0.1c
 VERSION_LIBPNG := 1.5.12
-VERSION_LIBJPEG := 8b
-VERSION_LIBLCMS := 2.1
+VERSION_LIBJPEG := 8d
+VERSION_LIBLCMS := 2.3
 VERSION_LIBMNG := 1.0.10
 VERSION_LIBCARES := 1.9.1
-VERSION_LIBCURL := 7.26.0
+VERSION_LIBCURL := 7.27.0
 VERSION_LIBGNURX := 2.5.1
 
 # Path
@@ -155,7 +155,7 @@ $(BUILDSTEPS)/libgnurx-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libgnurx-$(
 	touch $@
 
 $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz:
-	wget -q -O $@ "http://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmingw%2Ffiles%2FOther%2FUserContributed%2Fregex%2Fmingw-regex-2.5.1%2F&ts=1343071687&use_mirror=freefr"
+	wget -q -O $@ "http://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz"
 
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d

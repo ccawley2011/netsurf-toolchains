@@ -1,5 +1,5 @@
 --- cdjpeg.c.orig	1997-09-07 16:51:36.000000000 +0100
-+++ cdjpeg.c	2011-01-05 21:55:15.000000000 +0000
++++ cdjpeg.c	2012-08-04 18:03:36.000000000 +0100
 @@ -43,7 +43,7 @@
  }
  
@@ -63,8 +63,8 @@
  write_stdout (void)
  {
    FILE * output_file = stdout;
---- cdjpeg.h.orig	2011-01-05 22:21:13.000000000 +0000
-+++ cdjpeg.h	2011-01-05 22:26:20.000000000 +0000
+--- cdjpeg.h.orig	2003-11-03 20:53:18.000000000 +0000
++++ cdjpeg.h	2012-08-04 18:03:36.000000000 +0100
 @@ -117,41 +117,41 @@
  
  /* Module selection routines for I/O modules. */
@@ -129,8 +129,8 @@
  
  /* miscellaneous useful macros */
  
---- cjpeg.c.orig	2008-12-30 11:40:37.000000000 +0000
-+++ cjpeg.c	2011-01-05 21:55:15.000000000 +0000
+--- cjpeg.c.orig	2011-11-26 12:04:12.000000000 +0000
++++ cjpeg.c	2012-08-04 18:03:36.000000000 +0100
 @@ -77,7 +77,7 @@
  static boolean is_targa;	/* records user -targa switch */
  
@@ -149,7 +149,7 @@
  usage (void)
  /* complain about bad command line */
  {
-@@ -200,7 +200,7 @@
+@@ -204,7 +204,7 @@
  }
  
  
@@ -159,7 +159,7 @@
  		int last_file_arg_seen, boolean for_real)
  /* Parse optional switches.
 --- djpeg.c.orig	2009-03-24 20:31:18.000000000 +0000
-+++ djpeg.c	2011-01-05 21:55:15.000000000 +0000
++++ djpeg.c	2012-08-04 18:03:36.000000000 +0100
 @@ -87,7 +87,7 @@
  static char * outfilename;	/* for -outfile switch */
  
@@ -197,7 +197,7 @@
  {
    boolean traceit = (cinfo->err->trace_level >= 1);
 --- example.c.orig	2009-03-21 17:51:08.000000000 +0000
-+++ example.c	2011-01-05 21:55:15.000000000 +0000
++++ example.c	2012-08-04 18:03:36.000000000 +0100
 @@ -68,7 +68,7 @@
   * and a compression quality factor are passed in.
   */
@@ -226,7 +226,7 @@
  {
    /* This struct contains the JPEG decompression parameters and pointers to
 --- jcapimin.c.orig	2010-02-14 16:10:30.000000000 +0000
-+++ jcapimin.c	2011-01-05 21:55:15.000000000 +0000
++++ jcapimin.c	2012-08-04 18:03:36.000000000 +0100
 @@ -27,7 +27,7 @@
   * The error manager must already be set up (in case memory manager fails).
   */
@@ -309,7 +309,7 @@
  {
    if (cinfo->global_state != CSTATE_START)
 --- jcapistd.c.orig	1996-01-06 17:24:10.000000000 +0000
-+++ jcapistd.c	2011-01-05 21:55:15.000000000 +0000
++++ jcapistd.c	2012-08-04 18:03:36.000000000 +0100
 @@ -34,7 +34,7 @@
   * wrong thing.
   */
@@ -337,8 +337,8 @@
  jpeg_write_raw_data (j_compress_ptr cinfo, JSAMPIMAGE data,
  		     JDIMENSION num_lines)
  {
---- jcarith.c.orig	2009-09-16 19:50:58.000000000 +0100
-+++ jcarith.c	2011-01-05 21:55:15.000000000 +0000
+--- jcarith.c.orig	2011-10-19 10:58:30.000000000 +0100
++++ jcarith.c	2012-08-04 18:03:36.000000000 +0100
 @@ -112,7 +112,7 @@
  #endif
  
@@ -420,7 +420,7 @@
  encode_mcu (j_compress_ptr cinfo, JBLOCKROW *MCU_data)
  {
    arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
-@@ -827,7 +827,7 @@
+@@ -830,7 +830,7 @@
   * Initialize for an arithmetic-compressed scan.
   */
  
@@ -429,7 +429,7 @@
  start_pass (j_compress_ptr cinfo, boolean gather_statistics)
  {
    arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
-@@ -910,7 +910,7 @@
+@@ -913,7 +913,7 @@
   * Module initialization routine for arithmetic entropy encoding.
   */
  
@@ -438,9 +438,9 @@
  jinit_arith_encoder (j_compress_ptr cinfo)
  {
    arith_entropy_ptr entropy;
---- jccoefct.c.orig	2006-02-25 14:21:59.000000000 +0000
-+++ jccoefct.c	2011-01-05 21:55:15.000000000 +0000
-@@ -58,17 +58,17 @@
+--- jccoefct.c.orig	2011-09-11 11:40:08.000000000 +0100
++++ jccoefct.c	2012-08-04 18:03:36.000000000 +0100
+@@ -59,17 +59,17 @@
  
  
  /* Forward declarations */
@@ -462,7 +462,7 @@
  start_iMCU_row (j_compress_ptr cinfo)
  /* Reset within-iMCU-row counters for a new row */
  {
-@@ -96,7 +96,7 @@
+@@ -97,7 +97,7 @@
   * Initialize for a processing pass.
   */
  
@@ -471,7 +471,7 @@
  start_pass_coef (j_compress_ptr cinfo, J_BUF_MODE pass_mode)
  {
    my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-@@ -139,7 +139,7 @@
+@@ -140,7 +140,7 @@
   * which we index according to the component's SOF position.
   */
  
@@ -480,7 +480,7 @@
  compress_data (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
  {
    my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-@@ -244,7 +244,7 @@
+@@ -245,7 +245,7 @@
   * at the scan-dependent variables (MCU dimensions, etc).
   */
  
@@ -489,7 +489,7 @@
  compress_first_pass (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
  {
    my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-@@ -341,7 +341,7 @@
+@@ -342,7 +342,7 @@
   * NB: input_buf is ignored; it is likely to be a NULL pointer.
   */
  
@@ -498,7 +498,7 @@
  compress_output (j_compress_ptr cinfo, JSAMPIMAGE input_buf)
  {
    my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-@@ -405,7 +405,7 @@
+@@ -406,7 +406,7 @@
   * Initialize coefficient buffer controller.
   */
  
@@ -507,9 +507,9 @@
  jinit_c_coef_controller (j_compress_ptr cinfo, boolean need_full_buffer)
  {
    my_coef_ptr coef;
---- jccolor.c.orig	1996-01-06 17:24:22.000000000 +0000
-+++ jccolor.c	2011-01-05 21:55:15.000000000 +0000
-@@ -82,7 +82,7 @@
+--- jccolor.c.orig	2011-09-03 08:11:04.000000000 +0100
++++ jccolor.c	2012-08-04 18:03:36.000000000 +0100
+@@ -83,7 +83,7 @@
   * Initialize for RGB->YCC colorspace conversion.
   */
  
@@ -518,7 +518,7 @@
  rgb_ycc_start (j_compress_ptr cinfo)
  {
    my_cconvert_ptr cconvert = (my_cconvert_ptr) cinfo->cconvert;
-@@ -126,7 +126,7 @@
+@@ -127,7 +127,7 @@
   * offset required on that side.
   */
  
@@ -527,7 +527,7 @@
  rgb_ycc_convert (j_compress_ptr cinfo,
  		 JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
  		 JDIMENSION output_row, int num_rows)
-@@ -182,7 +182,7 @@
+@@ -183,7 +183,7 @@
   * We assume rgb_ycc_start has been called (we only use the Y tables).
   */
  
@@ -536,7 +536,7 @@
  rgb_gray_convert (j_compress_ptr cinfo,
  		  JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
  		  JDIMENSION output_row, int num_rows)
-@@ -221,7 +221,7 @@
+@@ -222,7 +222,7 @@
   * We assume rgb_ycc_start has been called.
   */
  
@@ -545,7 +545,7 @@
  cmyk_ycck_convert (j_compress_ptr cinfo,
  		   JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
  		   JDIMENSION output_row, int num_rows)
-@@ -276,7 +276,7 @@
+@@ -277,7 +277,7 @@
   * The source can be either plain grayscale or YCbCr (since Y == gray).
   */
  
@@ -554,7 +554,16 @@
  grayscale_convert (j_compress_ptr cinfo,
  		   JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
  		   JDIMENSION output_row, int num_rows)
-@@ -305,7 +305,7 @@
+@@ -306,7 +306,7 @@
+  * to separate-planes representation.
+  */
+ 
+-METHODDEF(void)
++JMETHODDEF(void)
+ rgb_convert (j_compress_ptr cinfo,
+ 	     JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
+ 	     JDIMENSION output_row, int num_rows)
+@@ -339,7 +339,7 @@
   * We assume input_components == num_components.
   */
  
@@ -563,7 +572,7 @@
  null_convert (j_compress_ptr cinfo,
  	      JSAMPARRAY input_buf, JSAMPIMAGE output_buf,
  	      JDIMENSION output_row, int num_rows)
-@@ -337,7 +337,7 @@
+@@ -371,7 +371,7 @@
   * Empty method for start_pass.
   */
  
@@ -572,7 +581,7 @@
  null_method (j_compress_ptr cinfo)
  {
    /* no work needed */
-@@ -348,7 +348,7 @@
+@@ -382,7 +382,7 @@
   * Module initialization routine for input colorspace conversion.
   */
  
@@ -582,7 +591,7 @@
  {
    my_cconvert_ptr cconvert;
 --- jcdctmgr.c.orig	2006-02-25 14:28:38.000000000 +0000
-+++ jcdctmgr.c	2011-01-05 21:55:15.000000000 +0000
++++ jcdctmgr.c	2012-08-04 18:03:36.000000000 +0100
 @@ -61,7 +61,7 @@
   * blocks. The quantized coefficients are returned in coef_blocks[].
   */
@@ -620,7 +629,7 @@
  {
    my_fdct_ptr fdct;
 --- jchuff.c.orig	2009-09-14 13:01:14.000000000 +0100
-+++ jchuff.c	2011-01-05 21:55:15.000000000 +0000
++++ jchuff.c	2012-08-04 18:03:36.000000000 +0100
 @@ -157,7 +157,7 @@
   * This routine also performs some validation checks on the table.
   */
@@ -864,7 +873,7 @@
  {
    huff_entropy_ptr entropy;
 --- jcinit.c.orig	2006-02-24 11:40:16.000000000 +0000
-+++ jcinit.c	2011-01-05 21:55:15.000000000 +0000
++++ jcinit.c	2012-08-04 18:03:36.000000000 +0100
 @@ -26,7 +26,7 @@
   * which modules will be used and give them appropriate initialization calls.
   */
@@ -875,7 +884,7 @@
  {
    /* Initialize master control (includes parameter checking/processing) */
 --- jcmainct.c.orig	2003-10-19 18:55:34.000000000 +0100
-+++ jcmainct.c	2011-01-05 21:55:15.000000000 +0000
++++ jcmainct.c	2012-08-04 18:03:36.000000000 +0100
 @@ -51,11 +51,11 @@
  
  
@@ -926,8 +935,8 @@
  jinit_c_main_controller (j_compress_ptr cinfo, boolean need_full_buffer)
  {
    my_main_ptr main;
---- jcmarker.c.orig	2009-12-31 14:44:28.000000000 +0000
-+++ jcmarker.c	2011-01-05 21:55:15.000000000 +0000
+--- jcmarker.c.orig	2010-12-02 09:49:30.000000000 +0000
++++ jcmarker.c	2012-08-04 18:03:36.000000000 +0100
 @@ -105,7 +105,7 @@
   * points where markers will be written.
   */
@@ -982,7 +991,7 @@
  emit_dac (j_compress_ptr cinfo)
  /* Emit a DAC marker */
  /* Since the useful info is so small, we want to emit all the tables in */
-@@ -267,7 +267,7 @@
+@@ -269,7 +269,7 @@
  }
  
  
@@ -991,7 +1000,7 @@
  emit_dri (j_compress_ptr cinfo)
  /* Emit a DRI marker */
  {
-@@ -279,7 +279,7 @@
+@@ -281,7 +281,7 @@
  }
  
  
@@ -1000,7 +1009,7 @@
  emit_sof (j_compress_ptr cinfo, JPEG_MARKER code)
  /* Emit a SOF marker */
  {
-@@ -310,7 +310,7 @@
+@@ -312,7 +312,7 @@
  }
  
  
@@ -1009,7 +1018,7 @@
  emit_sos (j_compress_ptr cinfo)
  /* Emit a SOS marker */
  {
-@@ -345,7 +345,7 @@
+@@ -347,7 +347,7 @@
  }
  
  
@@ -1018,7 +1027,7 @@
  emit_pseudo_sos (j_compress_ptr cinfo)
  /* Emit a pseudo SOS marker */
  {
-@@ -361,7 +361,7 @@
+@@ -363,7 +363,7 @@
  }
  
  
@@ -1027,7 +1036,7 @@
  emit_jfif_app0 (j_compress_ptr cinfo)
  /* Emit a JFIF-compliant APP0 marker */
  {
-@@ -396,7 +396,7 @@
+@@ -398,7 +398,7 @@
  }
  
  
@@ -1036,7 +1045,7 @@
  emit_adobe_app14 (j_compress_ptr cinfo)
  /* Emit an Adobe APP14 marker */
  {
-@@ -450,7 +450,7 @@
+@@ -452,7 +452,7 @@
   * Counting the parameter bytes properly is the caller's responsibility.
   */
  
@@ -1045,7 +1054,7 @@
  write_marker_header (j_compress_ptr cinfo, int marker, unsigned int datalen)
  /* Emit an arbitrary marker header */
  {
-@@ -462,7 +462,7 @@
+@@ -464,7 +464,7 @@
    emit_2bytes(cinfo, (int) (datalen + 2));	/* total length */
  }
  
@@ -1054,7 +1063,7 @@
  write_marker_byte (j_compress_ptr cinfo, int val)
  /* Emit one byte of marker parameters following write_marker_header */
  {
-@@ -481,7 +481,7 @@
+@@ -483,7 +483,7 @@
   * jpeg_start_compress returns.
   */
  
@@ -1063,7 +1072,7 @@
  write_file_header (j_compress_ptr cinfo)
  {
    my_marker_ptr marker = (my_marker_ptr) cinfo->marker;
-@@ -506,7 +506,7 @@
+@@ -508,7 +508,7 @@
   * try to error-check the quant table numbers as soon as they see the SOF.
   */
  
@@ -1072,7 +1081,7 @@
  write_frame_header (j_compress_ptr cinfo)
  {
    int ci, prec;
-@@ -570,7 +570,7 @@
+@@ -572,7 +572,7 @@
   * Compressed data will be written following the SOS.
   */
  
@@ -1081,7 +1090,7 @@
  write_scan_header (j_compress_ptr cinfo)
  {
    my_marker_ptr marker = (my_marker_ptr) cinfo->marker;
-@@ -614,7 +614,7 @@
+@@ -616,7 +616,7 @@
   * Write datastream trailer.
   */
  
@@ -1090,7 +1099,7 @@
  write_file_trailer (j_compress_ptr cinfo)
  {
    emit_marker(cinfo, M_EOI);
-@@ -628,7 +628,7 @@
+@@ -630,7 +630,7 @@
   * emitted.  Note that all tables will be marked sent_table = TRUE at exit.
   */
  
@@ -1099,7 +1108,7 @@
  write_tables_only (j_compress_ptr cinfo)
  {
    int i;
-@@ -657,7 +657,7 @@
+@@ -659,7 +659,7 @@
   * Initialize the marker writer module.
   */
  
@@ -1108,8 +1117,8 @@
  jinit_marker_writer (j_compress_ptr cinfo)
  {
    my_marker_ptr marker;
---- jcmaster.c.orig	2010-02-14 15:56:38.000000000 +0000
-+++ jcmaster.c	2011-01-05 21:55:15.000000000 +0000
+--- jcmaster.c.orig	2011-01-11 11:35:24.000000000 +0000
++++ jcmaster.c	2012-08-04 18:03:36.000000000 +0100
 @@ -49,7 +49,7 @@
   * Hence it mustn't do anything that can't be done twice.
   */
@@ -1119,7 +1128,7 @@
  jpeg_calc_jpeg_dimensions (j_compress_ptr cinfo)
  /* Do computations that are needed before master selection phase */
  {
-@@ -190,7 +190,7 @@
+@@ -205,7 +205,7 @@
  }
  
  
@@ -1127,8 +1136,8 @@
 +JLOCAL(void)
  jpeg_calc_trans_dimensions (j_compress_ptr cinfo)
  {
-   if (cinfo->min_DCT_h_scaled_size < 1 || cinfo->min_DCT_h_scaled_size > 16
-@@ -215,7 +215,7 @@
+   if (cinfo->min_DCT_h_scaled_size != cinfo->min_DCT_v_scaled_size)
+@@ -216,7 +216,7 @@
  }
  
  
@@ -1137,7 +1146,7 @@
  initial_setup (j_compress_ptr cinfo, boolean transcode_only)
  /* Do computations that are needed before master selection phase */
  {
-@@ -334,7 +334,7 @@
+@@ -354,7 +354,7 @@
  
  #ifdef C_MULTISCAN_FILES_SUPPORTED
  
@@ -1146,7 +1155,7 @@
  validate_script (j_compress_ptr cinfo)
  /* Verify that the scan script in cinfo->scan_info[] is valid; also
   * determine whether it uses progressive JPEG, and set cinfo->progressive_mode.
-@@ -469,7 +469,7 @@
+@@ -489,7 +489,7 @@
  }
  
  
@@ -1155,7 +1164,7 @@
  reduce_script (j_compress_ptr cinfo)
  /* Adapt scan script for use with reduced block size;
   * assume that script has been validated before.
-@@ -504,7 +504,7 @@
+@@ -524,7 +524,7 @@
  #endif /* C_MULTISCAN_FILES_SUPPORTED */
  
  
@@ -1164,7 +1173,7 @@
  select_scan_parameters (j_compress_ptr cinfo)
  /* Set up the scan parameters for the current scan */
  {
-@@ -548,7 +548,7 @@
+@@ -568,7 +568,7 @@
  }
  
  
@@ -1173,7 +1182,7 @@
  per_scan_setup (j_compress_ptr cinfo)
  /* Do computations that are needed before processing a JPEG scan */
  /* cinfo->comps_in_scan and cinfo->cur_comp_info[] are already set */
-@@ -641,7 +641,7 @@
+@@ -661,7 +661,7 @@
   * required.
   */
  
@@ -1182,7 +1191,7 @@
  prepare_for_pass (j_compress_ptr cinfo)
  {
    my_master_ptr master = (my_master_ptr) cinfo->master;
-@@ -729,7 +729,7 @@
+@@ -749,7 +749,7 @@
   * In multi-pass processing, this routine is not used.
   */
  
@@ -1191,7 +1200,7 @@
  pass_startup (j_compress_ptr cinfo)
  {
    cinfo->master->call_pass_startup = FALSE; /* reset flag so call only once */
-@@ -743,7 +743,7 @@
+@@ -763,7 +763,7 @@
   * Finish up at end of pass.
   */
  
@@ -1200,7 +1209,7 @@
  finish_pass_master (j_compress_ptr cinfo)
  {
    my_master_ptr master = (my_master_ptr) cinfo->master;
-@@ -783,7 +783,7 @@
+@@ -803,7 +803,7 @@
   * Initialize master compression control.
   */
  
@@ -1210,7 +1219,7 @@
  {
    my_master_ptr master;
 --- jcomapi.c.orig	1997-10-08 20:01:22.000000000 +0100
-+++ jcomapi.c	2011-01-05 21:55:15.000000000 +0000
++++ jcomapi.c	2012-08-04 18:03:36.000000000 +0100
 @@ -25,7 +25,7 @@
   * responsibility.
   */
@@ -1247,8 +1256,8 @@
  jpeg_alloc_huff_table (j_common_ptr cinfo)
  {
    JHUFF_TBL *tbl;
---- jconfig.cfg.orig	2010-04-29 13:42:58.000000000 +0100
-+++ jconfig.cfg	2011-01-05 21:55:15.000000000 +0000
+--- jconfig.cfg.orig	2012-08-04 18:19:46.000000000 +0100
++++ jconfig.cfg	2012-08-04 18:19:55.000000000 +0100
 @@ -28,7 +28,7 @@
  #ifdef JPEG_INTERNALS
  
@@ -1259,7 +1268,7 @@
  #undef DEFAULT_MAX_MEM
  #undef NO_MKTEMP
 --- jcparam.c.orig	2008-12-30 11:38:14.000000000 +0000
-+++ jcparam.c	2011-01-05 21:55:15.000000000 +0000
++++ jcparam.c	2012-08-04 18:03:36.000000000 +0100
 @@ -20,7 +20,7 @@
   * Quantization table setup routines
   */
@@ -1387,7 +1396,7 @@
  {
    int ncomps = cinfo->num_components;
 --- jcprepct.c.orig	2003-10-19 18:47:16.000000000 +0100
-+++ jcprepct.c	2011-01-05 21:55:15.000000000 +0000
++++ jcprepct.c	2012-08-04 18:03:36.000000000 +0100
 @@ -74,7 +74,7 @@
   * Initialize for a processing pass.
   */
@@ -1443,7 +1452,7 @@
  {
    my_prep_ptr prep;
 --- jcsample.c.orig	2003-10-21 15:13:36.000000000 +0100
-+++ jcsample.c	2011-01-05 21:55:15.000000000 +0000
++++ jcsample.c	2012-08-04 18:03:36.000000000 +0100
 @@ -80,7 +80,7 @@
   * Initialize for a downsampling pass.
   */
@@ -1534,8 +1543,8 @@
  jinit_downsampler (j_compress_ptr cinfo)
  {
    my_downsample_ptr downsample;
---- jctrans.c.orig	2009-09-14 00:35:44.000000000 +0100
-+++ jctrans.c	2011-01-05 21:55:15.000000000 +0000
+--- jctrans.c.orig	2011-09-11 11:34:56.000000000 +0100
++++ jctrans.c	2012-08-04 18:03:36.000000000 +0100
 @@ -17,9 +17,9 @@
  
  
@@ -1612,7 +1621,7 @@
  			     jvirt_barray_ptr * coef_arrays)
  {
 --- jdapimin.c.orig	2009-06-25 09:26:52.000000000 +0100
-+++ jdapimin.c	2011-01-05 21:55:15.000000000 +0000
++++ jdapimin.c	2012-08-04 18:03:36.000000000 +0100
 @@ -27,7 +27,7 @@
   * The error manager must already be set up (in case memory manager fails).
   */
@@ -1695,7 +1704,7 @@
  {
    if ((cinfo->global_state == DSTATE_SCANNING ||
 --- jdapistd.c.orig	2002-02-24 18:59:32.000000000 +0000
-+++ jdapistd.c	2011-01-05 21:55:15.000000000 +0000
++++ jdapistd.c	2012-08-04 18:03:36.000000000 +0100
 @@ -20,7 +20,7 @@
  
  
@@ -1759,8 +1768,8 @@
  jpeg_finish_output (j_decompress_ptr cinfo)
  {
    if ((cinfo->global_state == DSTATE_SCANNING ||
---- jdarith.c.orig	2009-09-16 19:53:08.000000000 +0100
-+++ jdarith.c	2011-01-05 21:55:15.000000000 +0000
+--- jdarith.c.orig	2011-10-19 10:59:16.000000000 +0100
++++ jdarith.c	2012-08-04 18:03:36.000000000 +0100
 @@ -61,7 +61,7 @@
  #define AC_STAT_BINS 256
  
@@ -1833,7 +1842,7 @@
  decode_mcu (j_decompress_ptr cinfo, JBLOCKROW *MCU_data)
  {
    arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
-@@ -627,7 +627,7 @@
+@@ -631,7 +631,7 @@
   * Initialize for an arithmetic-compressed scan.
   */
  
@@ -1842,7 +1851,7 @@
  start_pass (j_decompress_ptr cinfo)
  {
    arith_entropy_ptr entropy = (arith_entropy_ptr) cinfo->entropy;
-@@ -737,7 +737,7 @@
+@@ -741,7 +741,7 @@
   * Module initialization routine for arithmetic entropy decoding.
   */
  
@@ -1851,8 +1860,8 @@
  jinit_arith_decoder (j_decompress_ptr cinfo)
  {
    arith_entropy_ptr entropy;
---- jdatadst.c.orig	2009-11-16 15:52:18.000000000 +0000
-+++ jdatadst.c	2011-01-05 21:55:15.000000000 +0000
+--- jdatadst.c.orig	2012-01-02 11:14:42.000000000 +0000
++++ jdatadst.c	2012-08-04 18:03:36.000000000 +0100
 @@ -60,7 +60,7 @@
   * before any data is actually written.
   */
@@ -1925,8 +1934,8 @@
  jpeg_mem_dest (j_compress_ptr cinfo,
  	       unsigned char ** outbuffer, unsigned long * outsize)
  {
---- jdatasrc.c.orig	2010-04-29 10:49:52.000000000 +0100
-+++ jdatasrc.c	2011-01-05 21:55:15.000000000 +0000
+--- jdatasrc.c.orig	2011-08-30 10:22:50.000000000 +0100
++++ jdatasrc.c	2012-08-04 18:03:36.000000000 +0100
 @@ -41,7 +41,7 @@
   * before any data is actually read.
   */
@@ -1962,8 +1971,8 @@
 +JMETHODDEF(boolean)
  fill_mem_input_buffer (j_decompress_ptr cinfo)
  {
-   static JOCTET mybuffer[4];
-@@ -151,7 +151,7 @@
+   static const JOCTET mybuffer[4] = {
+@@ -152,7 +152,7 @@
   * buffer is the application writer's problem.
   */
  
@@ -1972,7 +1981,7 @@
  skip_input_data (j_decompress_ptr cinfo, long num_bytes)
  {
    struct jpeg_source_mgr * src = cinfo->src;
-@@ -192,7 +192,7 @@
+@@ -193,7 +193,7 @@
   * for error exit.
   */
  
@@ -1981,7 +1990,7 @@
  term_source (j_decompress_ptr cinfo)
  {
    /* no work necessary here */
-@@ -205,7 +205,7 @@
+@@ -206,7 +206,7 @@
   * for closing it after finishing decompression.
   */
  
@@ -1990,7 +1999,7 @@
  jpeg_stdio_src (j_decompress_ptr cinfo, FILE * infile)
  {
    my_src_ptr src;
-@@ -244,7 +244,7 @@
+@@ -245,7 +245,7 @@
   * The buffer must contain the whole JPEG data.
   */
  
@@ -1999,9 +2008,9 @@
  jpeg_mem_src (j_decompress_ptr cinfo,
  	      unsigned char * inbuffer, unsigned long insize)
  {
---- jdcoefct.c.orig	2002-02-24 18:29:28.000000000 +0000
-+++ jdcoefct.c	2011-01-05 21:55:15.000000000 +0000
-@@ -62,20 +62,20 @@
+--- jdcoefct.c.orig	2011-09-11 12:32:04.000000000 +0100
++++ jdcoefct.c	2012-08-04 18:03:36.000000000 +0100
+@@ -63,20 +63,20 @@
  typedef my_coef_controller * my_coef_ptr;
  
  /* Forward declarations */
@@ -2027,7 +2036,7 @@
  start_iMCU_row (j_decompress_ptr cinfo)
  /* Reset within-iMCU-row counters for a new row (input side) */
  {
-@@ -103,7 +103,7 @@
+@@ -104,7 +104,7 @@
   * Initialize for an input processing pass.
   */
  
@@ -2036,7 +2045,7 @@
  start_input_pass (j_decompress_ptr cinfo)
  {
    cinfo->input_iMCU_row = 0;
-@@ -115,7 +115,7 @@
+@@ -116,7 +116,7 @@
   * Initialize for an output processing pass.
   */
  
@@ -2045,7 +2054,7 @@
  start_output_pass (j_decompress_ptr cinfo)
  {
  #ifdef BLOCK_SMOOTHING_SUPPORTED
-@@ -143,7 +143,7 @@
+@@ -144,7 +144,7 @@
   * which we index according to the component's SOF position.
   */
  
@@ -2054,7 +2063,7 @@
  decompress_onepass (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
  {
    my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-@@ -224,7 +224,7 @@
+@@ -226,7 +226,7 @@
   * Dummy consume-input routine for single-pass operation.
   */
  
@@ -2063,7 +2072,7 @@
  dummy_consume_data (j_decompress_ptr cinfo)
  {
    return JPEG_SUSPENDED;	/* Always indicate nothing was done */
-@@ -240,7 +240,7 @@
+@@ -242,7 +242,7 @@
   * Return value is JPEG_ROW_COMPLETED, JPEG_SCAN_COMPLETED, or JPEG_SUSPENDED.
   */
  
@@ -2072,7 +2081,7 @@
  consume_data (j_decompress_ptr cinfo)
  {
    my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-@@ -311,7 +311,7 @@
+@@ -313,7 +313,7 @@
   * NB: output_buf contains a plane for each component in image.
   */
  
@@ -2081,7 +2090,7 @@
  decompress_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
  {
    my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-@@ -401,7 +401,7 @@
+@@ -403,7 +403,7 @@
   * more accurately than they really are.
   */
  
@@ -2090,7 +2099,7 @@
  smoothing_ok (j_decompress_ptr cinfo)
  {
    my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-@@ -457,7 +457,7 @@
+@@ -459,7 +459,7 @@
   * Variant of decompress_data for use when doing block smoothing.
   */
  
@@ -2099,7 +2108,7 @@
  decompress_smooth_data (j_decompress_ptr cinfo, JSAMPIMAGE output_buf)
  {
    my_coef_ptr coef = (my_coef_ptr) cinfo->coef;
-@@ -672,7 +672,7 @@
+@@ -674,7 +674,7 @@
   * Initialize coefficient buffer controller.
   */
  
@@ -2108,9 +2117,9 @@
  jinit_d_coef_controller (j_decompress_ptr cinfo, boolean need_full_buffer)
  {
    my_coef_ptr coef;
---- jdcolor.c.orig	1997-08-03 19:39:16.000000000 +0100
-+++ jdcolor.c	2011-01-05 21:55:15.000000000 +0000
-@@ -66,7 +66,7 @@
+--- jdcolor.c.orig	2011-09-03 08:12:20.000000000 +0100
++++ jdcolor.c	2012-08-04 18:03:36.000000000 +0100
+@@ -87,7 +87,7 @@
   * Initialize tables for YCC->RGB colorspace conversion.
   */
  
@@ -2119,7 +2128,7 @@
  build_ycc_rgb_table (j_decompress_ptr cinfo)
  {
    my_cconvert_ptr cconvert = (my_cconvert_ptr) cinfo->cconvert;
-@@ -116,7 +116,7 @@
+@@ -137,7 +137,7 @@
   * offset required on that side.
   */
  
@@ -2128,7 +2137,34 @@
  ycc_rgb_convert (j_decompress_ptr cinfo,
  		 JSAMPIMAGE input_buf, JDIMENSION input_row,
  		 JSAMPARRAY output_buf, int num_rows)
-@@ -165,7 +165,7 @@
+@@ -185,7 +185,7 @@
+  * Initialize for RGB->grayscale colorspace conversion.
+  */
+ 
+-LOCAL(void)
++JLOCAL(void)
+ build_rgb_y_table (j_decompress_ptr cinfo)
+ {
+   my_cconvert_ptr cconvert = (my_cconvert_ptr) cinfo->cconvert;
+@@ -209,7 +209,7 @@
+  * Convert RGB to grayscale.
+  */
+ 
+-METHODDEF(void)
++JMETHODDEF(void)
+ rgb_gray_convert (j_decompress_ptr cinfo,
+ 		  JSAMPIMAGE input_buf, JDIMENSION input_row,
+ 		  JSAMPARRAY output_buf, int num_rows)
+@@ -246,7 +246,7 @@
+  * to interleaved representation.
+  */
+ 
+-METHODDEF(void)
++JMETHODDEF(void)
+ rgb_convert (j_decompress_ptr cinfo,
+ 	     JSAMPIMAGE input_buf, JDIMENSION input_row,
+ 	     JSAMPARRAY output_buf, int num_rows)
+@@ -278,7 +278,7 @@
   * converting from separate-planes to interleaved representation.
   */
  
@@ -2137,7 +2173,7 @@
  null_convert (j_decompress_ptr cinfo,
  	      JSAMPIMAGE input_buf, JDIMENSION input_row,
  	      JSAMPARRAY output_buf, int num_rows)
-@@ -197,7 +197,7 @@
+@@ -310,7 +310,7 @@
   * we just copy the Y (luminance) component and ignore chrominance.
   */
  
@@ -2146,7 +2182,7 @@
  grayscale_convert (j_decompress_ptr cinfo,
  		   JSAMPIMAGE input_buf, JDIMENSION input_row,
  		   JSAMPARRAY output_buf, int num_rows)
-@@ -213,7 +213,7 @@
+@@ -326,7 +326,7 @@
   * with grayscale as a separate case.
   */
  
@@ -2155,7 +2191,7 @@
  gray_rgb_convert (j_decompress_ptr cinfo,
  		  JSAMPIMAGE input_buf, JDIMENSION input_row,
  		  JSAMPARRAY output_buf, int num_rows)
-@@ -241,7 +241,7 @@
+@@ -354,7 +354,7 @@
   * We assume build_ycc_rgb_table has been called.
   */
  
@@ -2164,7 +2200,7 @@
  ycck_cmyk_convert (j_decompress_ptr cinfo,
  		   JSAMPIMAGE input_buf, JDIMENSION input_row,
  		   JSAMPARRAY output_buf, int num_rows)
-@@ -289,7 +289,7 @@
+@@ -402,7 +402,7 @@
   * Empty method for start_pass.
   */
  
@@ -2173,7 +2209,7 @@
  start_pass_dcolor (j_decompress_ptr cinfo)
  {
    /* no work needed */
-@@ -300,7 +300,7 @@
+@@ -413,7 +413,7 @@
   * Module initialization routine for output colorspace conversion.
   */
  
@@ -2183,7 +2219,7 @@
  {
    my_cconvert_ptr cconvert;
 --- jdct.h.orig	2004-03-06 19:18:30.000000000 +0000
-+++ jdct.h	2011-01-05 22:27:21.000000000 +0000
++++ jdct.h	2012-08-04 18:03:36.000000000 +0100
 @@ -162,175 +162,175 @@
  
  /* Extern declarations for the forward and inverse DCT routines. */
@@ -2429,7 +2465,7 @@
  	 JCOEFPTR coef_block, JSAMPARRAY output_buf, JDIMENSION output_col));
  
 --- jddctmgr.c.orig	2010-02-20 09:41:32.000000000 +0000
-+++ jddctmgr.c	2011-01-05 21:55:15.000000000 +0000
++++ jddctmgr.c	2012-08-04 18:03:36.000000000 +0100
 @@ -86,7 +86,7 @@
   * a matching multiplier table.
   */
@@ -2449,7 +2485,7 @@
  {
    my_idct_ptr idct;
 --- jdhuff.c.orig	2009-09-19 09:59:10.000000000 +0100
-+++ jdhuff.c	2011-01-05 21:55:15.000000000 +0000
++++ jdhuff.c	2012-08-04 18:03:36.000000000 +0100
 @@ -319,7 +319,7 @@
   * This routine also performs some validation checks on the table.
   */
@@ -2559,7 +2595,7 @@
  {
    huff_entropy_ptr entropy;
 --- jdinput.c.orig	2009-12-28 10:01:10.000000000 +0000
-+++ jdinput.c	2011-01-05 21:55:15.000000000 +0000
++++ jdinput.c	2012-08-04 18:03:36.000000000 +0100
 @@ -29,7 +29,7 @@
  
  
@@ -2651,7 +2687,7 @@
  {
    my_inputctl_ptr inputctl;
 --- jdmainct.c.orig	2002-02-24 19:07:28.000000000 +0000
-+++ jdmainct.c	2011-01-05 21:55:15.000000000 +0000
++++ jdmainct.c	2012-08-04 18:03:36.000000000 +0100
 @@ -140,20 +140,20 @@
  
  
@@ -2750,7 +2786,7 @@
  {
    my_main_ptr main;
 --- jdmarker.c.orig	2009-08-29 18:49:24.000000000 +0100
-+++ jdmarker.c	2011-01-05 21:55:15.000000000 +0000
++++ jdmarker.c	2012-08-04 18:03:36.000000000 +0100
 @@ -194,7 +194,7 @@
   */
  
@@ -2940,8 +2976,8 @@
  jpeg_set_marker_processor (j_decompress_ptr cinfo, int marker_code,
  			   jpeg_marker_parser_method routine)
  {
---- jdmaster.c.orig	2009-12-28 10:01:10.000000000 +0000
-+++ jdmaster.c	2011-01-05 21:55:15.000000000 +0000
+--- jdmaster.c.orig	2011-09-01 17:34:40.000000000 +0100
++++ jdmaster.c	2012-08-04 18:03:36.000000000 +0100
 @@ -41,7 +41,7 @@
   * CRUCIAL: this must match the actual capabilities of jdmerge.c!
   */
@@ -2960,7 +2996,7 @@
  jpeg_calc_output_dimensions (j_decompress_ptr cinfo)
  /* Do computations that are needed before master selection phase.
   * This function is used for full decompression.
-@@ -227,7 +227,7 @@
+@@ -225,7 +225,7 @@
   * enough and used often enough to justify this.
   */
  
@@ -2969,7 +3005,7 @@
  prepare_range_limit_table (j_decompress_ptr cinfo)
  /* Allocate and fill in the sample_range_limit table */
  {
-@@ -267,7 +267,7 @@
+@@ -265,7 +265,7 @@
   * settings.
   */
  
@@ -2978,7 +3014,7 @@
  master_selection (j_decompress_ptr cinfo)
  {
    my_master_ptr master = (my_master_ptr) cinfo->master;
-@@ -410,7 +410,7 @@
+@@ -408,7 +408,7 @@
   * (In the latter case, jdapistd.c will crank the pass to completion.)
   */
  
@@ -2987,7 +3023,7 @@
  prepare_for_output_pass (j_decompress_ptr cinfo)
  {
    my_master_ptr master = (my_master_ptr) cinfo->master;
-@@ -470,7 +470,7 @@
+@@ -468,7 +468,7 @@
   * Finish up at end of an output pass.
   */
  
@@ -2996,7 +3032,7 @@
  finish_output_pass (j_decompress_ptr cinfo)
  {
    my_master_ptr master = (my_master_ptr) cinfo->master;
-@@ -487,7 +487,7 @@
+@@ -485,7 +485,7 @@
   * Switch to a new external colormap between output passes.
   */
  
@@ -3005,7 +3041,7 @@
  jpeg_new_colormap (j_decompress_ptr cinfo)
  {
    my_master_ptr master = (my_master_ptr) cinfo->master;
-@@ -515,7 +515,7 @@
+@@ -513,7 +513,7 @@
   * This is performed at the start of jpeg_start_decompress.
   */
  
@@ -3015,7 +3051,7 @@
  {
    my_master_ptr master;
 --- jdmerge.c.orig	1996-01-06 17:27:36.000000000 +0000
-+++ jdmerge.c	2011-01-05 21:55:15.000000000 +0000
++++ jdmerge.c	2012-08-04 18:03:36.000000000 +0100
 @@ -79,7 +79,7 @@
   * This is taken directly from jdcolor.c; see that file for more info.
   */
@@ -3080,7 +3116,7 @@
  {
    my_upsample_ptr upsample;
 --- jdpostct.c.orig	1996-01-06 17:27:44.000000000 +0000
-+++ jdpostct.c	2011-01-05 21:55:15.000000000 +0000
++++ jdpostct.c	2012-08-04 18:03:36.000000000 +0100
 @@ -43,20 +43,20 @@
  
  
@@ -3151,7 +3187,7 @@
  {
    my_post_ptr post;
 --- jdsample.c.orig	2008-12-30 11:29:14.000000000 +0000
-+++ jdsample.c	2011-01-05 21:55:15.000000000 +0000
++++ jdsample.c	2012-08-04 18:03:36.000000000 +0100
 @@ -66,7 +66,7 @@
   * Initialize for an upsampling pass.
   */
@@ -3225,7 +3261,7 @@
  {
    my_upsample_ptr upsample;
 --- jdtrans.c.orig	2009-09-14 00:48:38.000000000 +0100
-+++ jdtrans.c	2011-01-05 21:55:15.000000000 +0000
++++ jdtrans.c	2012-08-04 18:03:36.000000000 +0100
 @@ -17,7 +17,7 @@
  
  
@@ -3254,7 +3290,7 @@
  {
    /* This is effectively a buffered-image operation. */
 --- jerror.c.orig	1998-02-21 19:03:16.000000000 +0000
-+++ jerror.c	2011-01-05 21:55:15.000000000 +0000
++++ jerror.c	2012-08-04 18:03:36.000000000 +0100
 @@ -66,7 +66,7 @@
   * or jpeg_destroy) at some point.
   */
@@ -3310,7 +3346,7 @@
  {
    err->error_exit = error_exit;
 --- jfdctflt.c.orig	2009-01-18 00:02:53.000000000 +0000
-+++ jfdctflt.c	2011-01-05 21:55:15.000000000 +0000
++++ jfdctflt.c	2012-08-04 18:03:36.000000000 +0100
 @@ -56,7 +56,7 @@
   * Perform the forward DCT on one block of samples.
   */
@@ -3321,7 +3357,7 @@
  {
    FAST_FLOAT tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
 --- jfdctfst.c.orig	2009-01-18 00:03:07.000000000 +0000
-+++ jfdctfst.c	2011-01-05 21:55:15.000000000 +0000
++++ jfdctfst.c	2012-08-04 18:03:36.000000000 +0100
 @@ -111,7 +111,7 @@
   * Perform the forward DCT on one block of samples.
   */
@@ -3332,7 +3368,7 @@
  {
    DCTELEM tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
 --- jfdctint.c.orig	2009-06-08 20:40:24.000000000 +0100
-+++ jfdctint.c	2011-01-05 21:55:15.000000000 +0000
++++ jfdctint.c	2012-08-04 18:03:36.000000000 +0100
 @@ -154,7 +154,7 @@
   * Perform the forward DCT on one block of samples.
   */
@@ -3622,7 +3658,7 @@
  {
    INT32 tmp0, tmp1;
 --- jidctflt.c.orig	2010-02-21 10:51:08.000000000 +0000
-+++ jidctflt.c	2011-01-05 21:55:15.000000000 +0000
++++ jidctflt.c	2012-08-04 18:03:36.000000000 +0100
 @@ -65,7 +65,7 @@
   * Perform dequantization and inverse DCT on one block of coefficients.
   */
@@ -3633,7 +3669,7 @@
  		 JCOEFPTR coef_block,
  		 JSAMPARRAY output_buf, JDIMENSION output_col)
 --- jidctfst.c.orig	1998-01-14 21:10:06.000000000 +0000
-+++ jidctfst.c	2011-01-05 21:55:15.000000000 +0000
++++ jidctfst.c	2012-08-04 18:03:36.000000000 +0100
 @@ -164,7 +164,7 @@
   * Perform dequantization and inverse DCT on one block of coefficients.
   */
@@ -3644,7 +3680,7 @@
  		 JCOEFPTR coef_block,
  		 JSAMPARRAY output_buf, JDIMENSION output_col)
 --- jidctint.c.orig	2009-06-08 20:41:14.000000000 +0100
-+++ jidctint.c	2011-01-05 21:55:15.000000000 +0000
++++ jidctint.c	2012-08-04 18:03:36.000000000 +0100
 @@ -167,7 +167,7 @@
   * Perform dequantization and inverse DCT on one block of coefficients.
   */
@@ -3934,7 +3970,7 @@
  	       JCOEFPTR coef_block,
  	       JSAMPARRAY output_buf, JDIMENSION output_col)
 --- jmemansi.c.orig	1996-01-06 17:29:46.000000000 +0000
-+++ jmemansi.c	2011-01-05 21:55:15.000000000 +0000
++++ jmemansi.c	2012-08-04 18:03:36.000000000 +0100
 @@ -32,13 +32,13 @@
   * routines malloc() and free().
   */
@@ -4029,7 +4065,7 @@
  {
    /* no work */
 --- jmemdos.c.orig	1997-08-03 20:22:02.000000000 +0100
-+++ jmemdos.c	2011-01-05 21:55:15.000000000 +0000
++++ jmemdos.c	2012-08-04 18:03:36.000000000 +0100
 @@ -124,7 +124,7 @@
  
  static int next_file_num;	/* to distinguish among several temp files */
@@ -4215,7 +4251,7 @@
  {
    /* Microsoft C, at least in v6.00A, will not successfully reclaim freed
 --- jmemmac.c.orig	1997-08-03 20:26:18.000000000 +0100
-+++ jmemmac.c	2011-01-05 21:55:15.000000000 +0000
++++ jmemmac.c	2012-08-04 18:03:36.000000000 +0100
 @@ -78,13 +78,13 @@
   * with relocatable storage.
   */
@@ -4311,9 +4347,9 @@
  jpeg_mem_term (j_common_ptr cinfo)
  {
    /* no work */
---- jmemmgr.c.orig	1997-04-14 20:56:38.000000000 +0100
-+++ jmemmgr.c	2011-01-05 21:55:15.000000000 +0000
-@@ -182,7 +182,7 @@
+--- jmemmgr.c.orig	2011-09-11 11:33:02.000000000 +0100
++++ jmemmgr.c	2012-08-04 18:03:36.000000000 +0100
+@@ -183,7 +183,7 @@
  
  #ifdef MEM_STATS		/* optional extra stuff for statistics */
  
@@ -4322,7 +4358,7 @@
  print_mem_stats (j_common_ptr cinfo, int pool_id)
  {
    my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
-@@ -213,7 +213,7 @@
+@@ -214,7 +214,7 @@
  #endif /* MEM_STATS */
  
  
@@ -4331,7 +4367,7 @@
  out_of_memory (j_common_ptr cinfo, int which)
  /* Report an out-of-memory error and stop execution */
  /* If we compiled MEM_STATS support, report alloc requests before dying */
-@@ -253,7 +253,7 @@
+@@ -254,7 +254,7 @@
  #define MIN_SLOP  50		/* greater than 0 to avoid futile looping */
  
  
@@ -4340,7 +4376,7 @@
  alloc_small (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
  /* Allocate a "small" object */
  {
-@@ -338,7 +338,7 @@
+@@ -339,7 +339,7 @@
   * deliberately bunch rows together to ensure a large request size.
   */
  
@@ -4349,7 +4385,7 @@
  alloc_large (j_common_ptr cinfo, int pool_id, size_t sizeofobject)
  /* Allocate a "large" object */
  {
-@@ -391,7 +391,7 @@
+@@ -392,7 +392,7 @@
   * a virtual array.
   */
  
@@ -4358,7 +4394,7 @@
  alloc_sarray (j_common_ptr cinfo, int pool_id,
  	      JDIMENSION samplesperrow, JDIMENSION numrows)
  /* Allocate a 2-D sample array */
-@@ -439,7 +439,7 @@
+@@ -440,7 +440,7 @@
   * This is essentially the same as the code for sample arrays, above.
   */
  
@@ -4367,7 +4403,7 @@
  alloc_barray (j_common_ptr cinfo, int pool_id,
  	      JDIMENSION blocksperrow, JDIMENSION numrows)
  /* Allocate a 2-D coefficient-block array */
-@@ -519,7 +519,7 @@
+@@ -520,7 +520,7 @@
   */
  
  
@@ -4376,7 +4412,7 @@
  request_virt_sarray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
  		     JDIMENSION samplesperrow, JDIMENSION numrows,
  		     JDIMENSION maxaccess)
-@@ -549,7 +549,7 @@
+@@ -550,7 +550,7 @@
  }
  
  
@@ -4385,7 +4421,7 @@
  request_virt_barray (j_common_ptr cinfo, int pool_id, boolean pre_zero,
  		     JDIMENSION blocksperrow, JDIMENSION numrows,
  		     JDIMENSION maxaccess)
-@@ -579,7 +579,7 @@
+@@ -580,7 +580,7 @@
  }
  
  
@@ -4394,7 +4430,7 @@
  realize_virt_arrays (j_common_ptr cinfo)
  /* Allocate the in-memory buffers for any unrealized virtual arrays */
  {
-@@ -686,7 +686,7 @@
+@@ -687,7 +687,7 @@
  }
  
  
@@ -4403,7 +4439,7 @@
  do_sarray_io (j_common_ptr cinfo, jvirt_sarray_ptr ptr, boolean writing)
  /* Do backing store read or write of a virtual sample array */
  {
-@@ -719,7 +719,7 @@
+@@ -720,7 +720,7 @@
  }
  
  
@@ -4412,7 +4448,7 @@
  do_barray_io (j_common_ptr cinfo, jvirt_barray_ptr ptr, boolean writing)
  /* Do backing store read or write of a virtual coefficient-block array */
  {
-@@ -752,7 +752,7 @@
+@@ -753,7 +753,7 @@
  }
  
  
@@ -4421,7 +4457,7 @@
  access_virt_sarray (j_common_ptr cinfo, jvirt_sarray_ptr ptr,
  		    JDIMENSION start_row, JDIMENSION num_rows,
  		    boolean writable)
-@@ -837,7 +837,7 @@
+@@ -838,7 +838,7 @@
  }
  
  
@@ -4430,7 +4466,7 @@
  access_virt_barray (j_common_ptr cinfo, jvirt_barray_ptr ptr,
  		    JDIMENSION start_row, JDIMENSION num_rows,
  		    boolean writable)
-@@ -926,7 +926,7 @@
+@@ -927,7 +927,7 @@
   * Release all objects belonging to a specified pool.
   */
  
@@ -4439,7 +4475,7 @@
  free_pool (j_common_ptr cinfo, int pool_id)
  {
    my_mem_ptr mem = (my_mem_ptr) cinfo->mem;
-@@ -998,7 +998,7 @@
+@@ -999,7 +999,7 @@
   * Note that this cannot be called unless cinfo->mem is non-NULL.
   */
  
@@ -4448,7 +4484,7 @@
  self_destruct (j_common_ptr cinfo)
  {
    int pool;
-@@ -1024,7 +1024,7 @@
+@@ -1025,7 +1025,7 @@
   * When this is called, only the error manager pointer is valid in cinfo!
   */
  
@@ -4458,7 +4494,7 @@
  {
    my_mem_ptr mem;
 --- jmemname.c.orig	1997-09-14 17:35:10.000000000 +0100
-+++ jmemname.c	2011-01-05 21:55:15.000000000 +0000
++++ jmemname.c	2012-08-04 18:03:36.000000000 +0100
 @@ -91,7 +91,7 @@
  #endif
  
@@ -4572,7 +4608,7 @@
  {
    /* no work */
 --- jmemnobs.c.orig	1996-01-06 17:31:18.000000000 +0000
-+++ jmemnobs.c	2011-01-05 21:55:15.000000000 +0000
++++ jmemnobs.c	2012-08-04 18:03:36.000000000 +0100
 @@ -31,13 +31,13 @@
   * routines malloc() and free().
   */
@@ -4640,7 +4676,7 @@
  {
    /* no work */
 --- jmemsys.h.orig	1997-08-03 19:58:36.000000000 +0100
-+++ jmemsys.h	2011-01-05 21:55:15.000000000 +0000
++++ jmemsys.h	2012-08-04 18:03:36.000000000 +0100
 @@ -44,8 +44,8 @@
   * On an 80x86 machine using small-data memory model, these manage near heap.
   */
@@ -4690,8 +4726,8 @@
 -EXTERN(void) jpeg_mem_term JPP((j_common_ptr cinfo));
 +JEXTERN(long) jpeg_mem_init JPP((j_common_ptr cinfo));
 +JEXTERN(void) jpeg_mem_term JPP((j_common_ptr cinfo));
---- jmorecfg.h.orig	2009-11-20 08:01:24.000000000 +0000
-+++ jmorecfg.h	2011-01-05 21:55:15.000000000 +0000
+--- jmorecfg.h.orig	2011-08-31 12:35:12.000000000 +0100
++++ jmorecfg.h	2012-08-04 18:03:36.000000000 +0100
 @@ -188,13 +188,13 @@
   */
  
@@ -4712,7 +4748,7 @@
  
  
  /* This macro is used to declare a "method", that is, a function pointer.
-@@ -328,16 +328,16 @@
+@@ -326,16 +326,16 @@
  /* Definitions for speed-related optimizations. */
  
  
@@ -4734,9 +4770,17 @@
  #endif
  #endif
  
---- jpegint.h.orig	2009-09-19 09:51:24.000000000 +0100
-+++ jpegint.h	2011-01-05 22:28:15.000000000 +0000
-@@ -337,51 +337,51 @@
+--- jpegint.h.orig	2011-10-13 09:53:56.000000000 +0100
++++ jpegint.h	2012-08-04 18:03:36.000000000 +0100
+@@ -350,56 +350,56 @@
+ #ifdef USE_FMEM
+ #define FMEMZERO(target,size)	_fmemset((void FAR *)(target), 0, (size_t)(size))
+ #else
+-EXTERN(void) jzero_far JPP((void FAR * target, size_t bytestozero));
++JEXTERN(void) jzero_far JPP((void FAR * target, size_t bytestozero));
+ #define FMEMZERO(target,size)	jzero_far(target, size)
+ #endif
+ #endif
  
  
  /* Compression module initialization routines */
@@ -4814,14 +4858,11 @@
 -EXTERN(void) jcopy_block_row JPP((JBLOCKROW input_row, JBLOCKROW output_row,
 +JEXTERN(void) jcopy_block_row JPP((JBLOCKROW input_row, JBLOCKROW output_row,
  				  JDIMENSION num_blocks));
--EXTERN(void) jzero_far JPP((void FAR * target, size_t bytestozero));
-+JEXTERN(void) jzero_far JPP((void FAR * target, size_t bytestozero));
  /* Constant tables in jutils.c */
  #if 0				/* This table is not actually needed in v6a */
- extern const int jpeg_zigzag_order[]; /* natural coef order to zigzag order */
---- jpeglib.h.orig	2009-11-16 11:44:42.000000000 +0000
-+++ jpeglib.h	2011-01-05 21:55:15.000000000 +0000
-@@ -923,7 +923,7 @@
+--- jpeglib.h.orig	2011-08-27 17:15:42.000000000 +0100
++++ jpeglib.h	2012-08-04 18:03:36.000000000 +0100
+@@ -925,7 +925,7 @@
  
  
  /* Default error-management setup */
@@ -4830,7 +4871,7 @@
  	JPP((struct jpeg_error_mgr * err));
  
  /* Initialization of JPEG compression objects.
-@@ -939,82 +939,82 @@
+@@ -941,82 +941,82 @@
  #define jpeg_create_decompress(cinfo) \
      jpeg_CreateDecompress((cinfo), JPEG_LIB_VERSION, \
  			  (size_t) sizeof(struct jpeg_decompress_struct))
@@ -4943,7 +4984,7 @@
  				  boolean require_image));
  /* Return value is one of: */
  #define JPEG_SUSPENDED		0 /* Suspended due to lack of input data */
-@@ -1027,25 +1027,25 @@
+@@ -1029,25 +1029,25 @@
   */
  
  /* Main entry points for decompression */
@@ -4979,7 +5020,7 @@
  /* Return value is one of: */
  /* #define JPEG_SUSPENDED	0    Suspended due to lack of input data */
  #define JPEG_REACHED_SOS	1 /* Reached start of new scan */
-@@ -1054,24 +1054,24 @@
+@@ -1056,24 +1056,24 @@
  #define JPEG_SCAN_COMPLETED	4 /* Completed last iMCU row of a scan */
  
  /* Precalculate output dimensions for current decompression parameters. */
@@ -5011,7 +5052,7 @@
  						j_compress_ptr dstinfo));
  
  /* If you choose to abort compression or decompression before completing
-@@ -1080,17 +1080,17 @@
+@@ -1082,17 +1082,17 @@
   * if you're done with the JPEG object, but if you want to clean it up and
   * reuse it, call this:
   */
@@ -5034,8 +5075,8 @@
  					    int desired));
  
  
---- jpegtran.c.orig	2010-02-14 14:53:36.000000000 +0000
-+++ jpegtran.c	2011-01-05 21:55:15.000000000 +0000
+--- jpegtran.c.orig	2011-10-26 12:26:16.000000000 +0100
++++ jpegtran.c	2012-08-04 18:03:36.000000000 +0100
 @@ -42,7 +42,7 @@
  static jpeg_transform_info transformoption; /* image transformation options */
  
@@ -5063,9 +5104,9 @@
  parse_switches (j_compress_ptr cinfo, int argc, char **argv,
  		int last_file_arg_seen, boolean for_real)
  /* Parse optional switches.
---- jquant1.c.orig	1996-01-06 17:31:32.000000000 +0000
-+++ jquant1.c	2011-01-05 21:55:15.000000000 +0000
-@@ -182,7 +182,7 @@
+--- jquant1.c.orig	2011-09-11 11:29:14.000000000 +0100
++++ jquant1.c	2012-08-04 18:03:36.000000000 +0100
+@@ -183,7 +183,7 @@
   */
  
  
@@ -5074,7 +5115,7 @@
  select_ncolors (j_decompress_ptr cinfo, int Ncolors[])
  /* Determine allocation of desired colors to components, */
  /* and fill in Ncolors[] array to indicate choice. */
-@@ -241,7 +241,7 @@
+@@ -242,7 +242,7 @@
  }
  
  
@@ -5083,7 +5124,7 @@
  output_value (j_decompress_ptr cinfo, int ci, int j, int maxj)
  /* Return j'th output value, where j will range from 0 to maxj */
  /* The output values must fall in 0..MAXJSAMPLE in increasing order */
-@@ -255,7 +255,7 @@
+@@ -256,7 +256,7 @@
  }
  
  
@@ -5092,7 +5133,7 @@
  largest_input_value (j_decompress_ptr cinfo, int ci, int j, int maxj)
  /* Return largest input value that should map to j'th output value */
  /* Must have largest(j=0) >= 0, and largest(j=maxj) >= MAXJSAMPLE */
-@@ -269,7 +269,7 @@
+@@ -270,7 +270,7 @@
   * Create the colormap.
   */
  
@@ -5101,7 +5142,7 @@
  create_colormap (j_decompress_ptr cinfo)
  {
    my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
-@@ -329,7 +329,7 @@
+@@ -330,7 +330,7 @@
   * Create the color index table.
   */
  
@@ -5110,7 +5151,7 @@
  create_colorindex (j_decompress_ptr cinfo)
  {
    my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
-@@ -392,7 +392,7 @@
+@@ -393,7 +393,7 @@
   * distinct output values.
   */
  
@@ -5119,7 +5160,7 @@
  make_odither_array (j_decompress_ptr cinfo, int ncolors)
  {
    ODITHER_MATRIX_PTR odither;
-@@ -428,7 +428,7 @@
+@@ -429,7 +429,7 @@
   * share a dither table.
   */
  
@@ -5128,7 +5169,7 @@
  create_odither_tables (j_decompress_ptr cinfo)
  {
    my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
-@@ -455,7 +455,7 @@
+@@ -456,7 +456,7 @@
   * Map some rows of pixels to the output colormapped representation.
   */
  
@@ -5137,7 +5178,7 @@
  color_quantize (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
  		JSAMPARRAY output_buf, int num_rows)
  /* General case, no dithering */
-@@ -483,7 +483,7 @@
+@@ -484,7 +484,7 @@
  }
  
  
@@ -5146,7 +5187,7 @@
  color_quantize3 (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
  		 JSAMPARRAY output_buf, int num_rows)
  /* Fast path for out_color_components==3, no dithering */
-@@ -511,7 +511,7 @@
+@@ -512,7 +512,7 @@
  }
  
  
@@ -5155,7 +5196,7 @@
  quantize_ord_dither (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
  		     JSAMPARRAY output_buf, int num_rows)
  /* General case, with ordered dithering */
-@@ -561,7 +561,7 @@
+@@ -562,7 +562,7 @@
  }
  
  
@@ -5164,7 +5205,7 @@
  quantize3_ord_dither (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
  		      JSAMPARRAY output_buf, int num_rows)
  /* Fast path for out_color_components==3, with ordered dithering */
-@@ -606,7 +606,7 @@
+@@ -607,7 +607,7 @@
  }
  
  
@@ -5173,7 +5214,7 @@
  quantize_fs_dither (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
  		    JSAMPARRAY output_buf, int num_rows)
  /* General case, with Floyd-Steinberg dithering */
-@@ -718,7 +718,7 @@
+@@ -719,7 +719,7 @@
   * Allocate workspace for Floyd-Steinberg errors.
   */
  
@@ -5182,7 +5223,7 @@
  alloc_fs_workspace (j_decompress_ptr cinfo)
  {
    my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
-@@ -737,7 +737,7 @@
+@@ -738,7 +738,7 @@
   * Initialize for one-pass color quantization.
   */
  
@@ -5191,7 +5232,7 @@
  start_pass_1_quant (j_decompress_ptr cinfo, boolean is_pre_scan)
  {
    my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
-@@ -794,7 +794,7 @@
+@@ -795,7 +795,7 @@
   * Finish up at the end of the pass.
   */
  
@@ -5200,7 +5241,7 @@
  finish_pass_1_quant (j_decompress_ptr cinfo)
  {
    /* no work in 1-pass case */
-@@ -806,7 +806,7 @@
+@@ -807,7 +807,7 @@
   * Shouldn't get to this module!
   */
  
@@ -5209,7 +5250,7 @@
  new_color_map_1_quant (j_decompress_ptr cinfo)
  {
    ERREXIT(cinfo, JERR_MODE_CHANGE);
-@@ -817,7 +817,7 @@
+@@ -818,7 +818,7 @@
   * Module initialization routine for 1-pass color quantization.
   */
  
@@ -5218,9 +5259,9 @@
  jinit_1pass_quantizer (j_decompress_ptr cinfo)
  {
    my_cquantize_ptr cquantize;
---- jquant2.c.orig	1996-01-06 17:31:34.000000000 +0000
-+++ jquant2.c	2011-01-05 21:55:15.000000000 +0000
-@@ -220,7 +220,7 @@
+--- jquant2.c.orig	2011-09-11 11:30:54.000000000 +0100
++++ jquant2.c	2012-08-04 18:03:36.000000000 +0100
+@@ -221,7 +221,7 @@
   * NULL pointer).
   */
  
@@ -5229,7 +5270,7 @@
  prescan_quantize (j_decompress_ptr cinfo, JSAMPARRAY input_buf,
  		  JSAMPARRAY output_buf, int num_rows)
  {
-@@ -269,7 +269,7 @@
+@@ -270,7 +270,7 @@
  typedef box * boxptr;
  
  
@@ -5238,7 +5279,7 @@
  find_biggest_color_pop (boxptr boxlist, int numboxes)
  /* Find the splittable box with the largest color population */
  /* Returns NULL if no splittable boxes remain */
-@@ -289,7 +289,7 @@
+@@ -290,7 +290,7 @@
  }
  
  
@@ -5247,7 +5288,7 @@
  find_biggest_volume (boxptr boxlist, int numboxes)
  /* Find the splittable box with the largest (scaled) volume */
  /* Returns NULL if no splittable boxes remain */
-@@ -309,7 +309,7 @@
+@@ -310,7 +310,7 @@
  }
  
  
@@ -5256,7 +5297,7 @@
  update_box (j_decompress_ptr cinfo, boxptr boxp)
  /* Shrink the min/max bounds of a box to enclose only nonzero elements, */
  /* and recompute its volume and population */
-@@ -420,7 +420,7 @@
+@@ -421,7 +421,7 @@
  }
  
  
@@ -5265,7 +5306,7 @@
  median_cut (j_decompress_ptr cinfo, boxptr boxlist, int numboxes,
  	    int desired_colors)
  /* Repeatedly select and split the largest box until we have enough boxes */
-@@ -495,7 +495,7 @@
+@@ -496,7 +496,7 @@
  }
  
  
@@ -5274,7 +5315,7 @@
  compute_color (j_decompress_ptr cinfo, boxptr boxp, int icolor)
  /* Compute representative color for a box, put it in colormap[icolor] */
  {
-@@ -535,7 +535,7 @@
+@@ -536,7 +536,7 @@
  }
  
  
@@ -5283,7 +5324,7 @@
  select_colors (j_decompress_ptr cinfo, int desired_colors)
  /* Master routine for color selection */
  {
-@@ -642,7 +642,7 @@
+@@ -643,7 +643,7 @@
   * inner-loop variables.
   */
  
@@ -5292,7 +5333,7 @@
  find_nearby_colors (j_decompress_ptr cinfo, int minc0, int minc1, int minc2,
  		    JSAMPLE colorlist[])
  /* Locate the colormap entries close enough to an update box to be candidates
-@@ -771,7 +771,7 @@
+@@ -772,7 +772,7 @@
  }
  
  
@@ -5301,7 +5342,7 @@
  find_best_colors (j_decompress_ptr cinfo, int minc0, int minc1, int minc2,
  		  int numcolors, JSAMPLE colorlist[], JSAMPLE bestcolor[])
  /* Find the closest colormap entry for each cell in the update box,
-@@ -851,7 +851,7 @@
+@@ -852,7 +852,7 @@
  }
  
  
@@ -5310,7 +5351,7 @@
  fill_inverse_cmap (j_decompress_ptr cinfo, int c0, int c1, int c2)
  /* Fill the inverse-colormap entries in the update box that contains */
  /* histogram cell c0/c1/c2.  (Only that one cell MUST be filled, but */
-@@ -911,7 +911,7 @@
+@@ -912,7 +912,7 @@
   * Map some rows of pixels to the output colormapped representation.
   */
  
@@ -5319,7 +5360,7 @@
  pass2_no_dither (j_decompress_ptr cinfo,
  		 JSAMPARRAY input_buf, JSAMPARRAY output_buf, int num_rows)
  /* This version performs no dithering */
-@@ -945,7 +945,7 @@
+@@ -946,7 +946,7 @@
  }
  
  
@@ -5328,7 +5369,7 @@
  pass2_fs_dither (j_decompress_ptr cinfo,
  		 JSAMPARRAY input_buf, JSAMPARRAY output_buf, int num_rows)
  /* This version performs Floyd-Steinberg dithering */
-@@ -1104,7 +1104,7 @@
+@@ -1105,7 +1105,7 @@
   * to Aaron Giles for this idea.
   */
  
@@ -5337,7 +5378,7 @@
  init_error_limit (j_decompress_ptr cinfo)
  /* Allocate and fill in the error_limiter table */
  {
-@@ -1139,7 +1139,7 @@
+@@ -1140,7 +1140,7 @@
   * Finish up at the end of each pass.
   */
  
@@ -5346,7 +5387,7 @@
  finish_pass1 (j_decompress_ptr cinfo)
  {
    my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
-@@ -1152,7 +1152,7 @@
+@@ -1153,7 +1153,7 @@
  }
  
  
@@ -5355,7 +5396,7 @@
  finish_pass2 (j_decompress_ptr cinfo)
  {
    /* no work */
-@@ -1163,7 +1163,7 @@
+@@ -1164,7 +1164,7 @@
   * Initialize for each processing pass.
   */
  
@@ -5364,7 +5405,7 @@
  start_pass_2_quant (j_decompress_ptr cinfo, boolean is_pre_scan)
  {
    my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
-@@ -1226,7 +1226,7 @@
+@@ -1227,7 +1227,7 @@
   * Switch to a new external colormap between output passes.
   */
  
@@ -5373,7 +5414,7 @@
  new_color_map_2_quant (j_decompress_ptr cinfo)
  {
    my_cquantize_ptr cquantize = (my_cquantize_ptr) cinfo->cquantize;
-@@ -1240,7 +1240,7 @@
+@@ -1241,7 +1241,7 @@
   * Module initialization routine for 2-pass color quantization.
   */
  
@@ -5382,8 +5423,8 @@
  jinit_2pass_quantizer (j_decompress_ptr cinfo)
  {
    my_cquantize_ptr cquantize;
---- jutils.c.orig	2009-04-11 12:31:52.000000000 +0100
-+++ jutils.c	2011-01-05 21:55:15.000000000 +0000
+--- jutils.c.orig	2011-09-11 11:17:58.000000000 +0100
++++ jutils.c	2012-08-04 18:03:36.000000000 +0100
 @@ -120,7 +120,7 @@
   * Arithmetic utilities
   */
@@ -5402,7 +5443,16 @@
  jround_up (long a, long b)
  /* Compute a rounded up to next multiple of b, ie, ceil(a/b)*b */
  /* Assumes a >= 0, b > 0 */
-@@ -159,7 +159,7 @@
+@@ -157,7 +157,7 @@
+ /* This function is for use by the FMEMZERO macro defined in jpegint.h.
+  * Do not call this function directly, use the FMEMZERO macro instead.
+  */
+-GLOBAL(void)
++JGLOBAL(void)
+ jzero_far (void FAR * target, size_t bytestozero)
+ /* Zero out a chunk of FAR memory. */
+ /* This might be sample-array data, block-array data, or alloc_large data. */
+@@ -173,7 +173,7 @@
  #endif
  
  
@@ -5411,7 +5461,7 @@
  jcopy_sample_rows (JSAMPARRAY input_array, int source_row,
  		   JSAMPARRAY output_array, int dest_row,
  		   int num_rows, JDIMENSION num_cols)
-@@ -193,7 +193,7 @@
+@@ -207,7 +207,7 @@
  }
  
  
@@ -5420,17 +5470,8 @@
  jcopy_block_row (JBLOCKROW input_row, JBLOCKROW output_row,
  		 JDIMENSION num_blocks)
  /* Copy a row of coefficient blocks from one place to another. */
-@@ -213,7 +213,7 @@
- }
- 
- 
--GLOBAL(void)
-+JGLOBAL(void)
- jzero_far (void FAR * target, size_t bytestozero)
- /* Zero out a chunk of FAR memory. */
- /* This might be sample-array data, block-array data, or alloc_large data. */
 --- rdbmp.c.orig	2010-02-14 15:22:22.000000000 +0000
-+++ rdbmp.c	2011-01-05 21:55:16.000000000 +0000
++++ rdbmp.c	2012-08-04 18:03:36.000000000 +0100
 @@ -65,7 +65,7 @@
  } bmp_source_struct;
  
@@ -5513,7 +5554,7 @@
  {
    bmp_source_ptr source;
 --- rdcolmap.c.orig	1996-11-19 10:38:44.000000000 +0000
-+++ rdcolmap.c	2011-01-05 21:55:16.000000000 +0000
++++ rdcolmap.c	2012-08-04 18:03:36.000000000 +0100
 @@ -42,7 +42,7 @@
   * Add a (potentially) new color to the color map.
   */
@@ -5569,7 +5610,7 @@
  {
    /* Allocate space for a color map of maximum supported size. */
 --- rdgif.c.orig	1997-08-22 21:19:50.000000000 +0100
-+++ rdgif.c	2011-01-05 21:55:16.000000000 +0000
++++ rdgif.c	2012-08-04 18:03:36.000000000 +0100
 @@ -27,7 +27,7 @@
   * The module selection routine for GIF format input.
   */
@@ -5580,7 +5621,7 @@
  {
    fprintf(stderr, "GIF input is unsupported for legal reasons.  Sorry.\n");
 --- rdppm.c.orig	2009-04-02 18:44:25.000000000 +0100
-+++ rdppm.c	2011-01-05 21:55:16.000000000 +0000
++++ rdppm.c	2012-08-04 18:03:36.000000000 +0100
 @@ -81,7 +81,7 @@
  typedef ppm_source_struct * ppm_source_ptr;
  
@@ -5690,7 +5731,7 @@
  {
    ppm_source_ptr source;
 --- rdrle.c.orig	1996-01-06 17:32:20.000000000 +0000
-+++ rdrle.c	2011-01-05 21:55:16.000000000 +0000
++++ rdrle.c	2012-08-04 18:03:36.000000000 +0100
 @@ -77,7 +77,7 @@
   * Read the file header; return image size and component count.
   */
@@ -5746,7 +5787,7 @@
  {
    rle_source_ptr source;
 --- rdswitch.c.orig	2003-11-03 20:51:40.000000000 +0000
-+++ rdswitch.c	2011-01-05 21:55:16.000000000 +0000
++++ rdswitch.c	2012-08-04 18:03:36.000000000 +0100
 @@ -18,7 +18,7 @@
  #include <ctype.h>		/* to declare isdigit(), isspace() */
  
@@ -5820,7 +5861,7 @@
  /* Process a sample-factors parameter string, of the form
   *     HxV[,HxV,...]
 --- rdtarga.c.orig	1996-01-07 11:42:36.000000000 +0000
-+++ rdtarga.c	2011-01-05 21:55:16.000000000 +0000
++++ rdtarga.c	2012-08-04 18:03:36.000000000 +0100
 @@ -84,7 +84,7 @@
  
  
@@ -5938,8 +5979,8 @@
  jinit_read_targa (j_compress_ptr cinfo)
  {
    tga_source_ptr source;
---- transupp.c.orig	2009-09-03 15:45:06.000000000 +0100
-+++ transupp.c	2011-01-05 21:55:16.000000000 +0000
+--- transupp.c.orig	2011-10-26 12:20:05.000000000 +0100
++++ transupp.c	2012-08-04 18:03:36.000000000 +0100
 @@ -75,7 +75,7 @@
   */
  
@@ -6039,7 +6080,7 @@
  jtransform_parse_crop_spec (jpeg_transform_info *info, const char *spec)
  {
    info->crop = FALSE;
-@@ -826,7 +826,7 @@
+@@ -834,7 +834,7 @@
  
  /* Trim off any partial iMCUs on the indicated destination edge */
  
@@ -6048,7 +6089,7 @@
  trim_right_edge (jpeg_transform_info *info, JDIMENSION full_width)
  {
    JDIMENSION MCU_cols;
-@@ -837,7 +837,7 @@
+@@ -845,7 +845,7 @@
      info->output_width = MCU_cols * info->iMCU_sample_width;
  }
  
@@ -6057,7 +6098,7 @@
  trim_bottom_edge (jpeg_transform_info *info, JDIMENSION full_height)
  {
    JDIMENSION MCU_rows;
-@@ -866,7 +866,7 @@
+@@ -874,7 +874,7 @@
   * and transformation is not perfect.  Otherwise returns TRUE.
   */
  
@@ -6066,7 +6107,7 @@
  jtransform_request_workspace (j_decompress_ptr srcinfo,
  			      jpeg_transform_info *info)
  {
-@@ -1097,7 +1097,7 @@
+@@ -1111,7 +1111,7 @@
  
  /* Transpose destination image parameters */
  
@@ -6075,7 +6116,7 @@
  transpose_critical_parameters (j_compress_ptr dstinfo)
  {
    int tblno, i, j, ci, itemp;
-@@ -1143,7 +1143,7 @@
+@@ -1157,7 +1157,7 @@
   * We try to adjust the Tags ExifImageWidth and ExifImageHeight if possible.
   */
  
@@ -6084,7 +6125,7 @@
  adjust_exif_parameters (JOCTET FAR * data, unsigned int length,
  			JDIMENSION new_width, JDIMENSION new_height)
  {
-@@ -1305,7 +1305,7 @@
+@@ -1319,7 +1319,7 @@
   * to jpeg_write_coefficients().
   */
  
@@ -6093,7 +6134,7 @@
  jtransform_adjust_parameters (j_decompress_ptr srcinfo,
  			      j_compress_ptr dstinfo,
  			      jvirt_barray_ptr *src_coef_arrays,
-@@ -1400,7 +1400,7 @@
+@@ -1414,7 +1414,7 @@
   * Note that some transformations will modify the source data arrays!
   */
  
@@ -6102,7 +6143,7 @@
  jtransform_execute_transform (j_decompress_ptr srcinfo,
  			      j_compress_ptr dstinfo,
  			      jvirt_barray_ptr *src_coef_arrays,
-@@ -1473,7 +1473,7 @@
+@@ -1487,7 +1487,7 @@
   *           (may use custom action then)
   */
  
@@ -6111,7 +6152,7 @@
  jtransform_perfect_transform(JDIMENSION image_width, JDIMENSION image_height,
  			     int MCU_width, int MCU_height,
  			     JXFORM_CODE transform)
-@@ -1512,7 +1512,7 @@
+@@ -1526,7 +1526,7 @@
   * This must be called before jpeg_read_header() to have the desired effect.
   */
  
@@ -6120,7 +6161,7 @@
  jcopy_markers_setup (j_decompress_ptr srcinfo, JCOPY_OPTION option)
  {
  #ifdef SAVE_MARKERS_SUPPORTED
-@@ -1537,7 +1537,7 @@
+@@ -1551,7 +1551,7 @@
   * JFIF APP0 or Adobe APP14 markers if selected.
   */
  
@@ -6129,9 +6170,9 @@
  jcopy_markers_execute (j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
  		       JCOPY_OPTION option)
  {
---- transupp.h.orig	2009-09-03 09:54:26.000000000 +0100
-+++ transupp.h	2011-01-05 21:55:16.000000000 +0000
-@@ -156,25 +156,25 @@
+--- transupp.h.orig	2011-10-26 10:56:02.000000000 +0100
++++ transupp.h	2012-08-04 18:03:36.000000000 +0100
+@@ -159,25 +159,25 @@
  #if TRANSFORMS_SUPPORTED
  
  /* Parse a crop specification (written in X11 geometry style) */
@@ -6162,7 +6203,7 @@
  	JPP((JDIMENSION image_width, JDIMENSION image_height,
  	     int MCU_width, int MCU_height,
  	     JXFORM_CODE transform));
-@@ -202,9 +202,9 @@
+@@ -205,9 +205,9 @@
  #define JCOPYOPT_DEFAULT  JCOPYOPT_COMMENTS	/* recommended default */
  
  /* Setup decompression object to save desired markers in memory */
@@ -6175,7 +6216,7 @@
  	JPP((j_decompress_ptr srcinfo, j_compress_ptr dstinfo,
  	     JCOPY_OPTION option));
 --- wrbmp.c.orig	1996-01-06 17:32:38.000000000 +0000
-+++ wrbmp.c	2011-01-05 21:55:16.000000000 +0000
++++ wrbmp.c	2012-08-04 18:03:36.000000000 +0100
 @@ -57,7 +57,7 @@
  
  
@@ -6258,7 +6299,7 @@
  {
    bmp_dest_ptr dest;
 --- wrgif.c.orig	1997-09-24 10:56:50.000000000 +0100
-+++ wrgif.c	2011-01-05 21:55:16.000000000 +0000
++++ wrgif.c	2012-08-04 18:03:36.000000000 +0100
 @@ -77,7 +77,7 @@
   * A data block consists of a count byte (1..255) and that many data bytes.
   */
@@ -6368,7 +6409,7 @@
  {
    gif_dest_ptr dest;
 --- wrppm.c.orig	2009-04-06 22:20:20.000000000 +0100
-+++ wrppm.c	2011-01-05 21:55:16.000000000 +0000
++++ wrppm.c	2012-08-04 18:03:36.000000000 +0100
 @@ -87,7 +87,7 @@
   * output buffer is physically the same as the fwrite buffer.
   */
@@ -6433,7 +6474,7 @@
  {
    ppm_dest_ptr dest;
 --- wrrle.c.orig	1996-01-06 17:32:50.000000000 +0000
-+++ wrrle.c	2011-01-05 21:55:16.000000000 +0000
++++ wrrle.c	2012-08-04 18:03:36.000000000 +0100
 @@ -62,7 +62,7 @@
  typedef rle_dest_struct * rle_dest_ptr;
  
@@ -6480,7 +6521,7 @@
  {
    rle_dest_ptr dest;
 --- wrtarga.c.orig	1996-01-06 17:32:54.000000000 +0000
-+++ wrtarga.c	2011-01-05 21:55:16.000000000 +0000
++++ wrtarga.c	2012-08-04 18:03:36.000000000 +0100
 @@ -50,7 +50,7 @@
  typedef tga_dest_struct * tga_dest_ptr;
  
