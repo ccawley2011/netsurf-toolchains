@@ -24,6 +24,7 @@ VERSION_LIBMNG := 1.0.10
 VERSION_LIBCARES := 1.9.1
 VERSION_LIBCURL := 7.27.0
 VERSION_LIBGNURX := 2.5.1
+VERSION_LIBPBL := 1_04
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -75,7 +76,7 @@ ifeq ($(TARGET),arm-unknown-riscos)
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
-  SDK_ITEMS := $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(BUILDSTEPS)/libtre.d $(BUILDSTEPS)/libpbl.d $(COMMON_SDK_ITEMS)
   EXTRAARGS_LIBCARES := --disable-shared
   VERSION_LIBCURL := 7.21.3
 endif
@@ -171,6 +172,23 @@ $(BUILDSTEPS)/libtre-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/tre-$(VERSION
 
 $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2:
 	wget -q -O $@ http://laurikari.net/tre/$(subst $(SOURCEDIR)/,,$@)
+
+# libpbl
+$(BUILDSTEPS)/libpbl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libpbl-src.d
+	mkdir -p $(BUILDDIR)/libpbl
+	cd $(BUILDDIR)/libpbl && tar xzf $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz
+	for p in `ls $(RECIPES)/patches/libpbl/*.p` ; do patch -d $(BUILDDIR)/libpbl/pbl_$(VERSION_LIBPBL)_04 -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/libpbl/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libpbl/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libpbl/pbl_$(VERSION_LIBPBL)_04 -p0 <$$p ; done
+endif
+	cd $(BUILDDIR)/libpbl/pbl_$(VERSION_LIBPBL)_04 && $(env) make install PREFIX=$(GCCSDK_INSTALL_ENV)
+	touch $@
+
+$(BUILDSTEPS)/libpbl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz
+	touch $@
+
+$(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
+	wget -q -O $@ http://www.mission-base.com/peter/source/$(subst $(SOURCEDIR)/,,$@)
 
 # libXML2
 $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2-src.d
