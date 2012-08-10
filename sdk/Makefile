@@ -15,14 +15,16 @@ endif
 VERSION_ZLIB := 1.2.7
 VERSION_LIBICONV := 1.13.1
 VERSION_LIBTRE := 0.8.0
-VERSION_LIBXML := 2.7.8
-VERSION_OPENSSL := 1.0.0c
+VERSION_LIBXML := 2.8.0
+VERSION_OPENSSL := 1.0.1c
 VERSION_LIBPNG := 1.5.12
-VERSION_LIBJPEG := 8b
-VERSION_LIBLCMS := 2.1
+VERSION_LIBJPEG := 8d
+VERSION_LIBLCMS := 2.3
 VERSION_LIBMNG := 1.0.10
 VERSION_LIBCARES := 1.9.1
-VERSION_LIBCURL := 7.21.3
+VERSION_LIBCURL := 7.27.0
+VERSION_LIBGNURX := 2.5.1
+VERSION_LIBPBL := 1_04
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -31,6 +33,7 @@ path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
 cc__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
 cxx__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*g++)
 ar__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ar)
+ranlib__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ranlib)
 
 # Flags
 cflags__ := -I$(GCCSDK_INSTALL_ENV)/include
@@ -42,7 +45,7 @@ pkg_config_libdir__ := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
 TARGET := $(shell $(cc__) -dumpmachine)
 
 # Environment
-env := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" CFLAGS="$(cflags__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
+env := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" RANLIB="$(ranlib__)" CFLAGS="$(cflags__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
 
 RECIPES := $(CURDIR)/recipes
 SOURCEDIR := $(CURDIR)/sources
@@ -59,18 +62,29 @@ COMMON_SDK_ITEMS := $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2.d $(BUILDSTEPS)/o
 ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
   SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
 endif
 
 ifeq ($(TARGET),arm-unknown-riscos)
   SDK_ITEMS := $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
-  SDK_ITEMS := $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(BUILDSTEPS)/libtre.d $(BUILDSTEPS)/libpbl.d $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
+  $(warning Using ancient libcurl)
+  VERSION_LIBCURL := 7.21.3
+endif
+
+ifeq ($(TARGET),i686-w64-mingw32)
+  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libgnurx.d $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCURL := --disable-ldap
 endif
 
 ifeq ($(SDK_ITEMS),)
@@ -129,6 +143,22 @@ $(BUILDSTEPS)/libiconv-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libiconv-$(
 $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz:
 	wget -q -O $@ http://ftp.gnu.org/pub/gnu/libiconv/$(subst $(SOURCEDIR)/,,$@)
 
+# libgnurx
+$(BUILDSTEPS)/libgnurx.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libgnurx-src.d
+	mkdir -p $(BUILDDIR)/libgnurx
+	cd $(BUILDDIR)/libgnurx && tar xzf $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz
+	for p in `ls $(RECIPES)/patches/libgnurx/*.p` ; do patch -d $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) -p0 <$$p ; done
+	cd $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) 
+	cd $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) && $(env) make
+	cd $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) && $(env) make install
+	touch $@
+
+$(BUILDSTEPS)/libgnurx-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz
+	touch $@
+
+$(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz:
+	wget -q -O $@ "http://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz"
+
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
 	mkdir -p $(BUILDDIR)/libtre
@@ -143,6 +173,23 @@ $(BUILDSTEPS)/libtre-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/tre-$(VERSION
 
 $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2:
 	wget -q -O $@ http://laurikari.net/tre/$(subst $(SOURCEDIR)/,,$@)
+
+# libpbl
+$(BUILDSTEPS)/libpbl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libpbl-src.d
+	mkdir -p $(BUILDDIR)/libpbl
+	cd $(BUILDDIR)/libpbl && tar xzf $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz
+	for p in `ls $(RECIPES)/patches/libpbl/*.p` ; do patch -d $(BUILDDIR)/libpbl/pbl_$(VERSION_LIBPBL)_04 -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/libpbl/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libpbl/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libpbl/pbl_$(VERSION_LIBPBL)_04 -p0 <$$p ; done
+endif
+	cd $(BUILDDIR)/libpbl/pbl_$(VERSION_LIBPBL)_04 && $(env) make install PREFIX=$(GCCSDK_INSTALL_ENV)
+	touch $@
+
+$(BUILDSTEPS)/libpbl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz
+	touch $@
+
+$(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
+	wget -q -O $@ http://www.mission-base.com/peter/source/$(subst $(SOURCEDIR)/,,$@)
 
 # libXML2
 $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2-src.d
@@ -253,7 +300,7 @@ $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
 ifneq ($(realpath $(RECIPES)/patches/libcares/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libcares/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) $(EXTRAARGS_LIBCARES)
 	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) make install
 	touch $@
 
@@ -268,7 +315,10 @@ $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	mkdir -p $(BUILDDIR)/libcurl
 	cd $(BUILDDIR)/libcurl && tar xjf $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2
 	for p in `ls $(RECIPES)/patches/libcurl/*.p` ; do patch -d $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) -p0 <$$p ; done
-	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn --enable-nonblocking --enable-ares=$(GCCSDK_INSTALL_ENV)/lib --without-random
+ifneq ($(realpath $(RECIPES)/patches/libcurl/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libcurl/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) -p0 <$$p ; done
+endif
+	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn --enable-nonblocking --enable-ares --without-random ${EXTRAARGS_LIBCURL}
 	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) make install
 	touch $@
 
