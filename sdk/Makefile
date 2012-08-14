@@ -1,7 +1,17 @@
+#
+# NetSurf Project toolchain SDK build
+#
 # Required environment:
 #
 # GCCSDK_INSTALL_ENV      -- /path/to/install/prefix
 # GCCSDK_INSTALL_CROSSBIN -- /path/to/toolchain/bin
+#
+# supported targets are:
+#                       arm-unknown-riscos  
+#                       m68k-atari-mint
+#                       ppc-amigaos 
+#                       i686-w64-mingw32    
+#                       m68k-unknown-amigaos
 
 ifeq ($(GCCSDK_INSTALL_ENV),)
   $(error GCCSDK_INSTALL_ENV not set)
@@ -59,20 +69,18 @@ COMMON_SDK_ITEMS := $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2.d $(BUILDSTEPS)/o
 		$(BUILDSTEPS)/libpng.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d \
 		$(BUILDSTEPS)/libmng.d $(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl.d
 
+# Target Specific setup
+ifeq ($(TARGET),arm-unknown-riscos)
+  SDK_ITEMS := $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
+  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
+endif
+
 ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
   SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(COMMON_SDK_ITEMS)
   EXTRAARGS_LIBCARES := --disable-shared
-endif
-
-ifeq ($(TARGET),m68k-unknown-amigaos)
-  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
-  EXTRAARGS_LIBCARES := --disable-shared
-endif
-
-ifeq ($(TARGET),arm-unknown-riscos)
-  SDK_ITEMS := $(COMMON_SDK_ITEMS)
-  EXTRAARGS_LIBCARES := --disable-shared
+  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
@@ -84,7 +92,12 @@ endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
   SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libgnurx.d $(COMMON_SDK_ITEMS)
-  EXTRAARGS_LIBCURL := --disable-ldap
+  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap
+endif
+
+ifeq ($(TARGET),m68k-unknown-amigaos)
+  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+  EXTRAARGS_LIBCARES := --disable-shared
 endif
 
 ifeq ($(SDK_ITEMS),)
@@ -318,7 +331,7 @@ $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 ifneq ($(realpath $(RECIPES)/patches/libcurl/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libcurl/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn --enable-nonblocking --enable-ares --without-random ${EXTRAARGS_LIBCURL}
+	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn --without-random ${EXTRAARGS_LIBCURL}
 	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) make install
 	touch $@
 
