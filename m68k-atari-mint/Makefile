@@ -122,18 +122,24 @@ $(BUILDSTEPS)/mintlib.d: $(BUILDSTEPS)/bootstrap-compiler.d $(SOURCESDIR)/$(UPST
 # Rules to build and install the bootstrap compiler
 ###
 
+GCC_ENV_PARAMS := AUTOCONF=autoconf2.64 AUTOHEADER=autoheader2.64 AUTORECONF=autoreconf2.64 AUTOM4TE=autom4te2.64 PATH="$(PREFIX)/bin:$(PATH)"
+
 $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d $(BUILDSTEPS)/mintbin.d
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(GCC_SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) \
-			--disable-nls --enable-languages=c --enable-checking=no --enable-c99 --enable-maintainer-mode --without-headers
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all-gcc
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install-gcc
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all-target-libgcc
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install-target-libgcc
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) $(GCC_SRCDIR)/configure \
+			--prefix=$(PREFIX) --target=$(TARGET_NAME) \
+			--disable-nls --enable-languages=c \
+			--enable-checking=no --enable-c99 \
+			--enable-maintainer-mode --without-headers
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make all-gcc
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make install-gcc
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make all-target-libgcc
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make install-target-libgcc
 	touch $@
 
 ###
 # Rules to create the GCC source tree
 ###
+
 
 $(BUILDSTEPS)/srcdir-step3.d: $(BUILDSTEPS)/srcdir-step2.d $(SOURCESDIR)/$(UPSTREAM_GCC_PATCH)
 	bzcat $(SOURCESDIR)/$(UPSTREAM_GCC_PATCH) | patch -d $(GCC_SRCDIR) -p1
