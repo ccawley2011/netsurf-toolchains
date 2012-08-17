@@ -41,6 +41,11 @@ UPSTREAM_GEMLIB_VERSION := CVS-20100223
 UPSTREAM_GEMLIB_TARBALL := gemlib-$(UPSTREAM_GEMLIB_VERSION).tar.bz2
 UPSTREAM_GEMLIB_URI := http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/$(UPSTREAM_GEMLIB_TARBALL)
 
+GCC_AUTOCONF := autoconf2.64
+GCC_AUTOHEADER := autoheader2.64
+GCC_AUTORECONF := autoreconf2.64
+GCC_AUTOM4TE := autom4te2.64
+
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
 SOURCESDIR := $(TOP)/sources
@@ -122,7 +127,7 @@ $(BUILDSTEPS)/mintlib.d: $(BUILDSTEPS)/bootstrap-compiler.d $(SOURCESDIR)/$(UPST
 # Rules to build and install the bootstrap compiler
 ###
 
-GCC_ENV_PARAMS := AUTOCONF=autoconf2.64 AUTOHEADER=autoheader2.64 AUTORECONF=autoreconf2.64 AUTOM4TE=autom4te2.64 PATH="$(PREFIX)/bin:$(PATH)"
+GCC_ENV_PARAMS := AUTOCONF=$(GCC_AUTOCONF) AUTOHEADER=$(GCC_AUTOHEADER) AUTOM4TE=$(GCC_AUTOM4TE) PATH="$(PREFIX)/bin:$(PATH)"
 
 $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d $(BUILDSTEPS)/mintbin.d
 	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) $(GCC_SRCDIR)/configure \
@@ -143,6 +148,10 @@ $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/b
 
 $(BUILDSTEPS)/srcdir-step3.d: $(BUILDSTEPS)/srcdir-step2.d $(SOURCESDIR)/$(UPSTREAM_GCC_PATCH)
 	bzcat $(SOURCESDIR)/$(UPSTREAM_GCC_PATCH) | patch -d $(GCC_SRCDIR) -p1
+	cd $(GCC_SRCDIR) && ./contrib/gcc_update --touch
+	$(GCC_AUTORECONF) -f $(GCC_SRCDIR)/libmudflap
+	$(GCC_AUTORECONF) -f $(GCC_SRCDIR)/libssp
+	$(GCC_AUTORECONF) -f $(GCC_SRCDIR)/libquadmath
 	touch $@
 
 $(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL)
