@@ -35,6 +35,7 @@ VERSION_LIBCARES := 1.9.1
 VERSION_LIBCURL := 7.27.0
 VERSION_LIBGNURX := 2.5.1
 VERSION_LIBPBL := 1_04
+VERSION_WINDOM := 2.0.1
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -65,38 +66,37 @@ BUILDSTEPS := $(BUILDDIR)/build-steps
 # Compute the SDK components
 SDK_ITEMS :=
 
-COMMON_SDK_ITEMS := $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2.d $(BUILDSTEPS)/openssl.d \
-		$(BUILDSTEPS)/libpng.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d \
-		$(BUILDSTEPS)/libmng.d $(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl.d
+COMMON_SDK_ITEMS := zlib.d libxml2.d openssl.d libpng.d libjpeg.d liblcms.d \
+		    libmng.d libcares.d libcurl.d
 
 # Target Specific setup
 ifeq ($(TARGET),arm-unknown-riscos)
-  SDK_ITEMS := $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
 endif
 
 ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
-  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
-  SDK_ITEMS := $(BUILDSTEPS)/libtre.d $(BUILDSTEPS)/libpbl.d $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
   $(warning Using ancient libcurl)
   VERSION_LIBCURL := 7.21.3
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
-  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libgnurx.d $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libgnurx.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
-  SDK_ITEMS := $(BUILDSTEPS)/libiconv.d $(BUILDSTEPS)/libtre.d $(COMMON_SDK_ITEMS)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
 endif
 
