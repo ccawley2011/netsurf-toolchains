@@ -35,6 +35,7 @@ VERSION_LIBCARES := 1.9.1
 VERSION_LIBCURL := 7.27.0
 VERSION_LIBGNURX := 2.5.1
 VERSION_LIBPBL := 1_04
+VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 
 # Path
@@ -78,7 +79,7 @@ endif
 
 ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS))
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) ldg.d windom.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
 endif
@@ -171,6 +172,38 @@ $(BUILDSTEPS)/libgnurx-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libgnurx-$(
 
 $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz:
 	wget -q -O $@ "http://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz"
+
+# atari windom library
+$(BUILDSTEPS)/windom.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/windom-src.d
+	mkdir -p $(BUILDDIR)/windom
+	cd $(BUILDDIR)/windom && unzip $(SOURCEDIR)/windom-$(VERSION_WINDOM).zip
+	$(env) make -C $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1/src -f gcc.mak CROSS=yes M68K_ATARI_MINT_CFLAGS="-I$(GCCSDK_INSTALL_ENV)/include/"
+	$(env) make -C $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1/src -f gcc.mak CROSS=yes PREFIX=$(GCCSDK_INSTALL_ENV) install
+	touch $@
+
+$(BUILDSTEPS)/windom-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/windom-$(VERSION_WINDOM).zip
+	touch $@
+
+$(SOURCEDIR)/windom-$(VERSION_WINDOM).zip:
+	wget -q -O $@ "http://downloads.sourceforge.net/project/windom/windom/$(VERSION_WINDOM)/windom-$(VERSION_WINDOM)-1.zip"
+
+# atari ldg library
+$(BUILDSTEPS)/ldg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/ldg-src.d
+	mkdir -p $(BUILDDIR)/ldg
+	cd $(BUILDDIR)/ldg && unzip $(SOURCEDIR)/ldg-$(VERSION_LDG).zip
+	$(env) make -C $(BUILDDIR)/ldg/ldg-$(VERSION_LDG)/src/devel -f gcc.mak CROSS=yes PREFIX=$(GCCSDK_INSTALL_ENV)
+	cp $(BUILDDIR)/ldg/ldg-$(VERSION_LDG)/lib/gcc/libldg.a $(GCCSDK_INSTALL_ENV)/lib/
+	cp $(BUILDDIR)/ldg/ldg-$(VERSION_LDG)/include/ldg.h $(GCCSDK_INSTALL_ENV)/include/ldg.h
+	mkdir -p $(GCCSDK_INSTALL_ENV)/include/ldg
+	cp $(BUILDDIR)/ldg/ldg-$(VERSION_LDG)/include/ldg/mem.h $(GCCSDK_INSTALL_ENV)/include/ldg/
+	touch $@
+
+$(BUILDSTEPS)/ldg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/ldg-$(VERSION_LDG).zip
+	touch $@
+
+$(SOURCEDIR)/ldg-$(VERSION_LDG).zip:
+	wget -q -O $@ "http://ldg.org.free.fr/distrib/ldg-$(VERSION_LDG).zip"
+
 
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
