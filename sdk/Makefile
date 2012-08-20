@@ -35,6 +35,7 @@ VERSION_LIBCARES := 1.9.1
 VERSION_LIBCURL := 7.27.0
 VERSION_LIBGNURX := 2.5.1
 VERSION_LIBPBL := 1_04
+VERSION_LIBCF := CVS-20120227
 VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 
@@ -79,7 +80,7 @@ endif
 
 ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) ldg.d windom.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
 endif
@@ -172,6 +173,24 @@ $(BUILDSTEPS)/libgnurx-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libgnurx-$(
 
 $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz:
 	wget -q -O $@ "http://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz"
+
+# atari cf library
+$(BUILDSTEPS)/libcf.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcf-src.d
+	$(env) make -C $(BUILDDIR)/libcf/cflib-$(VERSION_LIBCF)/cflib PREFIX=$(GCCSDK_INSTALL_ENV) CROSS=yes
+	mkdir -p $(GCCSDK_INSTALL_ENV)/lib/mshort
+	mkdir -p $(GCCSDK_INSTALL_ENV)/lib/m68020-60
+	mkdir -p $(GCCSDK_INSTALL_ENV)/lib/m5475
+	$(env) make -C $(BUILDDIR)/libcf/cflib-$(VERSION_LIBCF)/cflib PREFIX=$(GCCSDK_INSTALL_ENV) CROSS=yes install
+	touch $@
+
+$(BUILDSTEPS)/libcf-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libcf-$(VERSION_LIBCF).tar.bz2
+	$(RM) -rf $(BUILDDIR)/libcf
+	mkdir -p $(BUILDDIR)/libcf
+	cd $(BUILDDIR)/libcf && tar xaf $(SOURCEDIR)/libcf-$(VERSION_LIBCF).tar.bz2
+	touch $@
+
+$(SOURCEDIR)/libcf-$(VERSION_LIBCF).tar.bz2:
+	wget -q -O $@ "http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/cflib-$(VERSION_LIBCF).tar.bz2"
 
 # atari windom library
 $(BUILDSTEPS)/windom.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/windom-src.d
