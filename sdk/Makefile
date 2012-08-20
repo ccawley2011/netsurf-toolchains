@@ -38,6 +38,7 @@ VERSION_LIBPBL := 1_04
 VERSION_LIBCF := CVS-20120227
 VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
+VERSION_HERMES := 1.3.3
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -80,7 +81,7 @@ endif
 
 ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
 endif
@@ -223,6 +224,20 @@ $(BUILDSTEPS)/ldg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/ldg-$(VERSION_LD
 $(SOURCEDIR)/ldg-$(VERSION_LDG).zip:
 	wget -q -O $@ "http://ldg.org.free.fr/distrib/ldg-$(VERSION_LDG).zip"
 
+# hermes bitmap lib
+$(BUILDSTEPS)/hermes.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/hermes-src.d
+	cd $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES) && $(env) make CFLAGS="-D__BIG_ENDIAN__" install 
+	touch $@
+
+$(BUILDSTEPS)/hermes-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/hermes-$(VERSION_HERMES).tar.bz2
+	$(RM) -rf $(BUILDDIR)/hermes
+	mkdir -p $(BUILDDIR)/hermes
+	cd $(BUILDDIR)/hermes && tar xaf $(SOURCEDIR)/hermes-$(VERSION_HERMES).tar.bz2
+	touch $@
+
+$(SOURCEDIR)/hermes-$(VERSION_HERMES).tar.bz2:
+	wget -q -O $@ "http://clanlib.org/download/legacy/Hermes-$(VERSION_HERMES).tar.bz2"
 
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
