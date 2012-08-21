@@ -39,6 +39,7 @@ VERSION_LIBCF := CVS-20120227
 VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 VERSION_HERMES := 1.3.3
+VERSION_FREETYPE := 2.4.10
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -81,7 +82,7 @@ endif
 
 ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d freetype.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
 endif
@@ -238,6 +239,21 @@ $(BUILDSTEPS)/hermes-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/hermes-$(VERS
 
 $(SOURCEDIR)/hermes-$(VERSION_HERMES).tar.bz2:
 	wget -q -O $@ "http://clanlib.org/download/legacy/Hermes-$(VERSION_HERMES).tar.bz2"
+
+# freetype font lib
+$(BUILDSTEPS)/freetype.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/freetype-src.d
+	cd $(BUILDDIR)/freetype/freetype-$(VERSION_FREETYPE) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/freetype/freetype-$(VERSION_FREETYPE) && $(env) make install 
+	touch $@
+
+$(BUILDSTEPS)/freetype-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/freetype-$(VERSION_FREETYPE).tar.bz2
+	$(RM) -rf $(BUILDDIR)/freetype
+	mkdir -p $(BUILDDIR)/freetype
+	cd $(BUILDDIR)/freetype && tar xaf $(SOURCEDIR)/freetype-$(VERSION_FREETYPE).tar.bz2
+	touch $@
+
+$(SOURCEDIR)/freetype-$(VERSION_FREETYPE).tar.bz2:
+	wget -q -O $@ "http://download.savannah.gnu.org/releases/freetype/freetype-$(VERSION_FREETYPE).tar.bz2"
 
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
