@@ -1,9 +1,9 @@
-# Going to use a known revision of trunk, until there's a release version that suits
+# Use tagged release of GCCSDK
 UPSTREAM_GCCSDK_VERSION := release_4_1_2_v2
 UPSTREAM_GCCSDK_TARBALL := gcc4
 UPSTREAM_GCCSDK_URI := svn://svn.riscos.info/gccsdk/tags/@$(UPSTREAM_GCCSDK_VERSION)
 
-# Ditto for OSLib
+# Going to use a known revision of trunk, until there's a release version that suits
 UPSTREAM_OSLIB_VERSION := 402
 UPSTREAM_OSLIB_TARBALL := oslib
 UPSTREAM_OSLIB_URI := https://ro-oslib.svn.sourceforge.net/svnroot/ro-oslib/trunk/!OSLib@$(UPSTREAM_OSLIB_VERSION)
