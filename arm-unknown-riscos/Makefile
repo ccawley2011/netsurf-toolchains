@@ -1,7 +1,7 @@
 # Going to use a known revision of trunk, until there's a release version that suits
-UPSTREAM_GCCSDK_VERSION := 4957
+UPSTREAM_GCCSDK_VERSION := release_4_1_2_v2
 UPSTREAM_GCCSDK_TARBALL := gcc4
-UPSTREAM_GCCSDK_URI := svn://svn.riscos.info/gccsdk/trunk/gcc4@$(UPSTREAM_GCCSDK_VERSION)
+UPSTREAM_GCCSDK_URI := svn://svn.riscos.info/gccsdk/tags/@$(UPSTREAM_GCCSDK_VERSION)
 
 # Ditto for OSLib
 UPSTREAM_OSLIB_VERSION := 402
