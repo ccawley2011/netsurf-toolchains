@@ -16,12 +16,12 @@ UPSTREAM_CCRES_URI := svn://svn.riscos.info/ccres/trunk@$(UPSTREAM_CCRES_VERSION
 # Makerun
 UPSTREAM_MAKERUN_VERSION := unused
 UPSTREAM_MAKERUN_TARBALL := makerun
-UPSTREAM_MAKERUN_URI := git://git.netsurf-browser.org/makerun
+UPSTREAM_MAKERUN_URI := git://git.netsurf-browser.org/makerun.git
 
 # Squeeze
 UPSTREAM_SQUEEZE_VERSION := unused
 UPSTREAM_SQUEEZE_TARBALL := squeeze
-UPSTREAM_SQUEEZE_URI := git://git.netsurf-browser.org/squeeze
+UPSTREAM_SQUEEZE_URI := git://git.netsurf-browser.org/squeeze.git
 
 # Infozip
 UPSTREAM_INFOZIP_VERSION := 30
@@ -51,7 +51,7 @@ distclean: clean
 # Rules to build the full toolchain
 ###
 
-$(BUILDSTEPS)/toolchain.d: $(BUILDSTEPS)/ccres.d $(BUILDSTEPS)/makerun.d $(BUILDSTEPS)/infozip.d
+$(BUILDSTEPS)/toolchain.d: $(BUILDSTEPS)/ccres.d $(BUILDSTEPS)/makerun.d $(BUILDSTEPS)/squeeze.d $(BUILDSTEPS)/infozip.d
 	touch $@
 
 ###
