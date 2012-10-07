@@ -19,9 +19,9 @@ UPSTREAM_MAKERUN_TARBALL := makerun
 UPSTREAM_MAKERUN_URI := git://git.netsurf-browser.org/makerun
 
 # Squeeze
-UPSTREAM_MAKERUN_VERSION := unused
-UPSTREAM_MAKERUN_TARBALL := squeeze
-UPSTREAM_MAKERUN_URI := git://git.netsurf-browser.org/squeeze
+UPSTREAM_SQUEEZE_VERSION := unused
+UPSTREAM_SQUEEZE_TARBALL := squeeze
+UPSTREAM_SQUEEZE_URI := git://git.netsurf-browser.org/squeeze
 
 # Infozip
 UPSTREAM_INFOZIP_VERSION := 30
