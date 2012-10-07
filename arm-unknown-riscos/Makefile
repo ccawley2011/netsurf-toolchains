@@ -13,10 +13,15 @@ UPSTREAM_CCRES_VERSION := 96
 UPSTREAM_CCRES_TARBALL := ccres
 UPSTREAM_CCRES_URI := svn://svn.riscos.info/ccres/trunk@$(UPSTREAM_CCRES_VERSION)
 
-# Ditto for Makerun
-UPSTREAM_MAKERUN_VERSION := 11186
+# Makerun
+UPSTREAM_MAKERUN_VERSION := unused
 UPSTREAM_MAKERUN_TARBALL := makerun
-UPSTREAM_MAKERUN_URI := svn://svn.netsurf-browser.org/trunk/tools/makerun@$(UPSTREAM_MAKERUN_VERSION)
+UPSTREAM_MAKERUN_URI := git://git.netsurf-browser.org/makerun
+
+# Squeeze
+UPSTREAM_MAKERUN_VERSION := unused
+UPSTREAM_MAKERUN_TARBALL := squeeze
+UPSTREAM_MAKERUN_URI := git://git.netsurf-browser.org/squeeze
 
 # Infozip
 UPSTREAM_INFOZIP_VERSION := 30
@@ -73,6 +78,15 @@ $(BUILDSTEPS)/makerun.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_MAKERUN_TA
 	touch $@
 
 ###
+# Rules to build and install Squeeze
+###
+
+$(BUILDSTEPS)/squeeze.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_SQUEEZE_TARBALL)
+	cp -r $(SOURCESDIR)/$(UPSTREAM_SQUEEZE_TARBALL) $(BUILDDIR)/squeeze
+	cd $(BUILDDIR)/squeeze && GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
+	touch $@
+
+###
 # Rules to build and install CCRes
 ###
 
@@ -122,7 +136,10 @@ $(SOURCESDIR)/$(UPSTREAM_CCRES_TARBALL):
 	svn co $(UPSTREAM_CCRES_URI) $@
 
 $(SOURCESDIR)/$(UPSTREAM_MAKERUN_TARBALL):
-	svn co $(UPSTREAM_MAKERUN_URI) $@
+	git clone $(UPSTREAM_MAKERUN_URI) $@
+
+$(SOURCESDIR)/$(UPSTREAM_SQUEEZE_TARBALL):
+	git clone $(UPSTREAM_SQUEEZE_URI) $@
 
 $(SOURCESDIR)/$(UPSTREAM_INFOZIP_TARBALL):
 	wget -q -O $@ $(UPSTREAM_INFOZIP_URI)
