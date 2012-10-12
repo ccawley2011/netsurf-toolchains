@@ -26,6 +26,12 @@ UPSTREAM_OPENURL_VERSION := 7.8
 UPSTREAM_OPENURL_TARBALL := openurl
 UPSTREAM_OPENURL_URI := http://svn.code.sf.net/p/openurllib/code/releases/$(UPSTREAM_OPENURL_VERSION)/developer/C
 
+# need to force the auto* version in use
+GCC_AUTOCONF := autoconf2.64
+GCC_AUTOHEADER := autoheader2.64
+GCC_AUTORECONF := autoreconf2.64
+GCC_AUTOM4TE := autom4te2.64
+
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
 SOURCESDIR := $(TOP)/sources
@@ -52,13 +58,18 @@ distclean: clean
 # Rules to build the full compiler
 ###
 
+GCC_ENV_PARAMS := AUTOCONF=$(GCC_AUTOCONF) AUTOHEADER=$(GCC_AUTOHEADER) AUTOM4TE=$(GCC_AUTOM4TE) PATH="$(PREFIX)/bin:$(PATH)"
+
 $(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d $(BUILDSTEPS)/ndk.d
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(GCC_SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) \
-			--disable-nls --disable-c-mbchar --enable-languages=c --enable-checking=no --enable-c99 \
-			--with-cross-host --without-x --enable-maintainer-mode --enable-haifa --enable-sjlj-exceptions \
-			--disable-libstdcxx-pch --disable-tls --disable-libssp
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) $(GCC_SRCDIR)/configure \
+			--prefix=$(PREFIX) --target=$(TARGET_NAME) \
+			--disable-nls --disable-c-mbchar --enable-languages=c \
+			--enable-checking=no --enable-c99 --with-cross-host \
+			--without-x --enable-maintainer-mode --enable-haifa \
+			--enable-sjlj-exceptions --disable-libstdcxx-pch \
+			--disable-tls --disable-libssp
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make all
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make install
 	touch $@
 
 ###
