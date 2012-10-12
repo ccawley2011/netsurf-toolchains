@@ -9,6 +9,7 @@
 # supported targets are:
 #                       arm-unknown-riscos  
 #                       m68k-atari-mint
+#			m5475-atari-mint
 #                       ppc-amigaos 
 #                       i686-w64-mingw32    
 #                       m68k-unknown-amigaos
@@ -81,6 +82,13 @@ ifeq ($(TARGET),arm-unknown-riscos)
 endif
 
 ifeq ($(TARGET),m68k-atari-mint)
+  EXTRAARGS_LIBXML := --enable-ipv6=no
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d freetype.d)
+  EXTRAARGS_LIBCARES := --disable-shared
+  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
+endif
+
+ifeq ($(TARGET),m5475-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d freetype.d)
   EXTRAARGS_LIBCARES := --disable-shared
@@ -178,11 +186,11 @@ $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz:
 
 # atari cf library
 $(BUILDSTEPS)/libcf.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcf-src.d
-	$(env) make -C $(BUILDDIR)/libcf/cflib-$(VERSION_LIBCF)/cflib PREFIX=$(GCCSDK_INSTALL_ENV) CROSS=yes
+	$(env) make -C $(BUILDDIR)/libcf/cflib-$(VERSION_LIBCF)/cflib CROSSPREFIX=${TARGET}- PREFIX=$(GCCSDK_INSTALL_ENV) CROSS=yes
 	mkdir -p $(GCCSDK_INSTALL_ENV)/lib/mshort
 	mkdir -p $(GCCSDK_INSTALL_ENV)/lib/m68020-60
 	mkdir -p $(GCCSDK_INSTALL_ENV)/lib/m5475
-	$(env) make -C $(BUILDDIR)/libcf/cflib-$(VERSION_LIBCF)/cflib PREFIX=$(GCCSDK_INSTALL_ENV) CROSS=yes install
+	$(env) make -C $(BUILDDIR)/libcf/cflib-$(VERSION_LIBCF)/cflib CROSSPREFIX=${TARGET}- PREFIX=$(GCCSDK_INSTALL_ENV) CROSS=yes install
 	touch $@
 
 $(BUILDSTEPS)/libcf-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libcf-$(VERSION_LIBCF).tar.bz2
@@ -198,8 +206,8 @@ $(SOURCEDIR)/libcf-$(VERSION_LIBCF).tar.bz2:
 $(BUILDSTEPS)/windom.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/windom-src.d
 	mkdir -p $(BUILDDIR)/windom
 	cd $(BUILDDIR)/windom && unzip $(SOURCEDIR)/windom-$(VERSION_WINDOM).zip
-	$(env) make -C $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1/src -f gcc.mak CROSS=yes M68K_ATARI_MINT_CFLAGS="-I$(GCCSDK_INSTALL_ENV)/include/"
-	$(env) make -C $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1/src -f gcc.mak CROSS=yes PREFIX=$(GCCSDK_INSTALL_ENV) install
+	$(env) make -C $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1/src -f gcc.mak CROSS=yes CROSSPREFIX=${TARGET} M68K_ATARI_MINT_CFLAGS="-I$(GCCSDK_INSTALL_ENV)/include/" 
+	$(env) make -C $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1/src -f gcc.mak CROSS=yes CROSSPREFIX=${TARGET} PREFIX=$(GCCSDK_INSTALL_ENV) install
 	touch $@
 
 $(BUILDSTEPS)/windom-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/windom-$(VERSION_WINDOM).zip
@@ -212,7 +220,7 @@ $(SOURCEDIR)/windom-$(VERSION_WINDOM).zip:
 $(BUILDSTEPS)/ldg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/ldg-src.d
 	mkdir -p $(BUILDDIR)/ldg
 	cd $(BUILDDIR)/ldg && unzip $(SOURCEDIR)/ldg-$(VERSION_LDG).zip
-	$(env) make -C $(BUILDDIR)/ldg/ldg-$(VERSION_LDG)/src/devel -f gcc.mak CROSS=yes PREFIX=$(GCCSDK_INSTALL_ENV)
+	$(env) make -C $(BUILDDIR)/ldg/ldg-$(VERSION_LDG)/src/devel -f gcc.mak CROSS=yes PREFIX=$(GCCSDK_INSTALL_ENV) CC=${TARGET}-gcc AR=${TARGET}-ar
 	cp $(BUILDDIR)/ldg/ldg-$(VERSION_LDG)/lib/gcc/libldg.a $(GCCSDK_INSTALL_ENV)/lib/
 	cp $(BUILDDIR)/ldg/ldg-$(VERSION_LDG)/include/ldg.h $(GCCSDK_INSTALL_ENV)/include/ldg.h
 	mkdir -p $(GCCSDK_INSTALL_ENV)/include/ldg
