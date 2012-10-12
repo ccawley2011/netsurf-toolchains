@@ -1,10 +1,10 @@
-UPSTREAM_GCC_VERSION := 390
+UPSTREAM_GCC_VERSION := 467
 UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION)
-UPSTREAM_GCC_URI := https://adtools.svn.sourceforge.net/svnroot/adtools/trunk/gcc@$(UPSTREAM_BINUTILS_VERSION)
+UPSTREAM_GCC_URI := http://svn.code.sf.net/p/adtools/code/branches/gcc/4.5.x@$(UPSTREAM_GCC_VERSION)
 
-UPSTREAM_BINUTILS_VERSION := 390
+UPSTREAM_BINUTILS_VERSION := 467
 UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION)
-UPSTREAM_BINUTILS_URI := https://adtools.svn.sourceforge.net/svnroot/adtools/trunk/binutils@$(UPSTREAM_BINUTILS_VERSION)
+UPSTREAM_BINUTILS_URI := http://svn.code.sf.net/p/adtools/code/trunk/binutils@$(UPSTREAM_BINUTILS_VERSION)
 
 UPSTREAM_GMP_VERSION := 4.3.2
 UPSTREAM_GMP_TARBALL := gmp-$(UPSTREAM_GMP_VERSION).tar.bz2
@@ -24,7 +24,7 @@ UPSTREAM_NDK_URI := "http://hyperion-entertainment.biz/index.php?option=com_regi
 
 UPSTREAM_OPENURL_VERSION := 7.8
 UPSTREAM_OPENURL_TARBALL := openurl
-UPSTREAM_OPENURL_URI := https://openurllib.svn.sourceforge.net/svnroot/openurllib/releases/$(UPSTREAM_OPENURL_VERSION)/developer/C
+UPSTREAM_OPENURL_URI := http://svn.code.sf.net/p/openurllib/code/releases/$(UPSTREAM_OPENURL_VERSION)/developer/C
 
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
