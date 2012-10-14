@@ -74,11 +74,13 @@ SDK_ITEMS :=
 COMMON_SDK_ITEMS := zlib.d libxml2.d openssl.d libpng.d libjpeg.d liblcms.d \
 		    libmng.d libcares.d libcurl.d
 
+LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap telnet gopher tftp pop3 imap smtp manual)
+
 # Target Specific setup
 ifeq ($(TARGET),arm-unknown-riscos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
-  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
+  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares $(LIBCURL_DISABLES)
 endif
 
 ifeq ($(TARGET),m68k-atari-mint)
