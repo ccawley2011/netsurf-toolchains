@@ -100,8 +100,6 @@ endif
 ifeq ($(TARGET),ppc-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
-  $(warning Using ancient libcurl)
-  VERSION_LIBCURL := 7.21.3
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
