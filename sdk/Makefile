@@ -98,7 +98,7 @@ ifeq ($(TARGET),m5475-atari-mint)
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libtre.d libpbl.d $(COMMON_SDK_ITEMS))
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --disable-ntlm-wb
 endif
@@ -159,6 +159,9 @@ $(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
 	mkdir -p $(BUILDDIR)/libiconv
 	cd $(BUILDDIR)/libiconv && tar xzf $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz
 	for p in `ls $(RECIPES)/patches/libiconv/*.p` ; do patch -d $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/libiconv/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libiconv/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) -p0 <$$p ; done
+endif
 	cd $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) && $(env) make install
 	touch $@
