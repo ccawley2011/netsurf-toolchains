@@ -439,7 +439,7 @@ $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
 
 # libexpat
 
-$(BUILDSTEPS)/libexpat.d: $(BUILDSTEPS)/builddir.d
+$(BUILDSTEPS)/libexpat.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libexpat-src.d
 	mkdir -p $(BUILDDIR)/libexpat
 	cd $(BUILDDIR)/libexpat && tar xzf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz
 	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
