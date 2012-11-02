@@ -37,6 +37,7 @@ VERSION_LIBCURL := 7.28.0
 VERSION_LIBGNURX := 2.5.1
 VERSION_LIBPBL := 1_04
 VERSION_LIBCF := CVS-20120227
+VERSION_LIBEXPAT := 2.1.0
 VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 VERSION_HERMES := 1.3.3
@@ -72,7 +73,7 @@ BUILDSTEPS := $(BUILDDIR)/build-steps
 SDK_ITEMS :=
 
 COMMON_SDK_ITEMS := zlib.d libxml2.d openssl.d libpng.d libjpeg.d liblcms.d \
-		    libmng.d libcares.d libcurl.d
+		    libmng.d libcares.d libcurl.d libexpat.d
 
 LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap telnet gopher tftp pop3 imap smtp manual)
 
@@ -436,3 +437,17 @@ $(BUILDSTEPS)/libcurl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/curl-$(VERSI
 $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
 	wget -q -O $@ http://curl.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)
 
+# libexpat
+
+$(BUILDSTEPS)/libexpat.d: $(BUILDSTEPS)/builddir.d
+	mkdir -p $(BUILDDIR)/libexpat
+	cd $(BUILDDIR)/libexpat && tar xzf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz
+	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) make install
+	touch $@
+
+$(BUILDSTEPS)/libexpat-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz
+	touch $@
+
+$(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz:
+	wget -q -O $@ http://downloads.sourceforge.net/project/expat/expat/$(VERSION_LIBEXPAT)/expat-$(VERSION_LIBEXPAT).tar.gz
