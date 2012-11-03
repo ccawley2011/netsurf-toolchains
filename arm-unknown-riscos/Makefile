@@ -25,8 +25,8 @@ UPSTREAM_SQUEEZE_URI := git://git.netsurf-browser.org/squeeze.git
 
 # Infozip
 UPSTREAM_INFOZIP_VERSION := 30
-UPSTREAM_INFOZIP_TARBALL := zip$(UPSTREAM_INFOZIP_VERSION).tgz
-UPSTREAM_INFOZIP_URI := ftp://ftp.info-zip.org/pub/infozip/src/$(UPSTREAM_INFOZIP_TARBALL)
+UPSTREAM_INFOZIP_TARBALL := zip$(UPSTREAM_INFOZIP_VERSION).tar.gz
+UPSTREAM_INFOZIP_URI := http://downloads.sourceforge.net/project/infozip/Zip%203.x%20%28latest%29/3.0/$(UPSTREAM_INFOZIP_TARBALL)
 
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
