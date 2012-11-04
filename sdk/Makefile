@@ -88,30 +88,30 @@ ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d freetype.d)
   EXTRAARGS_LIBCARES := --disable-shared
-  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
+  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --without-random
 endif
 
 ifeq ($(TARGET),m5475-atari-mint)
   EXTRAARGS_LIBXML := --enable-ipv6=no
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d freetype.d)
   EXTRAARGS_LIBCARES := --disable-shared
-  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares
+  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --without-random
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
-  EXTRAARGS_LIBCURL := --disable-ntlm-wb
+  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libgnurx.d $(COMMON_SDK_ITEMS))
-  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap
+  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap --without-random
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d $(COMMON_SDK_ITEMS))
-  EXTRAARGS_LIBCARES := --disable-shared
+  EXTRAARGS_LIBCARES := --disable-shared --without-random
 endif
 
 ifeq ($(SDK_ITEMS),)
@@ -427,7 +427,7 @@ $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 ifneq ($(realpath $(RECIPES)/patches/libcurl/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libcurl/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn --without-random ${EXTRAARGS_LIBCURL}
+	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-libidn ${EXTRAARGS_LIBCURL}
 	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) make install
 	touch $@
 
