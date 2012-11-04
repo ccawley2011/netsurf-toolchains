@@ -42,6 +42,7 @@ VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 VERSION_HERMES := 1.3.3
 VERSION_FREETYPE := 2.4.10
+VERSION_NSPR := 4.9.3
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -73,7 +74,7 @@ BUILDSTEPS := $(BUILDDIR)/build-steps
 SDK_ITEMS :=
 
 COMMON_SDK_ITEMS := zlib.d libxml2.d openssl.d libpng.d libjpeg.d liblcms.d \
-		    libmng.d libcares.d libcurl.d libexpat.d
+		    libmng.d libcares.d libcurl.d libexpat.d nspr.d
 
 LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap telnet gopher tftp pop3 imap smtp manual)
 
@@ -451,3 +452,20 @@ $(BUILDSTEPS)/libexpat-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/expat-$(VER
 
 $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz:
 	wget -q -O $@ http://downloads.sourceforge.net/project/expat/expat/$(VERSION_LIBEXPAT)/expat-$(VERSION_LIBEXPAT).tar.gz
+
+# nspr
+$(BUILDSTEPS)/nspr.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr-src.d
+	mkdir -p $(BUILDDIR)/nspr
+	cd $(BUILDDIR)/nspr && tar xzf $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
+	for p in `ls $(RECIPES)/patches/nspr/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR) -p0 <$$p ; done
+	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) CROSS_COMPILE=1 CFLAGS=-D_PR_LOCAL_THREADS_ONLY ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-pthreads 
+	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make
+	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make install
+	touch $@
+
+
+$(BUILDSTEPS)/nspr-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
+	touch $@
+
+$(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz:
+	wget -q -O $@ https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$(VERSION_NSPR)/src/nspr-$(VERSION_NSPR).tar.gz
