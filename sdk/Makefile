@@ -243,7 +243,7 @@ $(SOURCEDIR)/ldg-$(VERSION_LDG).zip:
 
 # hermes bitmap lib
 $(BUILDSTEPS)/hermes.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/hermes-src.d
-	cd $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --disable-x86asm
 	cd $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES) && $(env) make CFLAGS="-D__BIG_ENDIAN__" install 
 	touch $@
 
