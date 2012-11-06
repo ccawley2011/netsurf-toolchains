@@ -1,5 +1,5 @@
---- configvars	2012-10-11 16:56:15.000000000 +0100
-+++ configvars	2012-10-11 16:57:32.000000000 +0100
+--- ./configvars.orig	2012-05-03 19:26:10.000000000 +0200
++++ ./configvars	2012-11-05 23:03:52.000000000 +0100
 @@ -12,14 +12,14 @@
  # get installed.  You have to take car yourself that the libraries
  # and include files and so on will get installed in the right place
@@ -26,3 +26,12 @@
  else
   prefix=/usr
  endif
+@@ -124,7 +124,7 @@
+ CFLAGS=-O2 -fomit-frame-pointer
+ 
+ # Additional defines.
+-DEFS=
++DEFS=-DREGEX_MALLOC
+ 
+ # Define this to the warning level you want.
+ WARN=-Wall
