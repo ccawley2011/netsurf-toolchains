@@ -311,7 +311,7 @@ $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 ifneq ($(realpath $(RECIPES)/patches/libxml2/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libxml2/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-python $(EXTRAARGS_LIBXML)
+	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) CFLAGS=-O2 ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-python $(EXTRAARGS_LIBXML)
 	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) make install
 	touch $@
 
