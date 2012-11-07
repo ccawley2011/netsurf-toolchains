@@ -214,6 +214,10 @@ $(SOURCEDIR)/libcf-$(VERSION_LIBCF).tar.bz2:
 $(BUILDSTEPS)/windom.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/windom-src.d
 	mkdir -p $(BUILDDIR)/windom
 	cd $(BUILDDIR)/windom && unzip $(SOURCEDIR)/windom-$(VERSION_WINDOM).zip
+	for p in `ls $(RECIPES)/patches/windom/*.p` ; do patch -d $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1 -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/windom/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/windom/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1 -p0 <$$p ; done
+endif
 	$(env) make -C $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1/src -f gcc.mak CROSS=yes CROSSPREFIX=${TARGET} M68K_ATARI_MINT_CFLAGS="-I$(GCCSDK_INSTALL_ENV)/include/" 
 	$(env) make -C $(BUILDDIR)/windom/windom-$(VERSION_WINDOM)-1/src -f gcc.mak CROSS=yes CROSSPREFIX=${TARGET} PREFIX=$(GCCSDK_INSTALL_ENV) install
 	touch $@
@@ -243,6 +247,11 @@ $(SOURCEDIR)/ldg-$(VERSION_LDG).zip:
 
 # hermes bitmap lib
 $(BUILDSTEPS)/hermes.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/hermes-src.d
+	cd $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES)
+	for p in `ls $(RECIPES)/patches/hermes/*.p` ; do patch -d $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES) -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/hermes/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/hermes/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES) -p0 <$$p ; done
+endif
 	cd $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --disable-x86asm
 	cd $(BUILDDIR)/hermes/Hermes-$(VERSION_HERMES) && $(env) make CFLAGS="-D__BIG_ENDIAN__" install 
 	touch $@
