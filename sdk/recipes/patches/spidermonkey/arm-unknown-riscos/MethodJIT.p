@@ -55,12 +55,13 @@
  "   add     sp, sp, #(4*7 + 4*4)"               "\n"
  "   mov     r0, #0"                         "\n"
  "   pop     {r4-r11,pc}"                    "\n"
-@@ -551,7 +551,7 @@
+@@ -551,7 +551,8 @@
       * The arguments are identical to those for js_* except that the target function should be in
       * 'ip'. */
  "   push    {ip,lr}"                        "\n"
 -"   blx     ip"                             "\n"
-+"   bl     ip"                             "\n"
++"   mov lr, pc"                             "\n"
++"   mov pc, ip"                             "\n"
  "   pop     {ip,pc}"                        "\n"
  );
  
