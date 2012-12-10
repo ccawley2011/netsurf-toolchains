@@ -81,7 +81,7 @@ LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap telnet gopher tf
 
 # Target Specific setup
 ifeq ($(TARGET),arm-unknown-riscos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) nspr.d spidermonkey.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) spidermonkey.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares $(LIBCURL_DISABLES)
 endif
@@ -467,7 +467,7 @@ $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz:
 
 # nspr
 $(BUILDSTEPS)/nspr.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr-src.d
-	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) CROSS_COMPILE=1 CFLAGS=-D_PR_LOCAL_THREADS_ONLY ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-pthreads --with-cpu-arch=armv3
+	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) CROSS_COMPILE=1 CFLAGS=-D_PR_LOCAL_THREADS_ONLY ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-pthreads --without-thumb --without-thumb-interwork --with-arch=armv3
 	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make
 	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make install
 	touch $@
@@ -483,9 +483,9 @@ $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz:
 	wget -q -O $@ https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$(VERSION_NSPR)/src/nspr-$(VERSION_NSPR).tar.gz
 
 
-# spidermonkey (libmozjs)
-$(BUILDSTEPS)/spidermonkey.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/spidermonkey-src.d
-	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --disable-tracejit --disable-thumb2 --with-thumb=no --enable-static --with-system-nspr --with-nspr-prefix=$(GCCSDK_INSTALL_ENV) --disable-shared --disable-shared-js --with-cpu-arch=armv3 --disable-tests
+# spidermonkey (libmozjs) --disable-methodjit 
+$(BUILDSTEPS)/spidermonkey.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr.d $(BUILDSTEPS)/spidermonkey-src.d
+	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --disable-tracejit --disable-thumb2 --without-thumb --enable-static --with-system-nspr --with-nspr-prefix=$(GCCSDK_INSTALL_ENV) --disable-shared --disable-shared-js --with-cpu-arch=armv3 --disable-tests
 	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make
 	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make install
 	touch $@
