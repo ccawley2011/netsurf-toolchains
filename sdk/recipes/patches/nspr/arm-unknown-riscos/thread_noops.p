@@ -1,34 +1,3 @@
-=== modified file 'mozilla/nsprpub/pr/include/md/_riscos.h'
---- mozilla/nsprpub/pr/include/md/_riscos.h	2012-11-04 17:32:26 +0000
-+++ mozilla/nsprpub/pr/include/md/_riscos.h	2012-11-04 18:01:57 +0000
-@@ -22,6 +22,10 @@
- #define _PR_STAT_HAS_ONLY_ST_ATIME
- #define _PR_HAVE_POSIX_SEMAPHORES
- 
-+#define _PR_STACK_VMBASE	0x50000000
-+#define _MD_MMAP_FLAGS          MAP_PRIVATE
-+#define _MD_DEFAULT_STACK_SIZE	65536L
-+
- #include <sys/select.h>
- #include <sys/poll.h>
- #include <kernel.h>
-@@ -47,7 +51,6 @@
- #define _PR_CONTEXT_TYPE	jmp_buf
- #define _PR_NUM_GCREGS		_JBLEN
- #define _MD_GET_SP(_t)		(_t)->md.context[7]
--
- #define CONTEXT(_th)		((_th)->md.context)
- 
- 
-@@ -84,6 +87,7 @@
-     _PR_CONTEXT_TYPE context;
-     int id;
-     int errcode;
-+    int no_sched;
- };
- 
- struct _MDThreadStack {
-
 === modified file 'mozilla/nsprpub/pr/include/private/primpl.h'
 --- mozilla/nsprpub/pr/include/private/primpl.h	2012-11-04 17:32:26 +0000
 +++ mozilla/nsprpub/pr/include/private/primpl.h	2012-11-04 17:57:04 +0000
@@ -117,3 +86,50 @@
  }
  
 
+--- mozilla/nsprpub/pr/include/md/_riscos.h	2012-03-06 13:13:53.000000000 +0000
++++ mozilla/nsprpub/pr/include/md/_riscos.h	2012-12-10 01:29:32.341270324 +0000
+@@ -22,6 +22,10 @@
+ #define _PR_STAT_HAS_ONLY_ST_ATIME
+ #define _PR_HAVE_POSIX_SEMAPHORES
+ 
++#define _PR_STACK_VMBASE	0x50000000
++#define _MD_MMAP_FLAGS          MAP_PRIVATE
++#define _MD_DEFAULT_STACK_SIZE	65536L
++
+ #include <sys/select.h>
+ #include <sys/poll.h>
+ #include <kernel.h>
+@@ -47,7 +51,6 @@
+ #define _PR_CONTEXT_TYPE	jmp_buf
+ #define _PR_NUM_GCREGS		_JBLEN
+ #define _MD_GET_SP(_t)		(_t)->md.context[7]
+-
+ #define CONTEXT(_th)		((_th)->md.context)
+ 
+ 
+@@ -84,6 +87,7 @@
+     _PR_CONTEXT_TYPE context;
+     int id;
+     int errcode;
++    int no_sched;
+ };
+ 
+ struct _MDThreadStack {
+@@ -164,6 +168,7 @@
+ #define	_MD_SUSPEND_THREAD(thread)
+ #define	_MD_RESUME_THREAD(thread)
+ #define _MD_CLEAN_THREAD(_thread)
++#define _MD_SET_CURRENT_THREAD_NAME(thread)
+ 
+ /*
+ ** We wrapped the select() call.  _MD_SELECT refers to the built-in,
+@@ -174,4 +179,9 @@
+ #include <sys/select.h>
+ #define _MD_SELECT		select
+ 
++#ifdef _PR_POLL_AVAILABLE
++#include <sys/poll.h>
++#define _MD_POLL poll
++#endif
++
+ #endif /* nspr_riscos_defs_h___ */

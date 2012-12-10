@@ -43,6 +43,7 @@ VERSION_WINDOM := 2.0.1
 VERSION_HERMES := 1.3.3
 VERSION_FREETYPE := 2.4.10
 VERSION_NSPR := 4.9.3
+VERSION_SPIDERMONKEY := 1.8.5
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -80,7 +81,7 @@ LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap telnet gopher tf
 
 # Target Specific setup
 ifeq ($(TARGET),arm-unknown-riscos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) nspr.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) nspr.d spidermonkey.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares $(LIBCURL_DISABLES)
 endif
@@ -466,17 +467,35 @@ $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz:
 
 # nspr
 $(BUILDSTEPS)/nspr.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr-src.d
-	mkdir -p $(BUILDDIR)/nspr
-	cd $(BUILDDIR)/nspr && tar xzf $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
-	for p in `ls $(RECIPES)/patches/nspr/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR) -p0 <$$p ; done
-	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) CROSS_COMPILE=1 CFLAGS=-D_PR_LOCAL_THREADS_ONLY ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-pthreads 
+	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) CROSS_COMPILE=1 CFLAGS=-D_PR_LOCAL_THREADS_ONLY ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-pthreads --with-cpu-arch=armv3
 	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make
 	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make install
 	touch $@
 
-
 $(BUILDSTEPS)/nspr-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
+	$(RM) -rf $(BUILDDIR)/nspr
+	mkdir -p $(BUILDDIR)/nspr
+	cd $(BUILDDIR)/nspr && tar xzf $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
+	for p in `ls $(RECIPES)/patches/nspr/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR) -p0 <$$p ; done
 	touch $@
 
 $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz:
 	wget -q -O $@ https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$(VERSION_NSPR)/src/nspr-$(VERSION_NSPR).tar.gz
+
+
+# spidermonkey (libmozjs)
+$(BUILDSTEPS)/spidermonkey.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/spidermonkey-src.d
+	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --disable-tracejit --disable-thumb2 --with-thumb=no --enable-static --with-system-nspr --with-nspr-prefix=$(GCCSDK_INSTALL_ENV) --disable-shared --disable-shared-js --with-cpu-arch=armv3 --disable-tests
+	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make
+	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make install
+	touch $@
+
+$(BUILDSTEPS)/spidermonkey-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/spidermonkey-$(VERSION_SPIDERMONKEY).tar.gz
+	$(RM) -rf $(BUILDDIR)/spidermonkey
+	mkdir -p $(BUILDDIR)/spidermonkey
+	cd $(BUILDDIR)/spidermonkey && tar xaf $(SOURCEDIR)/spidermonkey-$(VERSION_SPIDERMONKEY).tar.gz
+	for p in `ls $(RECIPES)/patches/spidermonkey/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY) -p0 <$$p ; done
+	touch $@
+
+$(SOURCEDIR)/spidermonkey-$(VERSION_SPIDERMONKEY).tar.gz:
+	wget -q -O $@ http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
