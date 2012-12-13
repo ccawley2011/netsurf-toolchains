@@ -467,7 +467,7 @@ $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz:
 
 # nspr
 $(BUILDSTEPS)/nspr.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr-src.d
-	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) CROSS_COMPILE=1 CFLAGS=-D_PR_LOCAL_THREADS_ONLY ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-pthreads --without-thumb --without-thumb-interwork --with-arch=armv3
+	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --disable-shared --without-thumb --without-thumb-interwork --with-arch=armv3
 	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make
 	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make install
 	touch $@
