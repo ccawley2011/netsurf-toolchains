@@ -6,4 +6,4 @@
 +Description: The Mozilla JavaScript Library
 +Version: 1.7.0
 +Libs: -L${prefix}/lib -ljs
-+Cflags: -I${prefix}/include
++Cflags: -I${prefix}/include -DXP_UNIX

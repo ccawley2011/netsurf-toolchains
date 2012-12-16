@@ -14,10 +14,10 @@
  export:
  	+$(LOOP_OVER_PREDIRS)	
 -	mkdir -p $(DIST)/include $(DIST)/$(LIBDIR) $(DIST)/bin
-+	mkdir -p $(DIST)/include/js $(DIST)/$(LIBDIR)/pkgconfig $(DIST)/bin
++	mkdir -p $(DIST)/include/mozjs $(DIST)/$(LIBDIR)/pkgconfig $(DIST)/bin
  ifneq "$(strip $(HFILES))" ""
 -	$(CP) $(HFILES) $(DIST)/include
-+	$(CP) $(HFILES) $(DIST)/include/js/
++	$(CP) $(HFILES) $(DIST)/include/mozjs/
  endif
  ifneq "$(strip $(LIBRARY))" ""
  	$(CP) $(LIBRARY) $(DIST)/$(LIBDIR)
