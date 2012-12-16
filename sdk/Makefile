@@ -84,6 +84,9 @@ ifeq ($(TARGET),arm-unknown-riscos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) spidermonkey.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares $(LIBCURL_DISABLES)
+  ifeq ($(VERSION_SPIDERMONKEY),1.8.5)
+    EXTRAARGS_SPIDERMONKEY := --disable-tracejit --disable-thumb2 --without-thumb --enable-static --disable-shared --disable-shared-js --with-cpu-arch=armv3 --disable-tests --disable-methodjit
+  endif
 endif
 
 ifeq ($(TARGET),m68k-atari-mint)
@@ -106,6 +109,7 @@ ifeq ($(TARGET),ppc-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random
+  #VERSION_SPIDERMONKEY := 1.7.0
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
@@ -483,10 +487,14 @@ $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz:
 	wget -q -O $@ https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$(VERSION_NSPR)/src/nspr-$(VERSION_NSPR).tar.gz
 
 
-# spidermonkey (libmozjs) --disable-methodjit 
+# spidermonkey (libmozjs) 
 $(BUILDSTEPS)/spidermonkey.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr.d $(BUILDSTEPS)/spidermonkey-src.d
-	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --disable-tracejit --disable-thumb2 --without-thumb --enable-static --with-system-nspr --with-nspr-prefix=$(GCCSDK_INSTALL_ENV) --disable-shared --disable-shared-js --with-cpu-arch=armv3 --disable-tests
-	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make
+ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
+	$(env) make -C $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src -f Makefile.ref
+else
+	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET)  --with-system-nspr --with-nspr-prefix=$(GCCSDK_INSTALL_ENV) $(EXTRAARGS_SPIDERMONKEY)
+	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make 
+endif 
 	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make install
 	touch $@
 
@@ -494,8 +502,15 @@ $(BUILDSTEPS)/spidermonkey-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/spiderm
 	$(RM) -rf $(BUILDDIR)/spidermonkey
 	mkdir -p $(BUILDDIR)/spidermonkey
 	cd $(BUILDDIR)/spidermonkey && tar xaf $(SOURCEDIR)/spidermonkey-$(VERSION_SPIDERMONKEY).tar.gz
-	for p in `ls $(RECIPES)/patches/spidermonkey/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY) -p0 <$$p ; done
+ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
+	mkdir $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)
+	mv $(BUILDDIR)/spidermonkey/js $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/
+endif
+	for p in `ls $(RECIPES)/patches/spidermonkey/$(TARGET)-$(VERSION_SPIDERMONKEY)/*.p` ; do patch -d $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY) -p0 <$$p ; done
 	touch $@
 
-$(SOURCEDIR)/spidermonkey-$(VERSION_SPIDERMONKEY).tar.gz:
+$(SOURCEDIR)/spidermonkey-1.8.5.tar.gz:
 	wget -q -O $@ http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
+
+$(SOURCEDIR)/spidermonkey-1.7.0.tar.gz:
+	wget -q -O $@ http://ftp.mozilla.org/pub/mozilla.org/js/js-1.7.0.tar.gz

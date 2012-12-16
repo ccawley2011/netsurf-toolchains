@@ -24,7 +24,7 @@
 +
 +#define WTF_THUMB_ARCH_VERSION 0
 +#define WTF_PLATFORM_RISCOS 1
-+#define WTF_CPU_ARM_TRADITIONAL 1
++#define WTF_CPU_ARM_TRADITIONAL 0
 +
 +#endif
 
