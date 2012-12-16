@@ -84,7 +84,9 @@ ifeq ($(TARGET),arm-unknown-riscos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) spidermonkey.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares $(LIBCURL_DISABLES)
-  ifeq ($(VERSION_SPIDERMONKEY),1.8.5)
+  ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
+    EXTRAARGS_SPIDERMONKEY := BUILD_OPT=1 OS_ARCH=RISCOS OS_CPUARCH=arm OS_CONFIG=RISCOS
+  else
     EXTRAARGS_SPIDERMONKEY := --disable-tracejit --disable-thumb2 --without-thumb --enable-static --disable-shared --disable-shared-js --with-cpu-arch=armv3 --disable-tests --disable-methodjit
   endif
 endif
@@ -109,7 +111,7 @@ ifeq ($(TARGET),ppc-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random
-  #VERSION_SPIDERMONKEY := 1.7.0
+  VERSION_SPIDERMONKEY := 1.7.0
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
@@ -490,12 +492,13 @@ $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz:
 # spidermonkey (libmozjs) 
 $(BUILDSTEPS)/spidermonkey.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr.d $(BUILDSTEPS)/spidermonkey-src.d
 ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
-	$(env) make -C $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src -f Makefile.ref
+	$(env) make -C $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src -f Makefile.ref JS_DIST=$(GCCSDK_INSTALL_ENV) $(EXTRAARGS_SPIDERMONKEY)
+	$(env) make -C $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src -f Makefile.ref JS_DIST=$(GCCSDK_INSTALL_ENV) $(EXTRAARGS_SPIDERMONKEY) export
 else
 	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET)  --with-system-nspr --with-nspr-prefix=$(GCCSDK_INSTALL_ENV) $(EXTRAARGS_SPIDERMONKEY)
 	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make 
-endif 
 	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make install
+endif 
 	touch $@
 
 $(BUILDSTEPS)/spidermonkey-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/spidermonkey-$(VERSION_SPIDERMONKEY).tar.gz
@@ -505,6 +508,7 @@ $(BUILDSTEPS)/spidermonkey-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/spiderm
 ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
 	mkdir $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)
 	mv $(BUILDDIR)/spidermonkey/js $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/
+	mkdir $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src/RISCOS_OPT.OBJ
 endif
 	for p in `ls $(RECIPES)/patches/spidermonkey/$(TARGET)-$(VERSION_SPIDERMONKEY)/*.p` ; do patch -d $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY) -p0 <$$p ; done
 	touch $@
