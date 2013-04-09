@@ -75,7 +75,7 @@ BUILDSTEPS := $(BUILDDIR)/build-steps
 # Compute the SDK components
 SDK_ITEMS :=
 
-COMMON_SDK_ITEMS := zlib.d libxml2.d openssl.d libpng.d libjpeg.d liblcms.d \
+COMMON_SDK_ITEMS := zlib.d openssl.d libpng.d libjpeg.d liblcms.d \
 		    libmng.d libcares.d libcurl.d libexpat.d
 
 LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap telnet gopher tftp pop3 imap smtp manual)
