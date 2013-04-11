@@ -1,14 +1,3 @@
---- crypto/asn1/bio_ndef.c.orig	2011-03-08 22:18:51.000000000 +0000
-+++ crypto/asn1/bio_ndef.c	2011-03-08 22:19:03.000000000 +0000
-@@ -58,7 +58,7 @@
- #include <openssl/err.h>
- 
- #ifndef OPENSSL_SYSNAME_NETWARE
--#include <memory.h>
-+#include <string.h>
- #endif
- #include <stdio.h>
- 
 --- crypto/jpake/jpake.c.orig	2011-03-08 22:19:36.000000000 +0000
 +++ crypto/jpake/jpake.c	2011-03-08 22:19:49.000000000 +0000
 @@ -3,7 +3,7 @@
@@ -25,7 +14,7 @@
 @@ -57,7 +57,7 @@
  #include <openssl/bio.h>
  
- #ifndef OPENSSL_SYSNAME_NETWARE
+ #if !defined(OPENSSL_SYSNAME_NETWARE) && !defined(OPENSSL_SYSNAME_VXWORKS)
 -#include <memory.h>
 +#include <string.h>
  #endif
