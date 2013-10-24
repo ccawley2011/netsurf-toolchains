@@ -19,7 +19,7 @@ UPSTREAM_MPC_VERSION := 0.8.2
 UPSTREAM_MPC_TARBALL := mpc-$(UPSTREAM_MPC_VERSION).tar.gz
 UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TARBALL)
 
-UPSTREAM_NDK_TARBALL := SDK_53.20.lha
+UPSTREAM_NDK_TARBALL := SDK_53.24.lha
 UPSTREAM_NDK_URI := "http://hyperion-entertainment.biz/index.php?option=com_registration&view=download&format=raw&file=69&Itemid=63"
 
 UPSTREAM_OPENURL_VERSION := 7.8
