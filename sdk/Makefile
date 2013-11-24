@@ -152,20 +152,20 @@ $(BUILDSTEPS)/builddir.d:
 
 # zlib
 $(BUILDSTEPS)/zlib.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib-src.d
-	mkdir -p $(BUILDDIR)/zlib
-	cd $(BUILDDIR)/zlib && tar xjf $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.bz2
-	for p in `ls $(RECIPES)/patches/zlib/*.p` ; do patch -d $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) -p0 <$$p ; done
-ifneq ($(realpath $(RECIPES)/patches/zlib/$(TARGET)),)
-	for p in `ls $(RECIPES)/patches/zlib/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) -p0 <$$p ; done
-endif
 	cd $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --static
 	cd $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) && $(env) make install
 	touch $@
 
-$(BUILDSTEPS)/zlib-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.bz2
+$(BUILDSTEPS)/zlib-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.gz
+	mkdir -p $(BUILDDIR)/zlib
+	cd $(BUILDDIR)/zlib && tar xjf $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.gz
+	for p in `ls $(RECIPES)/patches/zlib/*.p` ; do patch -d $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/zlib/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/zlib/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) -p0 <$$p ; done
+endif
 	touch $@
 
-$(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.bz2:
+$(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.gz:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://zlib.net/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libiconv
