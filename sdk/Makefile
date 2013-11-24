@@ -158,7 +158,7 @@ $(BUILDSTEPS)/zlib.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib-src.d
 
 $(BUILDSTEPS)/zlib-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.gz
 	mkdir -p $(BUILDDIR)/zlib
-	cd $(BUILDDIR)/zlib && tar xjf $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.gz
+	cd $(BUILDDIR)/zlib && tar xaf $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.gz
 	for p in `ls $(RECIPES)/patches/zlib/*.p` ; do patch -d $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) -p0 <$$p ; done
 ifneq ($(realpath $(RECIPES)/patches/zlib/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/zlib/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/zlib/zlib-$(VERSION_ZLIB) -p0 <$$p ; done
@@ -171,7 +171,7 @@ $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.gz:
 # libiconv
 $(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
 	mkdir -p $(BUILDDIR)/libiconv
-	cd $(BUILDDIR)/libiconv && tar xzf $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz
+	cd $(BUILDDIR)/libiconv && tar xaf $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz
 	for p in `ls $(RECIPES)/patches/libiconv/*.p` ; do patch -d $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) -p0 <$$p ; done
 ifneq ($(realpath $(RECIPES)/patches/libiconv/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libiconv/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) -p0 <$$p ; done
@@ -189,7 +189,7 @@ $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz:
 # libgnurx
 $(BUILDSTEPS)/libgnurx.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libgnurx-src.d
 	mkdir -p $(BUILDDIR)/libgnurx
-	cd $(BUILDDIR)/libgnurx && tar xzf $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz
+	cd $(BUILDDIR)/libgnurx && tar xaf $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz
 	for p in `ls $(RECIPES)/patches/libgnurx/*.p` ; do patch -d $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) -p0 <$$p ; done
 	cd $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) 
 	cd $(BUILDDIR)/libgnurx/mingw-libgnurx-$(VERSION_LIBGNURX) && $(env) make
@@ -293,7 +293,7 @@ $(SOURCEDIR)/freetype-$(VERSION_FREETYPE).tar.bz2:
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
 	mkdir -p $(BUILDDIR)/libtre
-	cd $(BUILDDIR)/libtre && tar xjf $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2
+	cd $(BUILDDIR)/libtre && tar xaf $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2
 	cd $(BUILDDIR)/libtre/tre-$(VERSION_LIBTRE) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libtre/tre-$(VERSION_LIBTRE) && $(env) make install
 	cp $(RECIPES)/files/libtre/regex.h $(GCCSDK_INSTALL_ENV)/include/regex.h
@@ -308,7 +308,7 @@ $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2:
 # libpbl
 $(BUILDSTEPS)/libpbl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libpbl-src.d
 	mkdir -p $(BUILDDIR)/libpbl
-	cd $(BUILDDIR)/libpbl && tar xzf $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz
+	cd $(BUILDDIR)/libpbl && tar xaf $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz
 	for p in `ls $(RECIPES)/patches/libpbl/*.p` ; do patch -d $(BUILDDIR)/libpbl/pbl_$(VERSION_LIBPBL)_04 -p0 <$$p ; done
 ifneq ($(realpath $(RECIPES)/patches/libpbl/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libpbl/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libpbl/pbl_$(VERSION_LIBPBL)_04 -p0 <$$p ; done
@@ -325,7 +325,7 @@ $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
 # libXML2
 $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2-src.d
 	mkdir -p $(BUILDDIR)/libxml2
-	cd $(BUILDDIR)/libxml2 && tar xzf $(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz
+	cd $(BUILDDIR)/libxml2 && tar xaf $(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz
 	for p in `ls $(RECIPES)/patches/libxml2/*.p` ; do patch -d $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) -p0 <$$p ; done
 ifneq ($(realpath $(RECIPES)/patches/libxml2/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libxml2/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) -p0 <$$p ; done
@@ -343,7 +343,7 @@ $(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz:
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
 	mkdir -p $(BUILDDIR)/openssl
-	cd $(BUILDDIR)/openssl && tar xzf $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz
+	cd $(BUILDDIR)/openssl && tar xaf $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz
 	for p in `ls $(RECIPES)/patches/openssl/*.p` ; do patch -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
 ifneq ($(realpath $(RECIPES)/patches/openssl/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/openssl/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
@@ -361,7 +361,7 @@ $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz:
 # libPNG
 $(BUILDSTEPS)/libpng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libpng-src.d
 	mkdir -p $(BUILDDIR)/libpng
-	cd $(BUILDDIR)/libpng && tar xzf $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz
+	cd $(BUILDDIR)/libpng && tar xaf $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz
 ifneq ($(realpath $(RECIPES)/patches/libpng/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libpng/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libpng/libpng-$(VERSION_LIBPNG) -p0 <$$p ; done
 endif
@@ -378,7 +378,7 @@ $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz:
 # libjpeg
 $(BUILDSTEPS)/libjpeg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-src.d
 	mkdir -p $(BUILDDIR)/libjpeg
-	cd $(BUILDDIR)/libjpeg && tar xzf $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz
+	cd $(BUILDDIR)/libjpeg && tar xaf $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz
 	for p in `ls $(RECIPES)/patches/libjpeg/*.p` ; do patch -d $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) -p0 <$$p ; done
 	cd $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libjpeg/jpeg-$(VERSION_LIBJPEG) && $(env) make install
@@ -393,7 +393,7 @@ $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz:
 # liblcms
 $(BUILDSTEPS)/liblcms.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms-src.d
 	mkdir -p $(BUILDDIR)/liblcms
-	cd $(BUILDDIR)/liblcms && tar xzf $(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz
+	cd $(BUILDDIR)/liblcms && tar xaf $(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz
 	for p in `ls $(RECIPES)/patches/liblcms/*.p` ; do patch -d $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) -p0 <$$p ; done
 ifneq ($(realpath $(RECIPES)/patches/liblcms/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/liblcms/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) -p0 <$$p ; done
@@ -412,7 +412,7 @@ $(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz:
 # libMNG
 $(BUILDSTEPS)/libmng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d $(BUILDSTEPS)/libmng-src.d
 	mkdir -p $(BUILDDIR)/libmng
-	cd $(BUILDDIR)/libmng && tar xzf $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz
+	cd $(BUILDDIR)/libmng && tar xaf $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz
 	for p in `ls $(RECIPES)/patches/libmng/*.p` ; do patch -d $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG) -p0 <$$p ; done
 	cp $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG)/makefiles/makefile.unix $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG)/Makefile
 	cd $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG) && $(env) make install
@@ -427,7 +427,7 @@ $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz:
 # libcares
 $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
 	mkdir -p $(BUILDDIR)/libcares
-	cd $(BUILDDIR)/libcares && tar xzf $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz
+	cd $(BUILDDIR)/libcares && tar xaf $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz
 	for p in `ls $(RECIPES)/patches/libcares/*.p` ; do patch -d $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) -p0 <$$p ; done
 ifneq ($(realpath $(RECIPES)/patches/libcares/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libcares/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) -p0 <$$p ; done
@@ -451,7 +451,7 @@ $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 
 $(BUILDSTEPS)/libcurl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2
 	mkdir -p $(BUILDDIR)/libcurl
-	cd $(BUILDDIR)/libcurl && tar xjf $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2
+	cd $(BUILDDIR)/libcurl && tar xaf $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2
 	for p in `ls $(RECIPES)/patches/libcurl/*.p` ; do patch -d $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) -p0 <$$p ; done
 ifneq ($(realpath $(RECIPES)/patches/libcurl/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libcurl/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) -p0 <$$p ; done
@@ -465,7 +465,7 @@ $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
 # libexpat
 $(BUILDSTEPS)/libexpat.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libexpat-src.d
 	mkdir -p $(BUILDDIR)/libexpat
-	cd $(BUILDDIR)/libexpat && tar xzf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz
+	cd $(BUILDDIR)/libexpat && tar xaf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz
 	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) make install
 	touch $@
@@ -487,7 +487,7 @@ $(BUILDSTEPS)/nspr.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr-src.d
 $(BUILDSTEPS)/nspr-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
 	$(RM) -rf $(BUILDDIR)/nspr
 	mkdir -p $(BUILDDIR)/nspr
-	cd $(BUILDDIR)/nspr && tar xzf $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
+	cd $(BUILDDIR)/nspr && tar xaf $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
 	for p in `ls $(RECIPES)/patches/nspr/$(TARGET)/*.p` ; do patch -d $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR) -p0 <$$p ; done
 	touch $@
 
