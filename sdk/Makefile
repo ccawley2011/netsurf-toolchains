@@ -23,7 +23,7 @@ ifeq ($(GCCSDK_INSTALL_CROSSBIN),)
 endif
 
 # Upstream package versions
-VERSION_ZLIB := 1.2.7
+VERSION_ZLIB := 1.2.8
 VERSION_LIBICONV := 1.13.1
 VERSION_LIBTRE := 0.8.0
 VERSION_LIBXML := 2.8.0
@@ -71,6 +71,8 @@ RECIPES := $(CURDIR)/recipes
 SOURCEDIR := $(CURDIR)/sources
 BUILDDIR := $(CURDIR)/builddir-$(TARGET)
 BUILDSTEPS := $(BUILDDIR)/build-steps
+
+FETCHSRC := $(CURDIR)/fetchsrc
 
 # Compute the SDK components
 SDK_ITEMS :=
@@ -164,7 +166,7 @@ $(BUILDSTEPS)/zlib-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/zlib-$(VERSION_
 	touch $@
 
 $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.bz2:
-	wget -q -O $@ http://zlib.net/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://zlib.net/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libiconv
 $(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
@@ -182,7 +184,7 @@ $(BUILDSTEPS)/libiconv-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libiconv-$(
 	touch $@
 
 $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz:
-	wget -q -O $@ http://ftp.gnu.org/pub/gnu/libiconv/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ftp.gnu.org/pub/gnu/libiconv/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libgnurx
 $(BUILDSTEPS)/libgnurx.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libgnurx-src.d
@@ -198,7 +200,7 @@ $(BUILDSTEPS)/libgnurx-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libgnurx-$(
 	touch $@
 
 $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz:
-	wget -q -O $@ "http://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz"
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz" $@
 
 # atari cf library
 $(BUILDSTEPS)/libcf.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcf-src.d
@@ -216,7 +218,7 @@ $(BUILDSTEPS)/libcf-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libcf-$(VERSIO
 	touch $@
 
 $(SOURCEDIR)/libcf-$(VERSION_LIBCF).tar.bz2:
-	wget -q -O $@ "http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/cflib-$(VERSION_LIBCF).tar.bz2"
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/cflib-$(VERSION_LIBCF).tar.bz2" $@
 
 # atari windom library
 $(BUILDSTEPS)/windom.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/windom-src.d
@@ -234,7 +236,7 @@ $(BUILDSTEPS)/windom-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/windom-$(VERS
 	touch $@
 
 $(SOURCEDIR)/windom-$(VERSION_WINDOM).zip:
-	wget -q -O $@ "http://downloads.sourceforge.net/project/windom/windom/$(VERSION_WINDOM)/windom-$(VERSION_WINDOM)-1.zip"
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/windom/windom/$(VERSION_WINDOM)/windom-$(VERSION_WINDOM)-1.zip" $@
 
 # atari ldg library
 $(BUILDSTEPS)/ldg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/ldg-src.d
@@ -251,7 +253,7 @@ $(BUILDSTEPS)/ldg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/ldg-$(VERSION_LD
 	touch $@
 
 $(SOURCEDIR)/ldg-$(VERSION_LDG).zip:
-	wget -q -O $@ "http://ldg.org.free.fr/distrib/ldg-$(VERSION_LDG).zip"
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ldg.org.free.fr/distrib/ldg-$(VERSION_LDG).zip" $@
 
 # hermes bitmap lib
 $(BUILDSTEPS)/hermes.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/hermes-src.d
@@ -271,7 +273,7 @@ $(BUILDSTEPS)/hermes-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/hermes-$(VERS
 	touch $@
 
 $(SOURCEDIR)/hermes-$(VERSION_HERMES).tar.bz2:
-	wget -q -O $@ "http://clanlib.org/download/legacy/Hermes-$(VERSION_HERMES).tar.bz2"
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://clanlib.org/download/legacy/Hermes-$(VERSION_HERMES).tar.bz2" $@
 
 # freetype font lib
 $(BUILDSTEPS)/freetype.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/freetype-src.d
@@ -286,7 +288,7 @@ $(BUILDSTEPS)/freetype-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/freetype-$(
 	touch $@
 
 $(SOURCEDIR)/freetype-$(VERSION_FREETYPE).tar.bz2:
-	wget -q -O $@ "http://download.savannah.gnu.org/releases/freetype/freetype-$(VERSION_FREETYPE).tar.bz2"
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://download.savannah.gnu.org/releases/freetype/freetype-$(VERSION_FREETYPE).tar.bz2" $@
 
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
@@ -301,7 +303,7 @@ $(BUILDSTEPS)/libtre-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/tre-$(VERSION
 	touch $@
 
 $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2:
-	wget -q -O $@ http://laurikari.net/tre/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://laurikari.net/tre/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libpbl
 $(BUILDSTEPS)/libpbl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libpbl-src.d
@@ -318,7 +320,7 @@ $(BUILDSTEPS)/libpbl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/pbl_$(VERSION
 	touch $@
 
 $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
-	wget -q -O $@ http://www.mission-base.com/peter/source/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://www.mission-base.com/peter/source/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libXML2
 $(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2-src.d
@@ -336,7 +338,7 @@ $(BUILDSTEPS)/libxml2-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libxml2-$(VE
 	touch $@
 
 $(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz:
-	wget -q -O $@ ftp://xmlsoft.org/libxml2/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "ftp://xmlsoft.org/libxml2/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
@@ -354,7 +356,7 @@ $(BUILDSTEPS)/openssl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/openssl-$(VE
 	touch $@
 
 $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz:
-	wget -q -O $@ http://openssl.org/source/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://openssl.org/source/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libPNG
 $(BUILDSTEPS)/libpng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libpng-src.d
@@ -371,7 +373,7 @@ $(BUILDSTEPS)/libpng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libpng-$(VERS
 	touch $@
 
 $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz:
-	wget -q -O $@ http://downloads.sourceforge.net/libpng/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/libpng/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libjpeg
 $(BUILDSTEPS)/libjpeg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-src.d
@@ -386,7 +388,7 @@ $(BUILDSTEPS)/libjpeg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/jpegsrc.v$(V
 	touch $@
 
 $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz:
-	wget -q -O $@ http://ijg.org/files/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ijg.org/files/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # liblcms
 $(BUILDSTEPS)/liblcms.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms-src.d
@@ -404,7 +406,8 @@ $(BUILDSTEPS)/liblcms-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/lcms2-$(VERS
 	touch $@
 
 $(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz:
-	wget -q -O $@ http://downloads.sourceforge.net/project/lcms/lcms/$(VERSION_LIBLCMS)/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/lcms/lcms/$(VERSION_LIBLCMS)/$(subst $(SOURCEDIR)/,,$@)" $@
+
 
 # libMNG
 $(BUILDSTEPS)/libmng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d $(BUILDSTEPS)/libmng-src.d
@@ -419,7 +422,7 @@ $(BUILDSTEPS)/libmng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libmng-$(VERS
 	touch $@
 
 $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz:
-	wget -q -O $@ http://downloads.sourceforge.net/project/libmng/libmng-devel/$(VERSION_LIBMNG)/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/libmng/libmng-devel/$(VERSION_LIBMNG)/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libcares
 $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
@@ -437,7 +440,8 @@ $(BUILDSTEPS)/libcares-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/c-ares-$(VE
 	touch $@
 
 $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz:
-	wget -q -O $@ http://c-ares.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://c-ares.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)" $@
+
 
 # libcurl
 $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl.d $(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl-src.d
@@ -455,10 +459,10 @@ endif
 	touch $@
 
 $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
-	wget -q -O $@ http://curl.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://curl.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)" $@
+
 
 # libexpat
-
 $(BUILDSTEPS)/libexpat.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libexpat-src.d
 	mkdir -p $(BUILDDIR)/libexpat
 	cd $(BUILDDIR)/libexpat && tar xzf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz
@@ -470,7 +474,8 @@ $(BUILDSTEPS)/libexpat-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/expat-$(VER
 	touch $@
 
 $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz:
-	wget -q -O $@ http://downloads.sourceforge.net/project/expat/expat/$(VERSION_LIBEXPAT)/expat-$(VERSION_LIBEXPAT).tar.gz
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/expat/expat/$(VERSION_LIBEXPAT)/expat-$(VERSION_LIBEXPAT).tar.gz" $@
+
 
 # nspr
 $(BUILDSTEPS)/nspr.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr-src.d
@@ -487,7 +492,7 @@ $(BUILDSTEPS)/nspr-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/nspr-$(VERSION_
 	touch $@
 
 $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz:
-	wget -q -O $@ https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$(VERSION_NSPR)/src/nspr-$(VERSION_NSPR).tar.gz
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$(VERSION_NSPR)/src/nspr-$(VERSION_NSPR).tar.gz" $@
 
 
 # spidermonkey (libmozjs) 
@@ -515,7 +520,9 @@ endif
 	touch $@
 
 $(SOURCEDIR)/spidermonkey-1.8.5.tar.gz:
-	wget -q -O $@ http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz" $@
+
 
 $(SOURCEDIR)/spidermonkey-1.7.0.tar.gz:
-	wget -q -O $@ http://ftp.mozilla.org/pub/mozilla.org/js/js-1.7.0.tar.gz
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ftp.mozilla.org/pub/mozilla.org/js/js-1.7.0.tar.gz" $@
+
