@@ -5,6 +5,13 @@ Pre-requisites for Debian systems
 
 	$ apt-get install build-essential autoconf automake autogen flex bison
 	$ apt-get install libtool texinfo help2man subversion cvs
+	$ apt-get install lhasa autoconf2.64
+
+ On multiarch-aware systems:
+
+	$ dpkg --add-architecture i386
+	$ apt-get update
+	$ apt-get install ia32-libs gcc-multilib
 
 RISC OS
 -------
