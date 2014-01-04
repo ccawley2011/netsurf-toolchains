@@ -128,6 +128,7 @@ $(BUILDSTEPS)/binutils.d: $(BUILDSTEPS)/binutils-srcdir.d
 
 $(BUILDSTEPS)/binutils-srcdir.d: $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL)
 	cp -r $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL) $(BINUTILS_SRCDIR)
+	for p in `ls $(RECIPES)/patches/binutils/*.p` ; do patch -d $(BINUTILS_SRCDIR) -p0 <$$p ; done
 	touch $@
 
 ###
