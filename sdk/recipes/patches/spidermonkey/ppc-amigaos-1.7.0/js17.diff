@@ -1,0 +1,1388 @@
+Files js/src/binAOS4/js and js-amiga/src/binAOS4/js differ
+Files js/src/binAOS4/js.db and js-amiga/src/binAOS4/js.db differ
+diff -rupN js/src/js.c js-amiga/src/js.c
+--- js/src/js.c	2007-04-20 18:45:18 
++++ js-amiga/src/js.c	2012-07-06 21:15:11 
+@@ -88,6 +88,10 @@
+ #include <sys/wait.h>
+ #endif
+ 
++#ifdef XP_AMIGA
++#include <fcntl.h>
++#endif
++
+ #if defined(XP_WIN) || defined(XP_OS2)
+ #include <io.h>     /* for isatty() */
+ #endif
+diff -rupN js/src/jsapi.c js-amiga/src/jsapi.c
+--- js/src/jsapi.c	2007-10-03 14:36:48 
++++ js-amiga/src/jsapi.c	2012-09-03 22:53:15 
+@@ -1165,8 +1165,9 @@ js_InitFunctionAndObjectClasses(JSContex
+         entry->flags = JSRESFLAG_LOOKUP;
+     } else {
+         key.id = ATOM_TO_JSID(rt->atomState.classAtoms[JSProto_Object]);
+-        if (!js_StartResolving(cx, &key, JSRESFLAG_LOOKUP, &entry))
++        if (!js_StartResolving(cx, &key, JSRESFLAG_LOOKUP, &entry)) {
+             return NULL;
++		}
+ 
+         key.id = ATOM_TO_JSID(rt->atomState.classAtoms[JSProto_Function]);
+         if (!js_StartResolving(cx, &key, JSRESFLAG_LOOKUP, &entry)) {
+@@ -1180,8 +1181,9 @@ js_InitFunctionAndObjectClasses(JSContex
+ 
+     /* Initialize the function class first so constructors can be made. */
+     fun_proto = js_InitFunctionClass(cx, obj);
+-    if (!fun_proto)
++    if (!fun_proto) {
+         goto out;
++	}
+ 
+     /* Initialize the object class next so Object.prototype works. */
+     obj_proto = js_InitObjectClass(cx, obj);
+@@ -2122,8 +2124,9 @@ JS_InitClass(JSContext *cx, JSObject *ob
+ 
+     CHECK_REQUEST(cx);
+     atom = js_Atomize(cx, clasp->name, strlen(clasp->name), 0);
+-    if (!atom)
++    if (!atom) {
+         return NULL;
++	}
+ 
+     /*
+      * When initializing a standard class, if no parent_proto (grand-proto of
+@@ -2149,8 +2152,9 @@ JS_InitClass(JSContext *cx, JSObject *ob
+ 
+     /* Create a prototype object for this class. */
+     proto = js_NewObject(cx, clasp, parent_proto, obj);
+-    if (!proto)
++    if (!proto) {
+         return NULL;
++	}
+ 
+     /* After this point, control must exit via label bad or out. */
+     JS_PUSH_TEMP_ROOT_OBJECT(cx, proto, &tvr);
+@@ -2174,8 +2178,9 @@ JS_InitClass(JSContext *cx, JSObject *ob
+                                         ? JSPROP_READONLY | JSPROP_PERMANENT
+                                         : 0,
+                                         NULL);
+-            if (!named)
++            if (!named) {
+                 goto bad;
++			}
+         }
+ 
+         ctor = proto;
+@@ -2183,8 +2188,9 @@ JS_InitClass(JSContext *cx, JSObject *ob
+         /* Define the constructor function in obj's scope. */
+         fun = js_DefineFunction(cx, obj, atom, constructor, nargs, 0);
+         named = (fun != NULL);
+-        if (!fun)
++        if (!fun) {
+             goto bad;
++		}
+ 
+         /*
+          * Remember the class this function is a constructor for so that
+@@ -2202,8 +2208,9 @@ JS_InitClass(JSContext *cx, JSObject *ob
+         ctor = fun->object;
+         if (clasp->flags & JSCLASS_CONSTRUCT_PROTOTYPE) {
+             cval = OBJECT_TO_JSVAL(ctor);
+-            if (!js_InternalConstruct(cx, proto, cval, 0, NULL, &rval))
++            if (!js_InternalConstruct(cx, proto, cval, 0, NULL, &rval)) {
+                 goto bad;
++			}
+             if (!JSVAL_IS_PRIMITIVE(rval) && JSVAL_TO_OBJECT(rval) != proto)
+                 proto = JSVAL_TO_OBJECT(rval);
+         }
+@@ -2230,8 +2237,9 @@ JS_InitClass(JSContext *cx, JSObject *ob
+     }
+ 
+     /* If this is a standard class, cache its prototype. */
+-    if (key != JSProto_Null && !js_SetClassObject(cx, obj, key, ctor))
++    if (key != JSProto_Null && !js_SetClassObject(cx, obj, key, ctor)) {
+         goto bad;
++	}
+ 
+ out:
+     JS_POP_TEMP_ROOT(cx, &tvr);
+@@ -3486,8 +3494,9 @@ JS_GetReservedSlot(JSContext *cx, JSObje
+     CHECK_REQUEST(cx);
+     clasp = OBJ_GET_CLASS(cx, obj);
+     limit = JSCLASS_RESERVED_SLOTS(clasp);
+-    if (index >= limit && !ReservedSlotIndexOK(cx, obj, clasp, index, limit))
++    if (index >= limit && !ReservedSlotIndexOK(cx, obj, clasp, index, limit)) {
+         return JS_FALSE;
++	}
+     slot = JSSLOT_START(clasp) + index;
+     *vp = OBJ_GET_REQUIRED_SLOT(cx, obj, slot);
+     return JS_TRUE;
+diff -rupN js/src/jsautocfg.h js-amiga/src/jsautocfg.h
+--- js/src/jsautocfg.h	1978-01-01 00:00:00 
++++ js-amiga/src/jsautocfg.h	2012-07-06 23:28:26 
+@@ -0,0 +1,52 @@
++#ifndef js_cpucfg___
++#define js_cpucfg___
++
++/* AUTOMATICALLY GENERATED - DO NOT EDIT */
++
++#undef  IS_LITTLE_ENDIAN
++#define IS_BIG_ENDIAN 1
++
++#define JS_BYTES_PER_BYTE   1L
++#define JS_BYTES_PER_SHORT  2L
++#define JS_BYTES_PER_INT    4L
++#define JS_BYTES_PER_INT64  8L
++#define JS_BYTES_PER_LONG   4L
++#define JS_BYTES_PER_FLOAT  4L
++#define JS_BYTES_PER_DOUBLE 8L
++#define JS_BYTES_PER_WORD   4L
++#define JS_BYTES_PER_DWORD  8L
++
++#define JS_BITS_PER_BYTE    8L
++#define JS_BITS_PER_SHORT   16L
++#define JS_BITS_PER_INT     32L
++#define JS_BITS_PER_INT64   64L
++#define JS_BITS_PER_LONG    32L
++#define JS_BITS_PER_FLOAT   32L
++#define JS_BITS_PER_DOUBLE  64L
++#define JS_BITS_PER_WORD    32L
++
++#define JS_BITS_PER_BYTE_LOG2   3L
++#define JS_BITS_PER_SHORT_LOG2  4L
++#define JS_BITS_PER_INT_LOG2    5L
++#define JS_BITS_PER_INT64_LOG2  6L
++#define JS_BITS_PER_LONG_LOG2   5L
++#define JS_BITS_PER_FLOAT_LOG2  5L
++#define JS_BITS_PER_DOUBLE_LOG2 6L
++#define JS_BITS_PER_WORD_LOG2   5L
++
++#define JS_ALIGN_OF_SHORT   2L
++#define JS_ALIGN_OF_INT     4L
++#define JS_ALIGN_OF_LONG    4L
++#define JS_ALIGN_OF_INT64   8L
++#define JS_ALIGN_OF_FLOAT   4L
++#define JS_ALIGN_OF_DOUBLE  8L
++#define JS_ALIGN_OF_POINTER 4L
++#define JS_ALIGN_OF_WORD    4L
++
++#define JS_BYTES_PER_WORD_LOG2   2L
++#define JS_BYTES_PER_DWORD_LOG2  3L
++#define JS_WORDS_PER_DWORD_LOG2  1L
++
++#define JS_STACK_GROWTH_DIRECTION (-1)
++
++#endif /* js_cpucfg___ */
+Files js/src/jsautocfg.h.info and js-amiga/src/jsautocfg.h.info differ
+diff -rupN js/src/jsautokw.h js-amiga/src/jsautokw.h
+--- js/src/jsautokw.h	1978-01-01 00:00:00 
++++ js-amiga/src/jsautokw.h	2012-07-06 23:13:05 
+@@ -0,0 +1,401 @@
++    /*
++     * Generating switch for the list of 61 entries:
++     * break
++     * case
++     * continue
++     * default
++     * delete
++     * do
++     * else
++     * export
++     * false
++     * for
++     * function
++     * if
++     * in
++     * new
++     * null
++     * return
++     * switch
++     * this
++     * true
++     * typeof
++     * var
++     * void
++     * while
++     * with
++     * const
++     * try
++     * catch
++     * finally
++     * throw
++     * instanceof
++     * abstract
++     * boolean
++     * byte
++     * char
++     * class
++     * double
++     * extends
++     * final
++     * float
++     * goto
++     * implements
++     * import
++     * int
++     * interface
++     * long
++     * native
++     * package
++     * private
++     * protected
++     * public
++     * short
++     * static
++     * super
++     * synchronized
++     * throws
++     * transient
++     * volatile
++     * enum
++     * debugger
++     * yield
++     * let
++     */
++    switch (JSKW_LENGTH()) {
++      case 2:
++        if (JSKW_AT(0) == 'd') {
++            if (JSKW_AT(1)=='o') {
++                JSKW_GOT_MATCH(5) /* do */
++            }
++            JSKW_NO_MATCH()
++        }
++        if (JSKW_AT(0) == 'i') {
++            if (JSKW_AT(1) == 'f') {
++                JSKW_GOT_MATCH(11) /* if */
++            }
++            if (JSKW_AT(1) == 'n') {
++                JSKW_GOT_MATCH(12) /* in */
++            }
++            JSKW_NO_MATCH()
++        }
++        JSKW_NO_MATCH()
++      case 3:
++        switch (JSKW_AT(2)) {
++          case 'r':
++            if (JSKW_AT(0) == 'f') {
++                if (JSKW_AT(1)=='o') {
++                    JSKW_GOT_MATCH(9) /* for */
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(0) == 'v') {
++                if (JSKW_AT(1)=='a') {
++                    JSKW_GOT_MATCH(20) /* var */
++                }
++                JSKW_NO_MATCH()
++            }
++            JSKW_NO_MATCH()
++          case 't':
++            if (JSKW_AT(0) == 'i') {
++                if (JSKW_AT(1)=='n') {
++                    JSKW_GOT_MATCH(42) /* int */
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(0) == 'l') {
++                if (JSKW_AT(1)=='e') {
++                    JSKW_GOT_MATCH(60) /* let */
++                }
++                JSKW_NO_MATCH()
++            }
++            JSKW_NO_MATCH()
++          case 'w':
++            if (JSKW_AT(0)=='n' && JSKW_AT(1)=='e') {
++                JSKW_GOT_MATCH(13) /* new */
++            }
++            JSKW_NO_MATCH()
++          case 'y':
++            if (JSKW_AT(0)=='t' && JSKW_AT(1)=='r') {
++                JSKW_GOT_MATCH(25) /* try */
++            }
++            JSKW_NO_MATCH()
++        }
++        JSKW_NO_MATCH()
++      case 4:
++        switch (JSKW_AT(3)) {
++          case 'd':
++            if (JSKW_AT(0)=='v' && JSKW_AT(1)=='o' && JSKW_AT(2)=='i') {
++                JSKW_GOT_MATCH(21) /* void */
++            }
++            JSKW_NO_MATCH()
++          case 'e':
++            if (JSKW_AT(2) == 's') {
++                if (JSKW_AT(0) == 'c') {
++                    if (JSKW_AT(1)=='a') {
++                        JSKW_GOT_MATCH(1) /* case */
++                    }
++                    JSKW_NO_MATCH()
++                }
++                if (JSKW_AT(0) == 'e') {
++                    if (JSKW_AT(1)=='l') {
++                        JSKW_GOT_MATCH(6) /* else */
++                    }
++                    JSKW_NO_MATCH()
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(2) == 't') {
++                if (JSKW_AT(0)=='b' && JSKW_AT(1)=='y') {
++                    JSKW_GOT_MATCH(32) /* byte */
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(2) == 'u') {
++                if (JSKW_AT(0)=='t' && JSKW_AT(1)=='r') {
++                    JSKW_GOT_MATCH(18) /* true */
++                }
++                JSKW_NO_MATCH()
++            }
++            JSKW_NO_MATCH()
++          case 'g':
++            if (JSKW_AT(0)=='l' && JSKW_AT(1)=='o' && JSKW_AT(2)=='n') {
++                JSKW_GOT_MATCH(44) /* long */
++            }
++            JSKW_NO_MATCH()
++          case 'h':
++            if (JSKW_AT(0)=='w' && JSKW_AT(1)=='i' && JSKW_AT(2)=='t') {
++                JSKW_GOT_MATCH(23) /* with */
++            }
++            JSKW_NO_MATCH()
++          case 'l':
++            if (JSKW_AT(0)=='n' && JSKW_AT(1)=='u' && JSKW_AT(2)=='l') {
++                JSKW_GOT_MATCH(14) /* null */
++            }
++            JSKW_NO_MATCH()
++          case 'm':
++            if (JSKW_AT(0)=='e' && JSKW_AT(1)=='n' && JSKW_AT(2)=='u') {
++                JSKW_GOT_MATCH(57) /* enum */
++            }
++            JSKW_NO_MATCH()
++          case 'o':
++            if (JSKW_AT(0)=='g' && JSKW_AT(1)=='o' && JSKW_AT(2)=='t') {
++                JSKW_GOT_MATCH(39) /* goto */
++            }
++            JSKW_NO_MATCH()
++          case 'r':
++            if (JSKW_AT(0)=='c' && JSKW_AT(1)=='h' && JSKW_AT(2)=='a') {
++                JSKW_GOT_MATCH(33) /* char */
++            }
++            JSKW_NO_MATCH()
++          case 's':
++            if (JSKW_AT(0)=='t' && JSKW_AT(1)=='h' && JSKW_AT(2)=='i') {
++                JSKW_GOT_MATCH(17) /* this */
++            }
++            JSKW_NO_MATCH()
++        }
++        JSKW_NO_MATCH()
++      case 5:
++        switch (JSKW_AT(3)) {
++          case 'a':
++            if (JSKW_AT(0) == 'b') {
++                if (JSKW_AT(4)=='k' && JSKW_AT(1)=='r' && JSKW_AT(2)=='e') {
++                    JSKW_GOT_MATCH(0) /* break */
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(0) == 'f') {
++                if (JSKW_AT(4) == 'l') {
++                    if (JSKW_AT(2)=='n' && JSKW_AT(1)=='i') {
++                        JSKW_GOT_MATCH(37) /* final */
++                    }
++                    JSKW_NO_MATCH()
++                }
++                if (JSKW_AT(4) == 't') {
++                    if (JSKW_AT(2)=='o' && JSKW_AT(1)=='l') {
++                        JSKW_GOT_MATCH(38) /* float */
++                    }
++                    JSKW_NO_MATCH()
++                }
++                JSKW_NO_MATCH()
++            }
++            JSKW_NO_MATCH()
++          case 'c':
++            if (JSKW_AT(0)=='c' && JSKW_AT(1)=='a' && JSKW_AT(2)=='t' && JSKW_AT(4)=='h') {
++                JSKW_GOT_MATCH(26) /* catch */
++            }
++            JSKW_NO_MATCH()
++          case 'e':
++            if (JSKW_AT(0)=='s' && JSKW_AT(1)=='u' && JSKW_AT(2)=='p' && JSKW_AT(4)=='r') {
++                JSKW_GOT_MATCH(52) /* super */
++            }
++            JSKW_NO_MATCH()
++          case 'l':
++            if (JSKW_AT(0) == 'w') {
++                if (JSKW_AT(4)=='e' && JSKW_AT(1)=='h' && JSKW_AT(2)=='i') {
++                    JSKW_GOT_MATCH(22) /* while */
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(0) == 'y') {
++                if (JSKW_AT(4)=='d' && JSKW_AT(1)=='i' && JSKW_AT(2)=='e') {
++                    JSKW_GOT_MATCH(59) /* yield */
++                }
++                JSKW_NO_MATCH()
++            }
++            JSKW_NO_MATCH()
++          case 'o':
++            if (JSKW_AT(0)=='t' && JSKW_AT(1)=='h' && JSKW_AT(2)=='r' && JSKW_AT(4)=='w') {
++                JSKW_GOT_MATCH(28) /* throw */
++            }
++            JSKW_NO_MATCH()
++          case 'r':
++            if (JSKW_AT(0)=='s' && JSKW_AT(1)=='h' && JSKW_AT(2)=='o' && JSKW_AT(4)=='t') {
++                JSKW_GOT_MATCH(50) /* short */
++            }
++            JSKW_NO_MATCH()
++          case 's':
++            if (JSKW_AT(0) == 'c') {
++                if (JSKW_AT(4) == 's') {
++                    if (JSKW_AT(2)=='a' && JSKW_AT(1)=='l') {
++                        JSKW_GOT_MATCH(34) /* class */
++                    }
++                    JSKW_NO_MATCH()
++                }
++                if (JSKW_AT(4) == 't') {
++                    if (JSKW_AT(2)=='n' && JSKW_AT(1)=='o') {
++                        JSKW_GOT_MATCH(24) /* const */
++                    }
++                    JSKW_NO_MATCH()
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(0) == 'f') {
++                if (JSKW_AT(4)=='e' && JSKW_AT(1)=='a' && JSKW_AT(2)=='l') {
++                    JSKW_GOT_MATCH(8) /* false */
++                }
++                JSKW_NO_MATCH()
++            }
++            JSKW_NO_MATCH()
++        }
++        JSKW_NO_MATCH()
++      case 6:
++        switch (JSKW_AT(0)) {
++          case 'd':
++            if (JSKW_AT(1) == 'o') {
++                if (JSKW_AT(5)=='e' && JSKW_AT(4)=='l' && JSKW_AT(2)=='u' && JSKW_AT(3)=='b') {
++                    JSKW_GOT_MATCH(35) /* double */
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(1) == 'e') {
++                if (JSKW_AT(5)=='e' && JSKW_AT(4)=='t' && JSKW_AT(2)=='l' && JSKW_AT(3)=='e') {
++                    JSKW_GOT_MATCH(4) /* delete */
++                }
++                JSKW_NO_MATCH()
++            }
++            JSKW_NO_MATCH()
++          case 'e':
++            JSKW_TEST_GUESS(7) /* export */
++          case 'i':
++            JSKW_TEST_GUESS(41) /* import */
++          case 'n':
++            JSKW_TEST_GUESS(45) /* native */
++          case 'p':
++            JSKW_TEST_GUESS(49) /* public */
++          case 'r':
++            JSKW_TEST_GUESS(15) /* return */
++          case 's':
++            if (JSKW_AT(1) == 't') {
++                if (JSKW_AT(5)=='c' && JSKW_AT(4)=='i' && JSKW_AT(2)=='a' && JSKW_AT(3)=='t') {
++                    JSKW_GOT_MATCH(51) /* static */
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(1) == 'w') {
++                if (JSKW_AT(5)=='h' && JSKW_AT(4)=='c' && JSKW_AT(2)=='i' && JSKW_AT(3)=='t') {
++                    JSKW_GOT_MATCH(16) /* switch */
++                }
++                JSKW_NO_MATCH()
++            }
++            JSKW_NO_MATCH()
++          case 't':
++            if (JSKW_AT(5) == 'f') {
++                if (JSKW_AT(4)=='o' && JSKW_AT(1)=='y' && JSKW_AT(2)=='p' && JSKW_AT(3)=='e') {
++                    JSKW_GOT_MATCH(19) /* typeof */
++                }
++                JSKW_NO_MATCH()
++            }
++            if (JSKW_AT(5) == 's') {
++                if (JSKW_AT(4)=='w' && JSKW_AT(1)=='h' && JSKW_AT(2)=='r' && JSKW_AT(3)=='o') {
++                    JSKW_GOT_MATCH(54) /* throws */
++                }
++                JSKW_NO_MATCH()
++            }
++            JSKW_NO_MATCH()
++        }
++        JSKW_NO_MATCH()
++      case 7:
++        switch (JSKW_AT(0)) {
++          case 'b':
++            JSKW_TEST_GUESS(31) /* boolean */
++          case 'd':
++            JSKW_TEST_GUESS(3) /* default */
++          case 'e':
++            JSKW_TEST_GUESS(36) /* extends */
++          case 'f':
++            JSKW_TEST_GUESS(27) /* finally */
++          case 'p':
++            if (JSKW_AT(1) == 'a') {
++                JSKW_TEST_GUESS(46) /* package */
++            }
++            if (JSKW_AT(1) == 'r') {
++                JSKW_TEST_GUESS(47) /* private */
++            }
++            JSKW_NO_MATCH()
++        }
++        JSKW_NO_MATCH()
++      case 8:
++        switch (JSKW_AT(4)) {
++          case 'g':
++            JSKW_TEST_GUESS(58) /* debugger */
++          case 'i':
++            JSKW_TEST_GUESS(2) /* continue */
++          case 'r':
++            JSKW_TEST_GUESS(30) /* abstract */
++          case 't':
++            if (JSKW_AT(1) == 'o') {
++                JSKW_TEST_GUESS(56) /* volatile */
++            }
++            if (JSKW_AT(1) == 'u') {
++                JSKW_TEST_GUESS(10) /* function */
++            }
++            JSKW_NO_MATCH()
++        }
++        JSKW_NO_MATCH()
++      case 9:
++        if (JSKW_AT(1) == 'n') {
++            JSKW_TEST_GUESS(43) /* interface */
++        }
++        if (JSKW_AT(1) == 'r') {
++            if (JSKW_AT(0) == 'p') {
++                JSKW_TEST_GUESS(48) /* protected */
++            }
++            if (JSKW_AT(0) == 't') {
++                JSKW_TEST_GUESS(55) /* transient */
++            }
++            JSKW_NO_MATCH()
++        }
++        JSKW_NO_MATCH()
++      case 10:
++        if (JSKW_AT(1) == 'n') {
++            JSKW_TEST_GUESS(29) /* instanceof */
++        }
++        if (JSKW_AT(1) == 'm') {
++            JSKW_TEST_GUESS(40) /* implements */
++        }
++        JSKW_NO_MATCH()
++      case 12:
++        JSKW_TEST_GUESS(53) /* synchronized */
++    }
++    JSKW_NO_MATCH()
+Files js/src/jscpucfg and js-amiga/src/jscpucfg differ
+diff -rupN js/src/jscpucfg.c js-amiga/src/jscpucfg.c
+--- js/src/jscpucfg.c	2007-06-29 20:30:27 
++++ js-amiga/src/jscpucfg.c	2012-07-06 23:27:54 
+@@ -53,6 +53,10 @@
+ 
+ /* Generate cpucfg.h */
+ 
++#ifdef XP_AMIGA
++#include <exec/types.h>
++#define INT64 ULONG
++#else
+ #if defined(XP_WIN) || defined(XP_OS2)
+ #ifdef WIN32
+ #if defined(__GNUC__)
+@@ -70,6 +74,7 @@
+ #define INT64   long long
+ #endif
+ #endif
++#endif
+ 
+ #endif /* CROSS_COMPILE */
+ 
+diff -rupN js/src/jsfun.c js-amiga/src/jsfun.c
+--- js/src/jsfun.c	2007-07-10 19:39:03 
++++ js-amiga/src/jsfun.c	2012-09-04 18:12:14 
+@@ -2081,18 +2081,22 @@ js_InitFunctionClass(JSContext *cx, JSOb
+ 
+     proto = JS_InitClass(cx, obj, NULL, &js_FunctionClass, Function, 1,
+                          function_props, function_methods, NULL, NULL);
+-    if (!proto)
++    if (!proto) {
+         return NULL;
++	}
+     atom = js_Atomize(cx, js_FunctionClass.name, strlen(js_FunctionClass.name),
+                       0);
+-    if (!atom)
++    if (!atom) {
+         goto bad;
++	}
+     fun = js_NewFunction(cx, proto, NULL, 0, 0, obj, NULL);
+-    if (!fun)
++    if (!fun) {
+         goto bad;
++	}
+     fun->u.i.script = js_NewScript(cx, 1, 0, 0);
+-    if (!fun->u.i.script)
++    if (!fun->u.i.script) {
+         goto bad;
++	}
+     fun->u.i.script->code[0] = JSOP_STOP;
+     fun->flags |= JSFUN_INTERPRETED;
+     return proto;
+diff -rupN js/src/jsgc.c js-amiga/src/jsgc.c
+--- js/src/jsgc.c	2007-09-27 14:55:51 
++++ js-amiga/src/jsgc.c	2012-09-03 19:33:58 
+@@ -390,9 +390,11 @@ NewGCArena(JSRuntime *rt, JSGCArenaList 
+     uint32 *bytesptr;
+ 
+     /* Check if we are allowed and can allocate a new arena. */
+-    if (rt->gcBytes >= rt->gcMaxBytes)
++    if (rt->gcBytes >= rt->gcMaxBytes) {
+         return JS_FALSE;
++	}
+     a = (JSGCArena *)malloc(GC_ARENA_SIZE);
++
+     if (!a)
+         return JS_FALSE;
+ 
+@@ -1405,7 +1407,6 @@ js_NewGCThing(JSContext *cx, uintN flags
+ #else
+     doGC = (rt->gcMallocBytes >= rt->gcMaxMallocBytes);
+ #endif
+-
+     arenaList = &rt->gcArenaList[flindex];
+     for (;;) {
+         if (doGC) {
+@@ -1423,6 +1424,7 @@ js_NewGCThing(JSContext *cx, uintN flags
+ 
+         /* Try to get thing from the free list. */
+         thing = arenaList->freeList;
++
+         if (thing) {
+             arenaList->freeList = thing->next;
+             flagp = thing->flagp;
+@@ -1461,7 +1463,6 @@ js_NewGCThing(JSContext *cx, uintN flags
+         /* Allocate from the tail of last arena or from new arena if we can. */
+         if ((arenaList->last && arenaList->lastLimit != GC_THINGS_SIZE) ||
+             NewGCArena(rt, arenaList)) {
+-
+             offset = arenaList->lastLimit;
+             if ((offset & GC_PAGE_MASK) == 0) {
+                 /*
+@@ -1519,8 +1520,9 @@ js_NewGCThing(JSContext *cx, uintN flags
+         }
+ 
+         /* Consider doing a "last ditch" GC unless already tried. */
+-        if (doGC)
++        if (doGC) {
+             goto fail;
++		}
+         rt->gcPoke = JS_TRUE;
+         doGC = JS_TRUE;
+     }
+@@ -1553,6 +1555,7 @@ js_NewGCThing(JSContext *cx, uintN flags
+          * No local root scope, so we're stuck with the old, fragile model of
+          * depending on a pigeon-hole newborn per type per context.
+          */
++
+         cx->weakRoots.newborn[flags & GCF_TYPEMASK] = thing;
+     }
+ 
+@@ -1584,6 +1587,7 @@ fail:
+     if (gcLocked)
+         JS_UNLOCK_GC(rt);
+ #endif
++
+     METER(rt->gcStats.fail++);
+     JS_ReportOutOfMemory(cx);
+     return NULL;
+Files js/src/jskwgen and js-amiga/src/jskwgen differ
+diff -rupN js/src/jslibmath.h js-amiga/src/jslibmath.h
+--- js/src/jslibmath.h	2006-07-13 07:01:04 
++++ js-amiga/src/jslibmath.h	2012-07-06 23:06:50 
+@@ -58,6 +58,12 @@
+  * - fdlibm broken on OSF1/alpha
+  */
+ 
++
++#if defined(XP_AMIGA)
++#define JS_USE_FDLIBM_MATH 1
++#endif
++
++
+ #ifndef JS_USE_FDLIBM_MATH
+ #define JS_USE_FDLIBM_MATH 0
+ #endif
+diff -rupN js/src/jsnum.c js-amiga/src/jsnum.c
+--- js/src/jsnum.c	2007-04-06 20:53:22 
++++ js-amiga/src/jsnum.c	2012-07-06 21:14:25 
+@@ -42,7 +42,7 @@
+  * JS number type and wrapper class.
+  */
+ #include "jsstddef.h"
+-#if defined(XP_WIN) || defined(XP_OS2)
++#if defined(XP_WIN) || defined(XP_OS2) || defined(XP_AMIGA)
+ #include <float.h>
+ #endif
+ #include <locale.h>
+diff -rupN js/src/jsobj.c js-amiga/src/jsobj.c
+--- js/src/jsobj.c	2007-09-27 18:25:13 
++++ js-amiga/src/jsobj.c	2012-09-03 22:54:58 
+@@ -2454,8 +2454,9 @@ js_NewObject(JSContext *cx, JSClass *cla
+     } else {
+         /* Leave parent alone.  Allocate a new map for obj. */
+         map = ops->newObjectMap(cx, 1, ops, clasp, obj);
+-        if (!map)
++        if (!map) {
+             goto bad;
++		}
+         obj->map = map;
+ 
+         /* Let ops->newObjectMap set nslots so as to reserve slots. */
+@@ -2535,8 +2536,9 @@ js_GetClassObject(JSContext *cx, JSObjec
+     }
+ 
+     ok = JS_GetReservedSlot(cx, obj, key, &v);
+-    if (!ok)
++    if (!ok) {
+         return JS_FALSE;
++	}
+     if (!JSVAL_IS_PRIMITIVE(v)) {
+         *objp = JSVAL_TO_OBJECT(v);
+         return JS_TRUE;
+@@ -2544,8 +2546,9 @@ js_GetClassObject(JSContext *cx, JSObjec
+ 
+     rkey.obj = obj;
+     rkey.id = ATOM_TO_JSID(cx->runtime->atomState.classAtoms[key]);
+-    if (!js_StartResolving(cx, &rkey, JSRESFLAG_LOOKUP, &rentry))
++    if (!js_StartResolving(cx, &rkey, JSRESFLAG_LOOKUP, &rentry)) {
+         return JS_FALSE;
++	}
+     if (!rentry) {
+         /* Already caching key in obj -- suppress recursion. */
+         *objp = NULL;
+@@ -2603,14 +2606,16 @@ js_FindClassObject(JSContext *cx, JSObje
+     }
+ 
+     OBJ_TO_INNER_OBJECT(cx, obj);
+-    if (!obj)
++    if (!obj) {
+         return JS_FALSE;
++	}
+ 
+     if (JSID_IS_INT(id)) {
+         key = JSID_TO_INT(id);
+         JS_ASSERT(key != JSProto_Null);
+-        if (!js_GetClassObject(cx, obj, key, &cobj))
++        if (!js_GetClassObject(cx, obj, key, &cobj)) {
+             return JS_FALSE;
++		}
+         if (cobj) {
+             *vp = OBJECT_TO_JSVAL(cobj);
+             return JS_TRUE;
+@@ -4468,8 +4473,9 @@ js_GetClassPrototype(JSContext *cx, JSOb
+     jsval v;
+     JSObject *ctor;
+ 
+-    if (!js_FindClassObject(cx, scope, id, &v))
++    if (!js_FindClassObject(cx, scope, id, &v)) {
+         return JS_FALSE;
++	}
+     if (VALUE_IS_FUNCTION(cx, v)) {
+         ctor = JSVAL_TO_OBJECT(v);
+         if (!OBJ_GET_PROPERTY(cx, ctor,
+diff -rupN js/src/jsosdep.h js-amiga/src/jsosdep.h
+--- js/src/jsosdep.h	2006-07-07 02:12:02 
++++ js-amiga/src/jsosdep.h	2012-07-06 21:18:43 
+@@ -56,6 +56,11 @@
+ #define JS_HAVE_LONG_LONG
+ #endif
+ 
++#ifdef XP_AMIGA
++#undef JS_HAVE_LONG_LONG
++
++#include <stddef.h>
++#endif
+ 
+ #ifdef XP_UNIX
+ 
+diff -rupN js/src/jstypes.h js-amiga/src/jstypes.h
+--- js/src/jstypes.h	2006-08-14 20:32:06 
++++ js-amiga/src/jstypes.h	2012-07-29 12:14:05 
+@@ -117,6 +117,21 @@
+ #define JS_STATIC_DLL_CALLBACK(__x) __x JS_DLL_CALLBACK
+ #endif /* _WINDLL */
+ 
++#elif defined(XP_AMIGA)
++#ifdef HAVE_VISIBILITY_ATTRIBUTE
++#define JS_EXTERNAL_VIS __attribute__((visibility ("default")))
++#else
++#define JS_EXTERNAL_VIS
++#endif
++
++#define JS_EXTERN_API(__type) extern __type
++#define JS_EXPORT_API(__type) __type
++#define JS_EXTERN_DATA(__type) extern __type
++#define JS_EXPORT_DATA(__type) __type
++
++#define JS_DLL_CALLBACK
++#define JS_STATIC_DLL_CALLBACK(__x) static __x
++
+ #else /* Unix */
+ 
+ #ifdef HAVE_VISIBILITY_ATTRIBUTE
+@@ -241,11 +256,11 @@
+ 
+ #if (defined(XP_WIN) && !defined(CROSS_COMPILE)) || defined (WINCE)
+ #    include "jscpucfg.h"        /* Use standard Mac or Windows configuration */
+-#elif defined(XP_UNIX) || defined(XP_BEOS) || defined(XP_OS2) || defined(CROSS_COMPILE)
++#elif defined(XP_UNIX) || defined(XP_AMIGA) || defined(XP_BEOS) || defined(XP_OS2) || defined(CROSS_COMPILE)
+ #    include "jsautocfg.h"       /* Use auto-detected configuration */
+ #    include "jsosdep.h"         /* ...and platform-specific flags */
+ #else
+-#    error "Must define one of XP_BEOS, XP_OS2, XP_WIN or XP_UNIX"
++#    error "Must define one of XP_BEOS, XP_OS2, XP_AMIGA, XP_WIN or XP_UNIX"
+ #endif
+ 
+ JS_BEGIN_EXTERN_C
+Files js/src/libjs.a and js-amiga/src/libjs.a differ
+diff -rupN js/src/makefile.os4 js-amiga/src/makefile.os4
+--- js/src/makefile.os4	1978-01-01 00:00:00 
++++ js-amiga/src/makefile.os4	2012-07-06 23:12:15 
+@@ -0,0 +1,49 @@
++CFLAGS= -DXP_AMIGA -DHAVE_VA_COPY -DVA_COPY=va_copy
++CC = ppc-amigaos-gcc
++STRIP = ppc-amigaos-strip
++LIBS = -Lfdlibm -lfdlibm -lm
++RM = delete
++MKDIR = makedir
++OBJDIR = objAOS4
++BINDIR = binAOS4
++
++#OBJS = js.o jsapi.o jsarena.o jsarray.o jsatom.o jsbool.o \
++#	jscntxt.o jsdate.o jsdbgapi.o jsdhash.o jsdtoa.o \
++#	jsemit.o jsexn.o jsfile.o jsfun.o jsgc.o jshash.o \
++#	jsinterp.o jslock.o jslong.o jsmath.o jsnum.o \
++#	jsobj.o jsopcode.o jsparse.o jsprf.o jsregexp.o \
++#	jsscan.o jsscope.o jsscript.o jsstr.o jsutil.o \
++#	jsxdrapi.o prmjtime.o jslog2.o
++
++OBJS = prmjtime.o js.o jsapi.o jsarena.o jsarray.o jsatom.o \
++	jsbool.o jscntxt.o jsdate.o jsdbgapi.o jsdhash.o \
++	jsdtoa.o jsemit.o jsexn.o jsfile.o jsfun.o jsgc.o \
++	jshash.o jsinterp.o jslock.o jslong.o jsmath.o \
++	jsnum.o jsobj.o jsopcode.o jsparse.o jsprf.o \
++	jsregexp.o jsscan.o jsscope.o jsscript.o jsstr.o \
++	jsutil.o jsxdrapi.o jslog2.o jsxml.o jsiter.o
++
++all : $(OBJDIR) $(BINDIR) $(BINDIR)/js
++
++$(OBJDIR):
++	-$(MKDIR) $(OBJDIR)
++
++$(BINDIR):
++	-$(MKDIR) $(BINDIR)
++
++$(BINDIR)/js: $(addprefix $(OBJDIR)/,$(OBJS))
++	$(CC) -o $@.db $^ $(LIBS)
++	$(STRIP) -o $@ $@.db
++
++$(OBJDIR)/jsdate.o: jsdate.c prmjtime.c
++	$(CC) $(CFLAGS) -c $< -o $@
++
++clean:
++	$(RM) $(addprefix $(OBJDIR)/,$(OBJS))
++
++#jsdtoa.o: jsdtoa.c
++#	$(CC) -D__STDC__ $(CFLAGS) -c $< -o $@
++
++$(OBJDIR)/%.o : %.c
++	$(CC) $(CFLAGS) -c $< -o $@
++
+Files js/src/makefile.os4.info and js-amiga/src/makefile.os4.info differ
+diff -rupN js/src/Makefile.ref js-amiga/src/makefile.ref
+--- js/src/Makefile.ref	2006-07-26 19:16:47 
++++ js-amiga/src/makefile.ref	2012-09-04 23:15:44 
+@@ -1,375 +1,50 @@
+-# -*- Mode: makefile -*-
+-# vim: ft=make
+-#
+-# ***** BEGIN LICENSE BLOCK *****
+-# Version: MPL 1.1/GPL 2.0/LGPL 2.1
+-#
+-# The contents of this file are subject to the Mozilla Public License Version
+-# 1.1 (the "License"); you may not use this file except in compliance with
+-# the License. You may obtain a copy of the License at
+-# http://www.mozilla.org/MPL/
+-#
+-# Software distributed under the License is distributed on an "AS IS" basis,
+-# WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+-# for the specific language governing rights and limitations under the
+-# License.
+-#
+-# The Original Code is Mozilla Communicator client code, released
+-# March 31, 1998.
+-#
+-# The Initial Developer of the Original Code is
+-# Netscape Communications Corporation.
+-# Portions created by the Initial Developer are Copyright (C) 1998
+-# the Initial Developer. All Rights Reserved.
+-#
+-# Contributor(s):
+-#   Michael Ang <mang@subcarrier.org>
+-#   Kevin Buhr <buhr@stat.wisc.edu>
+-#
+-# Alternatively, the contents of this file may be used under the terms of
+-# either of the GNU General Public License Version 2 or later (the "GPL"),
+-# or the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+-# in which case the provisions of the GPL or the LGPL are applicable instead
+-# of those above. If you wish to allow use of your version of this file only
+-# under the terms of either the GPL or the LGPL, and not to allow others to
+-# use your version of this file under the terms of the MPL, indicate your
+-# decision by deleting the provisions above and replace them with the notice
+-# and other provisions required by the GPL or the LGPL. If you do not delete
+-# the provisions above, a recipient may use your version of this file under
+-# the terms of any one of the MPL, the GPL or the LGPL.
+-#
+-# ***** END LICENSE BLOCK *****
+-
+-#
+-# JSRef GNUmake makefile.
+-#
+-# Note: dependency rules are missing for some files (some
+-#       .h, all .msg, etc.)  Re-make clean if in doubt.
+-#
+-
+-
+-DEPTH = .
+-
+-include config.mk
+-
+-#NS_USE_NATIVE = 1
+-
+-ifdef NARCISSUS
+-DEFINES += -DNARCISSUS
+-endif
+-
+-# Look in OBJDIR to find jsautocfg.h and jsautokw.h
+-INCLUDES   += -I$(OBJDIR)
+-
+-ifdef JS_THREADSAFE
+-DEFINES += -DJS_THREADSAFE
+-INCLUDES += -I$(DIST)/include/nspr
+-ifdef USE_MSVC
+-OTHER_LIBS += $(DIST)/lib/libnspr$(NSPR_LIBSUFFIX).lib
+-else
+-OTHER_LIBS += -L$(DIST)/lib -lnspr$(NSPR_LIBSUFFIX)
+-endif
+-endif
+-
+-ifdef JS_NO_THIN_LOCKS
+-DEFINES += -DJS_USE_ONLY_NSPR_LOCKS
+-endif
+-
+-ifdef JS_HAS_FILE_OBJECT
+-DEFINES += -DJS_HAS_FILE_OBJECT
+-endif
+-
+-#
+-# XCFLAGS may be set in the environment or on the gmake command line
+-#
+-CFLAGS          += $(OPTIMIZER) $(OS_CFLAGS) $(DEFINES) $(INCLUDES) $(XCFLAGS)
+-
+-LDFLAGS		= $(XLDFLAGS)
+-
+-ifndef NO_LIBM
+-LDFLAGS += -lm
+-endif
+-
+-# Prevent floating point errors caused by VC++ optimizations
+-ifeq ($(OS_ARCH),WINNT)
+-_MSC_VER = $(shell $(CC) 2>&1 | sed -n 's/.*Compiler Version \([0-9]*\)\.\([0-9]*\).*/\1\2/p')
+-ifeq (,$(filter-out 1200 1300 1310,$(_MSC_VER)))
+-CFLAGS += -Op
+-else
+-CFLAGS += -fp:precise
+-endif
+-endif # WINNT
+-
+-#
+-# Ask perl what flags it was built with, so we can build js with similar flags
+-# and link properly.  Viva gmake.
+-#
+-ifdef JS_PERLCONNECT
+-DEFINES += -DPERLCONNECT -D_GNU_SOURCE
+-
+-PERLCFLAGS := $(shell perl -MExtUtils::Embed -e ccopts)
+-PERLLDFLAGS := $(shell perl -MExtUtils::Embed -e ldopts)
+-
+-# perl erroneously reports compiler flag -rdynamic (interpreted by ld
+-# as -r) when it really meant -export-dynamic.
+-PERLLDFLAGS := $(subst -rdynamic,-export-dynamic,$(PERLLDFLAGS))
+-
+-CFLAGS += $(PERLCFLAGS)
+-#LDFLAGS += $(PERLLDFLAGS) #PH removed this assgnment
+-INCLUDES += -I. #needed for perlconnect/jsperl.c
+-endif
+-
+-#
+-#	Server-related changes :
+-#
+-ifdef NES40
+-DEFINES += -DNES40
+-endif
+-
+-#
+-# Line editing support.
+-# Define JS_READLINE or JS_EDITLINE to enable line editing in the
+-# js command-line interpreter.
+-#
+-ifdef JS_READLINE
+-# For those platforms with the readline library installed.
+-DEFINES += -DEDITLINE
+-PROG_LIBS += -lreadline -ltermcap
+-else
+-ifdef JS_EDITLINE
+-# Use the editline library, built locally.
+-PREDIRS += editline
+-DEFINES += -DEDITLINE
+-PROG_LIBS += editline/$(OBJDIR)/libedit.a
+-endif
+-endif
+-
+-# For purify
+-PURE_CFLAGS     = -DXP_UNIX $(OPTIMIZER) $(PURE_OS_CFLAGS) $(DEFINES) \
+-                  $(INCLUDES) $(XCFLAGS)
+-
+-#
+-# JS file lists
+-#
+-JS_HFILES =		\
+-	jsarray.h	\
+-	jsatom.h	\
+-	jsbool.h	\
+-	jsconfig.h	\
+-	jscntxt.h	\
+-	jsdate.h	\
+-	jsemit.h	\
+-	jsexn.h		\
+-	jsfun.h		\
+-	jsgc.h		\
+-	jsinterp.h	\
+-	jsiter.h	\
+-	jslibmath.h	\
+-	jslock.h	\
+-	jsmath.h	\
+-	jsnum.h		\
+-	jsobj.h		\
+-	jsopcode.h      \
+-	jsparse.h	\
+-	jsarena.h	\
+-	jsclist.h	\
+-	jsdhash.h	\
+-	jsdtoa.h	\
+-	jshash.h	\
+-	jslong.h	\
+-	jsosdep.h	\
+-	jstypes.h	\
+-	jsprvtd.h	\
+-	jspubtd.h	\
+-	jsregexp.h	\
+-	jsscan.h	\
+-	jsscope.h	\
+-	jsscript.h	\
+-	jsstr.h		\
+-	jsxdrapi.h	\
+-	jsxml.h		\
+-	$(NULL)
+-
+-API_HFILES =		\
+-	jsapi.h		\
+-	jsdbgapi.h	\
+-	$(NULL)
+-
+-OTHER_HFILES =		\
+-	jsbit.h		\
+-	jscompat.h	\
+-	jscpucfg.h	\
+-	jsotypes.h	\
+-	jsstddef.h	\
+-	prmjtime.h	\
+-	resource.h	\
+-	jsopcode.tbl	\
+-	jsproto.tbl     \
+-	js.msg		\
+-	jsshell.msg	\
+-	jskeyword.tbl	\
+-	$(NULL)
+-
+-ifndef PREBUILT_CPUCFG
+-OTHER_HFILES += $(OBJDIR)/jsautocfg.h
+-endif
+-OTHER_HFILES += $(OBJDIR)/jsautokw.h
+-
+-HFILES = $(JS_HFILES) $(API_HFILES) $(OTHER_HFILES)
+-
+-JS_CFILES =		\
+-	jsapi.c		\
+-	jsarena.c	\
+-	jsarray.c	\
+-	jsatom.c	\
+-	jsbool.c	\
+-	jscntxt.c	\
+-	jsdate.c	\
+-	jsdbgapi.c	\
+-	jsdhash.c	\
+-	jsdtoa.c	\
+-	jsemit.c	\
+-	jsexn.c		\
+-	jsfun.c		\
+-	jsgc.c		\
+-	jshash.c	\
+-	jsinterp.c	\
+-	jsiter.c	\
+-	jslock.c	\
+-	jslog2.c	\
+-	jslong.c	\
+-	jsmath.c	\
+-	jsnum.c		\
+-	jsobj.c		\
+-	jsopcode.c      \
+-	jsparse.c	\
+-	jsprf.c		\
+-	jsregexp.c	\
+-	jsscan.c	\
+-	jsscope.c	\
+-	jsscript.c	\
+-	jsstr.c		\
+-	jsutil.c        \
+-	jsxdrapi.c	\
+-	jsxml.c		\
+-	prmjtime.c	\
+-	$(NULL)
+-
+-ifdef JS_LIVECONNECT
+-DIRS      += liveconnect
+-endif
+-
+-ifdef JS_PERLCONNECT
+-JS_CFILES += perlconnect/jsperl.c
+-endif
+-
+-ifdef JS_HAS_FILE_OBJECT
+-JS_CFILES += jsfile.c
+-JS_HFILES += jsfile.h
+-endif
+-
+-LIB_CFILES  = $(JS_CFILES)
+-LIB_ASFILES := $(wildcard *_$(OS_ARCH).s)
+-PROG_CFILES = js.c
+-
+-ifdef USE_MSVC
+-LIBRARY = $(OBJDIR)/js32.lib
+-SHARED_LIBRARY = $(OBJDIR)/js32.dll
+-PROGRAM = $(OBJDIR)/js.exe
+-else
+-LIBRARY = $(OBJDIR)/libjs.a
+-SHARED_LIBRARY = $(OBJDIR)/libjs.$(SO_SUFFIX)
+-PROGRAM = $(OBJDIR)/js
+-ifdef JS_PERLCONNECT
+-PROG_LIBS += $(PERLLDFLAGS)
+-endif
+-endif
+-
+-include rules.mk
+-
+-MOZ_DEPTH = ../..
+-include jsconfig.mk
+-
+-nsinstall-target:
+-	cd ../../config; $(MAKE) OBJDIR=$(OBJDIR) OBJDIR_NAME=$(OBJDIR)
+-
+-#
+-# Rules for keyword switch generation
+-#
+-
+-GARBAGE += $(OBJDIR)/jsautokw.h $(OBJDIR)/jskwgen$(HOST_BIN_SUFFIX)
+-GARBAGE += $(OBJDIR)/jskwgen.$(OBJ_SUFFIX)
+-
+-$(OBJDIR)/jsscan.$(OBJ_SUFFIX): $(OBJDIR)/jsautokw.h jskeyword.tbl
+-
+-$(OBJDIR)/jskwgen.$(OBJ_SUFFIX): jskwgen.c jskeyword.tbl
+-
+-$(OBJDIR)/jsautokw.h: $(OBJDIR)/jskwgen$(HOST_BIN_SUFFIX) jskeyword.tbl
+-	$(OBJDIR)/jskwgen$(HOST_BIN_SUFFIX) $@
+-
+-ifdef USE_MSVC
+-
+-$(OBJDIR)/jskwgen.obj: jskwgen.c jskeyword.tbl
+-	@$(MAKE_OBJDIR)
+-	$(CC) -Fo$(OBJDIR)/ -c $(CFLAGS) $<
+-
+-$(OBJDIR)/jskwgen$(HOST_BIN_SUFFIX): $(OBJDIR)/jskwgen.$(OBJ_SUFFIX)
+-	link.exe -out:"$@" $(EXE_LINK_FLAGS) $^
+-
+-else
+-
+-$(OBJDIR)/jskwgen.o: jskwgen.c jskeyword.tbl
+-	@$(MAKE_OBJDIR)
+-	$(CC) -o $@ -c $(CFLAGS) $<
+-
+-$(OBJDIR)/jskwgen$(HOST_BIN_SUFFIX): $(OBJDIR)/jskwgen.$(OBJ_SUFFIX)
+-	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $^
+-
+-endif
+-
+-#
+-# JS shell executable
+-#
+-
+-ifdef USE_MSVC
+-$(PROGRAM): $(PROG_OBJS) $(LIBRARY)
+-	link.exe -out:"$@" $(EXE_LINK_FLAGS) $^
+-else
+-$(PROGRAM): $(PROG_OBJS) $(LIBRARY)
+-	$(CC) -o $@ $(CFLAGS) $(PROG_OBJS) $(LIBRARY) $(LDFLAGS) $(OTHER_LIBS) \
+-	    $(PROG_LIBS)
+-endif
+-
+-$(PROGRAM).pure: $(PROG_OBJS) $(LIBRARY)
+-	purify $(PUREFLAGS) \
+-	    $(CC) -o $@ $(PURE_OS_CFLAGS) $(PROG_OBJS) $(LIBRARY) $(LDFLAGS) \
+-		$(OTHER_LIBS) $(PROG_LIBS)
+-
+-ifndef PREBUILT_CPUCFG
+-$(HFILES) $(CFILES): $(OBJDIR)/jsautocfg.h
+-
+-$(OBJDIR)/jsautocfg.h: $(OBJDIR)/jscpucfg
+-	rm -f $@
+-	$(OBJDIR)/jscpucfg > $@
+-
+-$(OBJDIR)/jscpucfg: $(OBJDIR)/jscpucfg.o
+-	$(CC) -o $@ $(OBJDIR)/jscpucfg.o
+-
+-# Add to TARGETS for clobber rule
+-TARGETS += $(OBJDIR)/jsautocfg.h $(OBJDIR)/jscpucfg \
+-	$(OBJDIR)/jscpucfg.o
+-endif
+-
+-#
+-# Hardwire dependencies on jsopcode.tbl
+-#
+-jsopcode.h jsopcode.c: jsopcode.tbl
+-
+--include $(DEPENDENCIES)
+-
+-TARNAME = jsref.tar
+-TARFILES = files `cat files`
+-
+-SUFFIXES: .i
+-%.i: %.c
+-	$(CC) -C -E $(CFLAGS) $< > $*.i
++CFLAGS= -O2 -DXP_AMIGA -DHAVE_VA_COPY -DVA_COPY=va_copy -fvisibility=hidden -DHAVE_VISIBILITY_ATTRIBUTE
++AR = ppc-amigaos-ar
++CC = ppc-amigaos-gcc
++STRIP = ppc-amigaos-strip
++LIBS =-Lfdlibm -lfdlibm -lm
++RM = delete
++MKDIR = makedir
++OBJDIR = objAOS4
++BINDIR = binAOS4
++
++#OBJS = js.o jsapi.o jsarena.o jsarray.o jsatom.o jsbool.o \
++#	jscntxt.o jsdate.o jsdbgapi.o jsdhash.o jsdtoa.o \
++#	jsemit.o jsexn.o jsfile.o jsfun.o jsgc.o jshash.o \
++#	jsinterp.o jslock.o jslong.o jsmath.o jsnum.o \
++#	jsobj.o jsopcode.o jsparse.o jsprf.o jsregexp.o \
++#	jsscan.o jsscope.o jsscript.o jsstr.o jsutil.o \
++#	jsxdrapi.o prmjtime.o jslog2.o
++
++OBJS = prmjtime.o jsapi.o jsarena.o jsarray.o jsatom.o \
++	jsbool.o jscntxt.o jsdate.o jsdbgapi.o jsdhash.o \
++	jsdtoa.o jsemit.o jsexn.o jsfile.o jsfun.o jsgc.o \
++	jshash.o jsinterp.o jslock.o jslong.o jsmath.o \
++	jsnum.o jsobj.o jsopcode.o jsparse.o jsprf.o \
++	jsregexp.o jsscan.o jsscope.o jsscript.o jsstr.o \
++	jsutil.o jsxdrapi.o jslog2.o jsxml.o jsiter.o
++
++all : $(OBJDIR) $(BINDIR) libjs.a
++
++$(OBJDIR):
++	-$(MKDIR) $(OBJDIR)
++
++$(BINDIR):
++	-$(MKDIR) $(BINDIR)
++
++libjs.a: $(addprefix $(OBJDIR)/,$(OBJS))
++	$(AR) cru $@ $^
++#	$(STRIP) -o $@ $@.db
++
++$(OBJDIR)/jsdate.o: jsdate.c prmjtime.c
++	$(CC) $(CFLAGS) -c $< -o $@
++
++clean:
++	$(RM) $(addprefix $(OBJDIR)/,$(OBJS))
++
++#jsdtoa.o: jsdtoa.c
++#	$(CC) -D__STDC__ $(CFLAGS) -c $< -o $@
++
++$(OBJDIR)/%.o : %.c
++	$(CC) $(CFLAGS) -c $< -o $@
++
+Files js/src/makefile.ref.info and js-amiga/src/makefile.ref.info differ
+diff -rupN js/src/prmjtime.c js-amiga/src/prmjtime.c
+--- js/src/prmjtime.c	2005-07-07 22:35:39 
++++ js-amiga/src/prmjtime.c	2012-07-06 21:22:31 
+@@ -89,13 +89,17 @@ static void PRMJ_basetime(JSInt64 tsecs,
+ JSInt32
+ PRMJ_LocalGMTDifference()
+ {
+-#if defined(XP_UNIX) || defined(XP_WIN) || defined(XP_OS2) || defined(XP_BEOS)
++#if defined(XP_UNIX) || defined(XP_WIN) || defined(XP_OS2) || defined(XP_BEOS) || defined(XP_AMIGA)
+     struct tm ltime;
+ 
+     /* get the difference between this time zone and GMT */
+     memset((char *)&ltime,0,sizeof(ltime));
+     ltime.tm_mday = 2;
++#ifdef XP_AMIGA
++    ltime.tm_year = 78;
++#else
+     ltime.tm_year = 70;
++#endif
+ #ifdef SUNOS4
+     ltime.tm_zone = 0;
+     ltime.tm_gmtoff = 0;
+@@ -158,11 +162,21 @@ PRMJ_Now(void)
+     ten = JSLL_INIT(0, 10);
+     FILETIME time, midnight;
+ #endif
+-#if defined(XP_UNIX) || defined(XP_BEOS)
++#if defined(XP_UNIX) || defined(XP_BEOS) || defined(XP_AMIGA)
+     struct timeval tv;
+     JSInt64 s, us, s2us;
+ #endif /* XP_UNIX */
+ 
++#if defined(XP_AMIGA)
++	gettimeofday(&tv, 0);
++	JSLL_UI2L(s2us, PRMJ_USEC_PER_SEC);
++	JSLL_UI2L(s, tv.tv_sec);
++	JSLL_UI2L(us, tv.tv_usec);
++	JSLL_MUL(s, s, s2us);
++	JSLL_ADD(s, s, us);
++	return s;
++#endif
++
+ #ifdef XP_OS2
+     ftime(&b);
+     JSLL_UI2L(ms2us, PRMJ_USEC_PER_MSEC);
+@@ -268,7 +282,7 @@ PRMJ_DSTOffset(JSInt64 local_time)
+ size_t
+ PRMJ_FormatTime(char *buf, int buflen, char *fmt, PRMJTime *prtm)
+ {
+-#if defined(XP_UNIX) || defined(XP_WIN) || defined(XP_OS2) || defined(XP_BEOS)
++#if defined(XP_UNIX) || defined(XP_WIN) || defined(XP_OS2) || defined(XP_BEOS) || defined(XP_AMIGA)
+     struct tm a;
+ 
+     /* Zero out the tm struct.  Linux, SunOS 4 struct tm has extra members int
