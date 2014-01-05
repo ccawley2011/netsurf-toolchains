@@ -91,7 +91,7 @@ ifeq ($(TARGET),arm-unknown-riscos)
     EXTRAARGS_SPIDERMONKEY := BUILD_OPT=1 OS_ARCH=RISCOS OS_CPUARCH=arm OS_CONFIG=RISCOS
   else
     EXTRAARGS_SPIDERMONKEY := --disable-tracejit --disable-thumb2 --without-thumb --enable-static --disable-shared --disable-shared-js --with-cpu-arch=armv3 --disable-tests --disable-methodjit
-    SDK_ITEMS += $(addprefix $(BUILDSTEPS)/, spidermonkey.d)
+    SDK_ITEMS += $(addprefix $(BUILDSTEPS)/, nspr.d)
   endif
 endif
 
