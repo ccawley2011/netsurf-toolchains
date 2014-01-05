@@ -91,6 +91,7 @@ ifeq ($(TARGET),arm-unknown-riscos)
     EXTRAARGS_SPIDERMONKEY := BUILD_OPT=1 OS_ARCH=RISCOS OS_CPUARCH=arm OS_CONFIG=RISCOS
   else
     EXTRAARGS_SPIDERMONKEY := --disable-tracejit --disable-thumb2 --without-thumb --enable-static --disable-shared --disable-shared-js --with-cpu-arch=armv3 --disable-tests --disable-methodjit
+    SDK_ITEMS += $(addprefix $(BUILDSTEPS)/, spidermonkey.d)
   endif
 endif
 
@@ -496,7 +497,7 @@ $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz:
 
 
 # spidermonkey (libmozjs) 
-$(BUILDSTEPS)/spidermonkey.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr.d $(BUILDSTEPS)/spidermonkey-src.d
+$(BUILDSTEPS)/spidermonkey.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/spidermonkey-src.d
 ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
 	$(env) make -C $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src -f Makefile.ref JS_DIST=$(GCCSDK_INSTALL_ENV) $(EXTRAARGS_SPIDERMONKEY)
 	$(env) make -C $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src -f Makefile.ref JS_DIST=$(GCCSDK_INSTALL_ENV) $(EXTRAARGS_SPIDERMONKEY) export
