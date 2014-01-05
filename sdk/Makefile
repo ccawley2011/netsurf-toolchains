@@ -112,7 +112,7 @@ ifeq ($(TARGET),m5475-atari-mint)
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d spidermonkey.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random
   VERSION_SPIDERMONKEY := 1.7.0
