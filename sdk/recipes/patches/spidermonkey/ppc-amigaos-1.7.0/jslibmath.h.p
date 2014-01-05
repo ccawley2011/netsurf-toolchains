@@ -6,7 +6,7 @@
  
 +
 +#if defined(XP_AMIGA)
-+#define JS_USE_FDLIBM_MATH 1
++#define JS_USE_FDLIBM_MATH 0
 +#endif
 +
 +

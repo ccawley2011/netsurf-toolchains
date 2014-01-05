@@ -1,6 +1,6 @@
 --- js/src/Makefile.ref	2006-07-26 19:16:47 
 +++ js-amiga/src/makefile.ref	2012-09-04 23:15:44 
-@@ -1,375 +1,50 @@
+@@ -1,375 +1,57 @@
 -# -*- Mode: makefile -*-
 -# vim: ft=make
 -#
@@ -385,6 +385,7 @@
 +MKDIR = mkdir
 +OBJDIR = objAOS4
 +BINDIR = binAOS4
++CP = cp
 +
 +#OBJS = js.o jsapi.o jsarena.o jsarray.o jsatom.o jsbool.o \
 +#	jscntxt.o jsdate.o jsdbgapi.o jsdhash.o jsdtoa.o \
@@ -425,5 +426,11 @@
 +
 +$(OBJDIR)/%.o : %.c
 +	$(CC) $(CFLAGS) -c $< -o $@
++
++export:
++	$(MKDIR) $(JS_DIST)/include/js
++	$(CP) libjs.a $(JS_DIST)/lib
++	$(CP) *.h $(JS_DIST)/include/js
++	$(CP) *.tbl $(JS_DIST)/include/js
 +
 
