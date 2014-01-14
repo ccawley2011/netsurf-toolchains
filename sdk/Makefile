@@ -30,8 +30,6 @@ VERSION_LIBXML := 2.9.1
 VERSION_OPENSSL := 1.0.1f
 VERSION_LIBPNG := 1.6.8
 VERSION_LIBJPEG := 8d
-VERSION_LIBLCMS := 2.3
-VERSION_LIBMNG := 1.0.10
 VERSION_LIBCARES := 1.10.0
 VERSION_LIBCURL := 7.34.0
 VERSION_LIBGNURX := 2.5.1
@@ -81,8 +79,7 @@ FETCHSRC := $(CURDIR)/fetchsrc
 # Compute the SDK components
 SDK_ITEMS :=
 
-COMMON_SDK_ITEMS := zlib.d openssl.d libpng.d libjpeg.d liblcms.d \
-		    libmng.d libcares.d libcurl.d libexpat.d
+COMMON_SDK_ITEMS := zlib.d openssl.d libpng.d libjpeg.d libcares.d libcurl.d libexpat.d
 
 LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap telnet gopher tftp pop3 imap smtp manual)
 
@@ -394,40 +391,6 @@ $(BUILDSTEPS)/libjpeg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/jpegsrc.v$(V
 
 $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ijg.org/files/$(subst $(SOURCEDIR)/,,$@)" $@
-
-# liblcms
-$(BUILDSTEPS)/liblcms.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms-src.d
-	mkdir -p $(BUILDDIR)/liblcms
-	cd $(BUILDDIR)/liblcms && tar xaf $(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz
-	for p in `ls $(RECIPES)/patches/liblcms/*.p` ; do $(PATCH) -d $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) -p0 <$$p ; done
-ifneq ($(realpath $(RECIPES)/patches/liblcms/$(TARGET)),)
-	for p in `ls $(RECIPES)/patches/liblcms/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) -p0 <$$p ; done
-endif
-	cd $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(BUILDDIR)/liblcms/lcms2-$(VERSION_LIBLCMS) && $(env) make install
-	touch $@
-
-$(BUILDSTEPS)/liblcms-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz
-	touch $@
-
-$(SOURCEDIR)/lcms2-$(VERSION_LIBLCMS).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/lcms/lcms/$(VERSION_LIBLCMS)/$(subst $(SOURCEDIR)/,,$@)" $@
-
-
-# libMNG
-$(BUILDSTEPS)/libmng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libjpeg.d $(BUILDSTEPS)/liblcms.d $(BUILDSTEPS)/libmng-src.d
-	mkdir -p $(BUILDDIR)/libmng
-	cd $(BUILDDIR)/libmng && tar xaf $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz
-	for p in `ls $(RECIPES)/patches/libmng/*.p` ; do $(PATCH) -d $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG) -p0 <$$p ; done
-	cp $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG)/makefiles/makefile.unix $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG)/Makefile
-	cd $(BUILDDIR)/libmng/libmng-$(VERSION_LIBMNG) && $(env) make install
-	touch $@
-
-$(BUILDSTEPS)/libmng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz
-	touch $@
-
-$(SOURCEDIR)/libmng-$(VERSION_LIBMNG).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/libmng/libmng-devel/$(VERSION_LIBMNG)/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libcares
 $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
