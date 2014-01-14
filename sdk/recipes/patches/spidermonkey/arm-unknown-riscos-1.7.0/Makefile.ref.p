@@ -30,4 +30,4 @@
 +if test ! -d $(@D); then rm -rf $(@D); mkdir -p $(@D); fi
  endef
 
- all: $(LIBRARY)
+ all: $(LIBRARY) 
