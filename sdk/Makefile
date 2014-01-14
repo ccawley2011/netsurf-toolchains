@@ -24,16 +24,16 @@ endif
 
 # Upstream package versions
 VERSION_ZLIB := 1.2.8
-VERSION_LIBICONV := 1.13.1
+VERSION_LIBICONV := 1.14
 VERSION_LIBTRE := 0.8.0
-VERSION_LIBXML := 2.8.0
-VERSION_OPENSSL := 1.0.1e
-VERSION_LIBPNG := 1.6.7
+VERSION_LIBXML := 2.9.1
+VERSION_OPENSSL := 1.0.1f
+VERSION_LIBPNG := 1.6.8
 VERSION_LIBJPEG := 8d
 VERSION_LIBLCMS := 2.3
 VERSION_LIBMNG := 1.0.10
-VERSION_LIBCARES := 1.9.1
-VERSION_LIBCURL := 7.28.1
+VERSION_LIBCARES := 1.10.0
+VERSION_LIBCURL := 7.34.0
 VERSION_LIBGNURX := 2.5.1
 VERSION_LIBPBL := 1_04
 VERSION_LIBCF := CVS-20120227
@@ -65,7 +65,8 @@ pkg_config_libdir__ := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
 TARGET := $(shell $(cc__) -dumpmachine)
 
 # Environment
-env := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" RANLIB="$(ranlib__)" CFLAGS="$(cflags__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
+cleanenv := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" RANLIB="$(ranlib__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
+env := $(cleanenv) CFLAGS="$(cflags__)"
 
 RECIPES := $(CURDIR)/recipes
 SOURCEDIR := $(CURDIR)/sources
@@ -436,8 +437,8 @@ $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
 ifneq ($(realpath $(RECIPES)/patches/libcares/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libcares/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) $(EXTRAARGS_LIBCARES)
-	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(env) make install
+	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(cleanenv) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) $(EXTRAARGS_LIBCARES)
+	cd $(BUILDDIR)/libcares/c-ares-$(VERSION_LIBCARES) && $(cleanenv) make install
 	touch $@
 
 $(BUILDSTEPS)/libcares-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz
