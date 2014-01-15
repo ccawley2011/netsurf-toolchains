@@ -1,6 +1,6 @@
 --- crypto/ui/ui_openssl.c.orig	2011-03-08 22:37:51.000000000 +0000
 +++ crypto/ui/ui_openssl.c	2011-03-08 22:39:00.000000000 +0000
-@@ -214,6 +214,12 @@
+@@ -220,6 +220,12 @@
  #undef SGTTY
  #endif
  
@@ -13,7 +13,7 @@
  #ifdef TERMIOS
  # include <termios.h>
  # define TTY_STRUCT		struct termios
-@@ -262,7 +268,7 @@
+@@ -268,7 +274,7 @@
  	typedef int sig_atomic_t;
  #endif
  
