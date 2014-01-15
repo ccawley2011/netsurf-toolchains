@@ -11,7 +11,7 @@ Pre-requisites for Debian systems
 
 	$ dpkg --add-architecture i386
 	$ apt-get update
-	$ apt-get install ia32-libs gcc-multilib
+	$ apt-get install gcc-multilib
 
 RISC OS
 -------
