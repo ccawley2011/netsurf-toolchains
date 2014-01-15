@@ -2,7 +2,7 @@
 +++ lib/amigaos.h	2012-10-19 21:37:26.000000000 +0100
 @@ -23,7 +23,7 @@
   ***************************************************************************/
- #include "setup.h"
+ #include "curl_setup.h"
  
 -#if defined(__AMIGA__) && !defined(__ixemul__)
 +#if defined(__AMIGA__) && !(defined(__ixemul__) || defined(__amigaos4__))
