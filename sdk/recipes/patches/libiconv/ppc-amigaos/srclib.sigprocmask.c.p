@@ -1,5 +1,5 @@
---- srclib/sigprocmask.c.old	2012-10-21 01:14:40.000000000 +0100
-+++ srclib/sigprocmask.c	2012-10-21 01:15:24.000000000 +0100
+--- srclib/sigprocmask.c.orig	2011-08-07 14:42:06.000000000 +0100
++++ srclib/sigprocmask.c	2014-01-15 00:59:33.130968152 +0000
 @@ -83,77 +83,6 @@
  # define signal ext_signal
  #endif
@@ -11,7 +11,7 @@
 -    {
 -      #ifdef SIGABRT_COMPAT
 -      if (sig == SIGABRT_COMPAT)
--	sig = SIGABRT;
+-        sig = SIGABRT;
 -      #endif
 -
 -      return (*set >> sig) & 1;
@@ -34,7 +34,7 @@
 -    {
 -      #ifdef SIGABRT_COMPAT
 -      if (sig == SIGABRT_COMPAT)
--	sig = SIGABRT;
+-        sig = SIGABRT;
 -      #endif
 -
 -      *set |= 1U << sig;
@@ -54,7 +54,7 @@
 -    {
 -      #ifdef SIGABRT_COMPAT
 -      if (sig == SIGABRT_COMPAT)
--	sig = SIGABRT;
+-        sig = SIGABRT;
 -      #endif
 -
 -      *set &= ~(1U << sig);
