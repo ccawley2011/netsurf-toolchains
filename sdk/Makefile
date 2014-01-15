@@ -82,7 +82,7 @@ SDK_ITEMS :=
 
 COMMON_SDK_ITEMS := zlib.d openssl.d libpng.d libjpeg.d libcares.d libcurl.d libexpat.d
 
-LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap telnet gopher tftp pop3 imap smtp manual)
+LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap ldaps rtsp telnet gopher tftp pop3 imap smtp manual)
 
 # Target Specific setup
 ifeq ($(TARGET),arm-unknown-riscos)
