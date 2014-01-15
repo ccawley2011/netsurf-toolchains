@@ -63,6 +63,7 @@ pkg_config_libdir__ := $(GCCSDK_INSTALL_ENV)/lib/pkgconfig
 TARGET := $(shell $(cc__) -dumpmachine)
 
 # Environment
+# Newer autotools objects to -I appearing in CFLAGS
 cleanenv := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" RANLIB="$(ranlib__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
 env := $(cleanenv) CFLAGS="$(cflags__)"
 
