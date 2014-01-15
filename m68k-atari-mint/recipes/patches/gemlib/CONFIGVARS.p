@@ -1,6 +1,6 @@
 --- CONFIGVARS	2011-05-13 23:38:45.000000000 +0100
 +++ CONFIGVARS	2011-05-13 23:40:11.000000000 +0100
-@@ -2,13 +2,13 @@
+@@ -2,7 +2,7 @@
  # 
  # cross compiling
  #CROSS = yes
@@ -9,14 +9,6 @@
  
  #
  # build alternate libraries for processor variants
- #
--WITH_020_LIB = no
--WITH_V4E_LIB = no
-+WITH_020_LIB = yes
-+WITH_V4E_LIB = yes
- 
- #
- # target and host compiler
 @@ -21,7 +21,7 @@
  NATIVECFLAGS = -O
  CRLF = echo crlf -s
