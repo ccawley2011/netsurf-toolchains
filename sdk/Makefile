@@ -26,7 +26,6 @@ endif
 VERSION_ZLIB := 1.2.8
 VERSION_LIBICONV := 1.14
 VERSION_LIBTRE := 0.8.0
-VERSION_LIBXML := 2.9.1
 VERSION_OPENSSL := 1.0.1f
 VERSION_LIBPNG := 1.6.8
 VERSION_LIBJPEG := 8d
@@ -98,7 +97,6 @@ ifeq ($(TARGET),arm-unknown-riscos)
 endif
 
 ifeq ($(TARGET),m68k-atari-mint)
-  EXTRAARGS_LIBXML := --enable-ipv6=no
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d freetype.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver 
@@ -106,7 +104,6 @@ ifeq ($(TARGET),m68k-atari-mint)
 endif
 
 ifeq ($(TARGET),m5475-atari-mint)
-  EXTRAARGS_LIBXML := --enable-ipv6=no
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d freetype.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver
@@ -324,24 +321,6 @@ $(BUILDSTEPS)/libpbl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/pbl_$(VERSION
 
 $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://www.mission-base.com/peter/source/$(subst $(SOURCEDIR)/,,$@)" $@
-
-# libXML2
-$(BUILDSTEPS)/libxml2.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libxml2-src.d
-	mkdir -p $(BUILDDIR)/libxml2
-	cd $(BUILDDIR)/libxml2 && tar xaf $(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz
-	for p in `ls $(RECIPES)/patches/libxml2/*.p` ; do $(PATCH) -d $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) -p0 <$$p ; done
-ifneq ($(realpath $(RECIPES)/patches/libxml2/$(TARGET)),)
-	for p in `ls $(RECIPES)/patches/libxml2/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) -p0 <$$p ; done
-endif
-	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) CFLAGS=-O2 ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --without-python $(EXTRAARGS_LIBXML)
-	cd $(BUILDDIR)/libxml2/libxml2-$(VERSION_LIBXML) && $(env) make install
-	touch $@
-
-$(BUILDSTEPS)/libxml2-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz
-	touch $@
-
-$(SOURCEDIR)/libxml2-$(VERSION_LIBXML).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "ftp://xmlsoft.org/libxml2/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
