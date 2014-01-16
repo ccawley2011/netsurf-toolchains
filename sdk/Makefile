@@ -33,12 +33,12 @@ VERSION_LIBCARES := 1.10.0
 VERSION_LIBCURL := 7.34.0
 VERSION_LIBGNURX := 2.5.1
 VERSION_LIBPBL := 1_04
-VERSION_LIBCF := CVS-20120227
+VERSION_LIBCF := CVS-20130415
 VERSION_LIBEXPAT := 2.1.0
 VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 VERSION_HERMES := 1.3.3
-VERSION_FREETYPE := 2.4.10
+VERSION_FREETYPE := 2.5.2
 VERSION_NSPR := 4.9.3
 #VERSION_SPIDERMONKEY := 1.8.5
 VERSION_SPIDERMONKEY := 1.7.0
@@ -82,6 +82,7 @@ SDK_ITEMS :=
 COMMON_SDK_ITEMS := zlib.d openssl.d libpng.d libjpeg.d libcares.d libcurl.d libexpat.d
 
 LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap ldaps rtsp telnet gopher tftp pop3 imap smtp manual)
+FREETYPE_ENV := LIBPNG_CFLAGS=$$($(GCCSDK_INSTALL_ENV)/bin/libpng-config --cflags) LIBPNG_LDFLAGS=$$($(GCCSDK_INSTALL_ENV)/bin/libpng-config --ldflags)
 
 # Target Specific setup
 ifeq ($(TARGET),arm-unknown-riscos)
@@ -277,7 +278,8 @@ $(SOURCEDIR)/hermes-$(VERSION_HERMES).tar.bz2:
 
 # freetype font lib
 $(BUILDSTEPS)/freetype.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/freetype-src.d
-	cd $(BUILDDIR)/freetype/freetype-$(VERSION_FREETYPE) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/freetype/freetype-$(VERSION_FREETYPE) && $(env) $(FREETYPE_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/freetype/freetype-$(VERSION_FREETYPE) && $(env) make
 	cd $(BUILDDIR)/freetype/freetype-$(VERSION_FREETYPE) && $(env) make install 
 	touch $@
 
