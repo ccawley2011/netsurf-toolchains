@@ -88,7 +88,7 @@ FREETYPE_ENV := LIBPNG_CFLAGS=$$($(GCCSDK_INSTALL_ENV)/bin/libpng-config --cflag
 ifeq ($(TARGET),arm-unknown-riscos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) spidermonkey.d)
   EXTRAARGS_LIBCARES := --disable-shared
-  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares $(LIBCURL_DISABLES)
+  EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --with-random="/dev/urandom" $(LIBCURL_DISABLES)
   ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
     EXTRAARGS_SPIDERMONKEY := BUILD_OPT=1 OS_ARCH=RISCOS OS_CPUARCH=arm OS_CONFIG=RISCOS
   else
