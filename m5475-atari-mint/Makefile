@@ -2,16 +2,16 @@
 
 # Build cross toolchain for m5475 processor with an atari mint ABI
 
-UPSTREAM_GCC_VERSION := 4.6.3
+UPSTREAM_GCC_VERSION := 4.6.4
 UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION).tar.bz2
 UPSTREAM_GCC_URI := http://ftp.gnu.org/gnu/gcc/gcc-$(UPSTREAM_GCC_VERSION)/$(UPSTREAM_GCC_TARBALL)
-UPSTREAM_GCC_PATCH := gcc-4.6.3-mint-20120503.patch.bz2
+UPSTREAM_GCC_PATCH := gcc-4.6.4-mint-20130415.patch.bz2
 UPSTREAM_GCC_PATCH_URI := http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/$(UPSTREAM_GCC_PATCH)
 
-UPSTREAM_BINUTILS_VERSION := 2.22
+UPSTREAM_BINUTILS_VERSION := 2.24
 UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION).tar.bz2
 UPSTREAM_BINUTILS_URI := ftp://ftp.gnu.org/gnu/binutils/$(UPSTREAM_BINUTILS_TARBALL)
-UPSTREAM_BINUTILS_PATCH := binutils-2.22-mint-20120205.patch.bz2
+UPSTREAM_BINUTILS_PATCH := binutils-2.24-mint-20131217.patch.bz2
 UPSTREAM_BINUTILS_PATCH_URI := http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/$(UPSTREAM_BINUTILS_PATCH)
 
 UPSTREAM_GMP_VERSION := 4.3.2
@@ -31,7 +31,7 @@ UPSTREAM_MINTBIN_VERSION := CVS-20110527
 UPSTREAM_MINTBIN_TARBALL := mintbin-$(UPSTREAM_MINTBIN_VERSION).tar.gz
 UPSTREAM_MINTBIN_URI := http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/$(UPSTREAM_MINTBIN_TARBALL)
 
-UPSTREAM_MINTLIB_VERSION := CVS-20131103
+UPSTREAM_MINTLIB_VERSION := CVS-20131219
 UPSTREAM_MINTLIB_TARBALL := mintlib-$(UPSTREAM_MINTLIB_VERSION).tar.gz
 UPSTREAM_MINTLIB_URI := http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/$(UPSTREAM_MINTLIB_TARBALL)
 
@@ -41,7 +41,7 @@ UPSTREAM_PML_URI := http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives
 UPSTREAM_PML_PATCH := pml-2.03-mint-20110207.patch.bz2
 UPSTREAM_PML_PATCH_URI := http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/$(UPSTREAM_PML_PATCH)
 
-UPSTREAM_GEMLIB_VERSION := CVS-20100223
+UPSTREAM_GEMLIB_VERSION := CVS-20130415
 UPSTREAM_GEMLIB_TARBALL := gemlib-$(UPSTREAM_GEMLIB_VERSION).tar.bz2
 UPSTREAM_GEMLIB_URI := http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/$(UPSTREAM_GEMLIB_TARBALL)
 
