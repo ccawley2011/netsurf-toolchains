@@ -138,7 +138,8 @@ $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/b
 			--prefix=$(PREFIX) --target=$(TARGET_NAME) \
 			--disable-nls --enable-languages=c \
 			--enable-checking=no --enable-c99 \
-			--enable-maintainer-mode --without-headers
+			--enable-maintainer-mode --without-headers \
+			--with-arch=cf
 	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make all-gcc
 	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make install-gcc
 	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make all-target-libgcc
