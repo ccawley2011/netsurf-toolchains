@@ -1,5 +1,5 @@
---- curl_orig/lib/hostip4.c	2013-10-23 21:55:34.000000000 +0100
-+++ curl/lib/hostip4.c	2014-01-30 10:19:46.900018967 +0000
+--- lib/hostip4.c	2013-10-23 21:55:34.000000000 +0100
++++ lib/hostip4.c	2014-01-30 10:19:46.900018967 +0000
 @@ -122,6 +122,11 @@ Curl_addrinfo *Curl_getaddrinfo(struct c
   * implying that only threadsafe code and function calls may be used.
   *
