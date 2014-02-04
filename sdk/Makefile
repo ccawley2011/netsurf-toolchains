@@ -114,7 +114,7 @@ endif
 ifeq ($(TARGET),ppc-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d spidermonkey.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared
-  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --enable-threaded-resolver LDFLAGS=-lpthread
+  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --enable-threaded-resolver LIBS=-lpthread
   VERSION_SPIDERMONKEY := 1.7.0
 endif
 
