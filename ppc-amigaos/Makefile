@@ -82,10 +82,13 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/base.lha
 	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/newlib-53.28.lha
 	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/clib2-1.205.lha
+	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/pthread.lha
 	mkdir -p $(PREFIX)/$(TARGET_NAME)/SDK
 	cp -r $(BUILDDIR)/ndk/tmp/Include $(PREFIX)/$(TARGET_NAME)/SDK/include
 	cp -r $(BUILDDIR)/ndk/tmp/newlib $(PREFIX)/$(TARGET_NAME)/SDK/newlib
 	cp -r $(BUILDDIR)/ndk/tmp/clib2 $(PREFIX)/$(TARGET_NAME)/SDK/clib2
+	cp -r $(BUILDDIR)/ndk/tmp/Local/common/include $(PREFIX)/$(TARGET_NAME)/SDK/newlib/include
+	cp -r $(BUILDDIR)/ndk/tmp/Local/newlib $(PREFIX)/$(TARGET_NAME)/SDK/newlib
 	cp -r $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)/include/* $(PREFIX)/$(TARGET_NAME)/SDK/include/include_h/
 	touch $@
 
