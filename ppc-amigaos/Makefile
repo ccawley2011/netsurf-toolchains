@@ -85,8 +85,8 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 	mkdir -p $(PREFIX)/$(TARGET_NAME)/SDK
 	cp -r $(BUILDDIR)/ndk/tmp/Include $(PREFIX)/$(TARGET_NAME)/SDK/include
 	cp -r $(BUILDDIR)/ndk/tmp/newlib $(PREFIX)/$(TARGET_NAME)/SDK/newlib
-	cp -r $(BUILDDIR)/ndk/tmp/Local/common/include $(PREFIX)/$(TARGET_NAME)/SDK/newlib/include
-	cp -r $(BUILDDIR)/ndk/tmp/Local/newlib $(PREFIX)/$(TARGET_NAME)/SDK/newlib
+	cp -r $(BUILDDIR)/ndk/tmp/Local/common/include/* $(PREFIX)/$(TARGET_NAME)/SDK/newlib/include/
+	cp -r $(BUILDDIR)/ndk/tmp/Local/newlib/lib/* $(PREFIX)/$(TARGET_NAME)/SDK/newlib/lib/
 	cp -r $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)/include/* $(PREFIX)/$(TARGET_NAME)/SDK/include/include_h/
 	touch $@
 
