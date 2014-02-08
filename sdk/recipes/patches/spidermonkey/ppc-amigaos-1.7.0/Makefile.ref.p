@@ -428,9 +428,9 @@
 +	$(CC) $(CFLAGS) -c $< -o $@
 +
 +export:
-+	$(MKDIR) $(JS_DIST)/include/js
-+	$(CP) libjs.a $(JS_DIST)/lib
-+	$(CP) *.h $(JS_DIST)/include/js
-+	$(CP) *.tbl $(JS_DIST)/include/js
++	$(MKDIR) -p $(JS_DIST)/include/js
++	$(CP) -f libjs.a $(JS_DIST)/lib
++	$(CP) -f *.h $(JS_DIST)/include/js
++	$(CP) -f *.tbl $(JS_DIST)/include/js
 +
 
