@@ -102,6 +102,7 @@ ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver 
   EXTRAARGS_LIBICONV := --enable-extra-encodings
+  LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
 endif
 
 ifeq ($(TARGET),m5475-atari-mint)
@@ -109,6 +110,7 @@ ifeq ($(TARGET),m5475-atari-mint)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver
   EXTRAARGS_LIBICONV := --enable-extra-encodings
+  LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
@@ -177,7 +179,7 @@ $(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
 ifneq ($(realpath $(RECIPES)/patches/libiconv/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libiconv/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared $(EXTRAARGS_LIBICONV)
+	cd $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) && $(env) $(LIBICONV_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared $(EXTRAARGS_LIBICONV)
 	cd $(BUILDDIR)/libiconv/libiconv-$(VERSION_LIBICONV) && $(env) make install
 	touch $@
 
