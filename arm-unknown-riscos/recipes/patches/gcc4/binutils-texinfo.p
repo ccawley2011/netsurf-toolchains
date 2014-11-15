@@ -1,6 +1,6 @@
 --- recipe/patches/binutils/binutils.texinfo.p
 +++ recipe/patches/binutils/binutils-texinfo.p
-@@ -0,0 +1,45 @@
+@@ -0,0 +1,85 @@
 +--- binutils/doc/binutils.texi	29 Oct 2010 12:10:32 -0000	1.173
 ++++ binutils/doc/binutils.texi	15 Nov 2014 16:24:15 -0000
 +@@ -4188,28 +4188,28 @@
@@ -46,3 +46,43 @@
 + Change the ELF OSABI in the ELF header to @var{type}.  The
 + supported ELF OSABI are the same as @option{--input-osabi}.
 + 
++--- bfd/doc/bfd.texinfo	28 Oct 2010 11:40:25 -0000	1.18
+++++ bfd/doc/bfd.texinfo	15 Nov 2014 16:52:33 -0000
++@@ -322,7 +322,7 @@
++ @printindex cp
++ 
++ @tex
++-% I think something like @colophon should be in texinfo.  In the
+++% I think something like @@colophon should be in texinfo.  In the
++ % meantime:
++ \long\def\colophon{\hbox to0pt{}\vfill
++ \centerline{The body of this manual is set in}
++@@ -333,7 +333,7 @@
++ \centerline{{\sl\fontname\tensl\/}}
++ \centerline{are used for emphasis.}\vfill}
++ \page\colophon
++-% Blame: doc@cygnus.com, 28mar91.
+++% Blame: doc@@cygnus.com, 28mar91.
++ @end tex
++ 
++ @bye
++--- ld/ld.texinfo	28 Oct 2010 11:40:26 -0000	1.267
+++++ ld/ld.texinfo	15 Nov 2014 16:52:35 -0000
++@@ -7682,7 +7682,7 @@
++ @printindex cp
++ 
++ @tex
++-% I think something like @colophon should be in texinfo.  In the
+++% I think something like @@colophon should be in texinfo.  In the
++ % meantime:
++ \long\def\colophon{\hbox to0pt{}\vfill
++ \centerline{The body of this manual is set in}
++@@ -7693,7 +7693,7 @@
++ \centerline{{\sl\fontname\tensl\/}}
++ \centerline{are used for emphasis.}\vfill}
++ \page\colophon
++-% Blame: doc@cygnus.com, 28mar91.
+++% Blame: doc@@cygnus.com, 28mar91.
++ @end tex
++ 
++ @bye
