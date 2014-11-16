@@ -1,14 +1,14 @@
-# Use tagged release of GCCSDK
-UPSTREAM_GCCSDK_VERSION := release_4_1_2_v2
+# Use a tested trunk version of GCCSDK
 UPSTREAM_GCCSDK_TARBALL := gcc4
-UPSTREAM_GCCSDK_URI := svn://svn.riscos.info/gccsdk/tags/$(UPSTREAM_GCCSDK_VERSION)
+UPSTREAM_GCCSDK_REVISION := 6747
+UPSTREAM_GCCSDK_URI := svn://svn.riscos.info/gccsdk/trunk/gcc4@$(UPSTREAM_GCCSDK_REVISION)
 
-# Going to use a known revision of trunk, until there's a release version that suits
-UPSTREAM_OSLIB_VERSION := 402
+# OSLib 7.00
+UPSTREAM_OSLIB_VERSION := oslib-700
 UPSTREAM_OSLIB_TARBALL := oslib
-UPSTREAM_OSLIB_URI := https://svn.code.sf.net/p/ro-oslib/code/trunk/!OSLib@$(UPSTREAM_OSLIB_VERSION)
+UPSTREAM_OSLIB_URI := https://svn.code.sf.net/p/ro-oslib/code/tags/$(UPSTREAM_OSLIB_VERSION)/!OSLib
 
-# Ditto for CCRes
+# Known tested version of trunk for CCRes
 UPSTREAM_CCRES_VERSION := 96
 UPSTREAM_CCRES_TARBALL := ccres
 UPSTREAM_CCRES_URI := svn://svn.riscos.info/ccres/trunk@$(UPSTREAM_CCRES_VERSION)
