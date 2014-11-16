@@ -113,6 +113,9 @@ $(BUILDSTEPS)/oslib.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_OSLIB_TARBAL
 $(BUILDSTEPS)/gcc.d: $(BUILDSTEPS)/gccsdk-srcdir.d
 	cd $(BUILDDIR)/gcc4 && make
 	cd $(BUILDDIR)/gcc4 && ./install-env
+	@# Newer GCCSDK adds these trampoline binaries that for us
+	@# serve no purpose and get in the way.
+	$(RM) $(PREFIX)/cross/bin/arm-unknown-riscos-gcc-ar $(PREFIX)/cross/bin/arm-unknown-riscos-gcc-nm $(PREFIX)/cross/bin/arm-unknown-riscos-gcc-ranlib
 	touch $@
 
 $(BUILDSTEPS)/gccsdk-srcdir.d: $(BUILDSTEPS)/buildsteps.d $(SOURCESDIR)/$(UPSTREAM_GCCSDK_TARBALL)
