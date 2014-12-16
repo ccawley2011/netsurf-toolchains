@@ -5,7 +5,7 @@ UPSTREAM_GCC_URI := http://ftp.gnu.org/gnu/gcc/gcc-$(UPSTREAM_GCC_VERSION)/$(UPS
 UPSTREAM_BINUTILS_VERSION := 2.14
 # Not a tarball; so sue me
 UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION)
-UPSTREAM_BINUTILS_URI := https://adtools.svn.sourceforge.net/svnroot/adtools/tags/before-merge-with-binutils-2.18/binutils
+UPSTREAM_BINUTILS_URI := http://svn.code.sf.net/p/adtools/code/tags/before-merge-with-binutils-2.18/binutils/
 
 UPSTREAM_GMP_VERSION := 4.3.2
 UPSTREAM_GMP_TARBALL := gmp-$(UPSTREAM_GMP_VERSION).tar.bz2
@@ -25,7 +25,7 @@ UPSTREAM_CLIB2_TARBALL := clib2
 UPSTREAM_CLIB2_URI := anonymous@clib2.cvs.sourceforge.net:/cvsroot/clib2
 
 UPSTREAM_NDK_TARBALL := ndk-3.9-includes.tar.bz2
-UPSTREAM_NDK_URI := http://www.zerohero.se/cross/files/m68k-amigaos/ndk-3.9-includes.tar.bz2
+UPSTREAM_NDK_URI := http://kas1e.mikendezign.com/zerohero_crosscompilers_backup/files/m68k-amigaos/ndk-3.9-includes.tar.bz2
 
 UPSTREAM_OPENURL_VERSION := 7.8
 UPSTREAM_OPENURL_TARBALL := openurl
