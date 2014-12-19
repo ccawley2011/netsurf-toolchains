@@ -126,7 +126,7 @@ ifeq ($(TARGET),i686-w64-mingw32)
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d $(COMMON_SDK_ITEMS))
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared --without-random
 endif
 
