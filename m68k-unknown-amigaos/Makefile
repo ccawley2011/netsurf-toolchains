@@ -27,9 +27,9 @@ UPSTREAM_CLIB2_URI := anonymous@clib2.cvs.sourceforge.net:/cvsroot/clib2
 UPSTREAM_NDK_TARBALL := ndk-3.9-includes.tar.bz2
 UPSTREAM_NDK_URI := http://kas1e.mikendezign.com/zerohero_crosscompilers_backup/files/m68k-amigaos/ndk-3.9-includes.tar.bz2
 
-UPSTREAM_OPENURL_VERSION := 7.8
+UPSTREAM_OPENURL_VERSION := 7.15
 UPSTREAM_OPENURL_TARBALL := openurl
-UPSTREAM_OPENURL_URI := https://openurllib.svn.sourceforge.net/svnroot/openurllib/releases/$(UPSTREAM_OPENURL_VERSION)/developer/C
+UPSTREAM_OPENURL_URI := http://svn.code.sf.net/p/openurllib/code/releases/$(UPSTREAM_OPENURL_VERSION)/developer/C
 
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
