@@ -128,6 +128,7 @@ endif
 ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared --without-random
+  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver
 endif
 
 ifeq ($(SDK_ITEMS),)

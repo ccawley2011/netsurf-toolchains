@@ -1,11 +1,11 @@
-UPSTREAM_GCC_VERSION := 4.5.1
+UPSTREAM_GCC_VERSION := 4.5.4
 UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION).tar.bz2
 UPSTREAM_GCC_URI := http://ftp.gnu.org/gnu/gcc/gcc-$(UPSTREAM_GCC_VERSION)/$(UPSTREAM_GCC_TARBALL)
 
 UPSTREAM_BINUTILS_VERSION := 2.14
 # Not a tarball; so sue me
 UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION)
-UPSTREAM_BINUTILS_URI := http://svn.code.sf.net/p/adtools/code/tags/before-merge-with-binutils-2.18/binutils/
+UPSTREAM_BINUTILS_URI := http://svn.code.sf.net/p/adtools/code/branches/binutils/$(UPSTREAM_BINUTILS_VERSION)/
 
 UPSTREAM_GMP_VERSION := 4.3.2
 UPSTREAM_GMP_TARBALL := gmp-$(UPSTREAM_GMP_VERSION).tar.bz2
