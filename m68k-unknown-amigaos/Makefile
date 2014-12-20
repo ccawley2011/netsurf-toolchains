@@ -21,8 +21,8 @@ UPSTREAM_MPC_TARBALL := mpc-$(UPSTREAM_MPC_VERSION).tar.gz
 UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TARBALL)
 
 UPSTREAM_CLIB2_VERSION := 2010-12-30
-UPSTREAM_CLIB2_TARBALL := clib2
-UPSTREAM_CLIB2_URI := anonymous@clib2.cvs.sourceforge.net:/cvsroot/clib2
+UPSTREAM_CLIB2_TARBALL := clib2-$(UPSTREAM_CLIB2_VERSION).tar.xz
+UPSTREAM_CLIB2_URI := anonymous:@clib2.cvs.sourceforge.net:/cvsroot/clib2
 
 UPSTREAM_NDK_TARBALL := ndk-3.9-includes.tar.bz2
 UPSTREAM_NDK_URI := http://kas1e.mikendezign.com/zerohero_crosscompilers_backup/files/m68k-amigaos/ndk-3.9-includes.tar.bz2
@@ -30,6 +30,12 @@ UPSTREAM_NDK_URI := http://kas1e.mikendezign.com/zerohero_crosscompilers_backup/
 UPSTREAM_OPENURL_VERSION := 7.15
 UPSTREAM_OPENURL_TARBALL := openurl
 UPSTREAM_OPENURL_URI := http://svn.code.sf.net/p/openurllib/code/releases/$(UPSTREAM_OPENURL_VERSION)/developer/C
+
+# need to force the auto* version in use
+GCC_AUTOCONF := autoconf2.64
+GCC_AUTOHEADER := autoheader2.64
+GCC_AUTORECONF := autoreconf2.64
+GCC_AUTOM4TE := autom4te2.64
 
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
@@ -43,6 +49,8 @@ BINUTILS_SRCDIR := $(SRCDIR)/binutils
 TARGET_NAME := m68k-unknown-amigaos
 
 PREFIX ?= /opt/netsurf/$(TARGET_NAME)/cross
+
+GCC_ENV_PARAMS := AUTOCONF=$(GCC_AUTOCONF) AUTOHEADER=$(GCC_AUTOHEADER) AUTOM4TE=$(GCC_AUTOM4TE) PATH="$(PREFIX)/bin:$(PATH)"
 
 .PHONY: all clean distclean
 all: $(BUILDSTEPS)/stage2.d
@@ -58,8 +66,8 @@ distclean: clean
 ###
 
 $(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/clib2.d
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make all
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make install
 	touch $@
 
 ###
@@ -67,7 +75,8 @@ $(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/clib2.d
 ###
 
 $(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL)
-	cp -r $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL) $(BUILDDIR)/clib2
+	tar xaf $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL)
+	mv library $(BUILDDIR)/clib2
 	for p in `ls $(RECIPES)/patches/clib2/*.p` ; do patch -d $(BUILDDIR)/clib2 -p0 <$$p ; done
 	for dir in `find $(RECIPES)/files/clib2/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do mkdir -p $(BUILDDIR)/clib2$$dir ; done
 	for file in `find $(RECIPES)/files/clib2/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do cp -p $(RECIPES)/files/clib2$$file $(BUILDDIR)/clib2$$file ; done
@@ -94,7 +103,7 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 ###
 
 $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(GCC_SRCDIR)/configure \
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) $(GCC_SRCDIR)/configure \
 				--prefix=$(PREFIX) \
 				--target=$(TARGET_NAME) \
 				--with-cpu=m68040 --disable-threads \
@@ -104,8 +113,8 @@ $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/b
 				--disable-multilib --without-x \
 				--enable-maintainer-mode --disable-shared \
 				--without-headers
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all-gcc
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install-gcc
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make all-gcc
+	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) make install-gcc
 	touch $@
 
 ###
@@ -175,7 +184,8 @@ $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL):
 $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL):
 	cvs -Q -d:pserver:$(UPSTREAM_CLIB2_URI) login
 	cvs -z9 -d:pserver:$(UPSTREAM_CLIB2_URI) checkout -D $(UPSTREAM_CLIB2_VERSION) library
-	mv library $@
+	tar -caf $@ library
+	rm -rf library
 
 $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL):
 	wget -q -O $@ $(UPSTREAM_NDK_URI)
