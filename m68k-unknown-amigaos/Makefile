@@ -94,11 +94,16 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 ###
 
 $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d
-	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(GCC_SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) \
-			--with-cpu=m68040 --disable-threads --disable-nls --disable-c-mbchar \
-			--enable-languages=c --enable-checking=no --enable-c99 --with-cross-host \
-			--disable-multilib --without-x --enable-maintainer-mode --disable-shared \
-			--without-headers
+	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" $(GCC_SRCDIR)/configure \
+				--prefix=$(PREFIX) \
+				--target=$(TARGET_NAME) \
+				--with-cpu=m68040 --disable-threads \
+				--disable-nls --disable-c-mbchar \
+				--enable-languages=c --enable-checking=no \
+				--enable-c99 --with-cross-host \
+				--disable-multilib --without-x \
+				--enable-maintainer-mode --disable-shared \
+				--without-headers
 	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make all-gcc
 	cd $(BUILDDIR) && PATH="$(PREFIX)/bin:$(PATH)" make install-gcc
 	touch $@
@@ -114,11 +119,11 @@ $(BUILDSTEPS)/srcdir-step3.d: $(BUILDSTEPS)/srcdir-step2.d
 	touch $@
 
 $(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL)
-	tar xjf $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL)
+	tar xaf $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL)
 	mv gmp-$(UPSTREAM_GMP_VERSION) $(GCC_SRCDIR)/gmp
-	tar xjf $(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL)
+	tar xaf $(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL)
 	mv mpfr-$(UPSTREAM_MPFR_VERSION) $(GCC_SRCDIR)/mpfr
-	tar xzf $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL)
+	tar xaf $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL)
 	mv mpc-$(UPSTREAM_MPC_VERSION) $(GCC_SRCDIR)/mpc
 	touch $@
 
