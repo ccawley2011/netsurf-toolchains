@@ -83,6 +83,7 @@ $(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(
 	cd $(BUILDDIR)/clib2 && PATH="$(PREFIX)/bin:$(PATH)" make -f GNUmakefile.68k
 	cp -r $(BUILDDIR)/clib2/include $(PREFIX)/$(TARGET_NAME)
 	cp -r $(BUILDDIR)/clib2/lib $(PREFIX)/$(TARGET_NAME)
+	ln -sf $(PREFIX)/$(TARGET_NAME)/lib/ncrt0.o $(PREFIX)/$(TARGET_NAME)/lib/crt0.o
 	touch $@
 
 ###
