@@ -1,4 +1,4 @@
-UPSTREAM_GCC_VERSION := 4.5.4
+UPSTREAM_GCC_VERSION := 3.4.6
 UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION).tar.bz2
 UPSTREAM_GCC_URI := http://ftp.gnu.org/gnu/gcc/gcc-$(UPSTREAM_GCC_VERSION)/$(UPSTREAM_GCC_TARBALL)
 
@@ -106,7 +106,7 @@ $(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/b
 	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) $(GCC_SRCDIR)/configure \
 				--prefix=$(PREFIX) \
 				--target=$(TARGET_NAME) \
-				--with-cpu=m68040 --disable-threads \
+				--disable-threads \
 				--disable-nls --disable-c-mbchar \
 				--enable-languages=c --enable-checking=no \
 				--enable-c99 --with-cross-host \

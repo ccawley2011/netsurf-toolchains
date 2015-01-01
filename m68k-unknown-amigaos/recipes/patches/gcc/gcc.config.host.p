@@ -1,12 +1,14 @@
---- gcc/config.host	2010-12-20 02:28:16.000000000 +0000
-+++ gcc/config.host	2010-12-20 02:31:32.000000000 +0000
-@@ -264,4 +264,9 @@
-     out_host_hook_obj=host-hpux.o
-     host_xmake_file="${host_xmake_file} x-hpux"
+--- gcc-3.4.6/gcc/config.host	2013-05-19 20:09:27.000000000 +0200
++++ gcc/config.host	2013-05-19 20:23:32.000000000 +0200
+@@ -154,6 +154,11 @@
+   i860-*-sysv4*)
+     host_xmake_file=i860/x-sysv4
      ;;
 +  m68k-*-amigaos*)
-+    host_xm_file="m68k/xm-amigaos.h"
-+    host_xmake_file="m68k/x-amigaos"
++    host_xm_file=m68k/xm-amigaos.h
++    host_xmake_file=m68k/x-amigaos
 +    out_host_hook_obj=host-amigaos.o
 +    ;;
- esac
+   powerpc-*-darwin*)
+     # powerpc-darwin host support.
+     out_host_hook_obj=host-darwin.o

@@ -3,8 +3,7 @@
    Free Software Foundation, Inc.  
    Contributed by Markus M. Wild (wild@amiga.physik.unizh.ch).
    Heavily modified by Kamil Iskra (iskra@student.uci.agh.edu.pl).
-   
- 
+
 This file is part of GCC.
 
 GCC is free software; you can redistribute it and/or modify
@@ -22,54 +21,13 @@ along with GCC; see the file COPYING.  If not, write to
 the Free Software Foundation, 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.  */
 
-/* use the motorola syntax, other mode is broken. */
-
-#undef TARGET_VERSION
-#define TARGET_VERSION fprintf (stderr, " (68k, Motorola syntax)")
-
-#undef MOTOROLA
-#define MOTOROLA 1
-
-/* #define IRA_COVER_CLASSES */
-
-/* disable 80 bit and 128 bit floats, dont work in libgcc */
-
-#undef LIBGCC2_HAS_XF_MODE
-#define LIBGCC2_HAS_XF_MODE 0
-
-#undef LIBGCC2_HAS_TF_MODE
-#define LIBGCC2_HAS_TF_MODE 0
-
-/*  The function name __transfer_from_trampoline is not actually used.
-   The function definition just permits use of asm with operands"
-   (though the operand list is empty).  */
-   
-#undef TRANSFER_FROM_TRAMPOLINE				 
-
-
-/* Compile using the first 'm68k_regparm' data, address and float
-   registers for arguments passing.  */      
-/*#define SUBTARGET_OPTIONS     { "regparm=",		&m68k_regparm_string,				\
-    N_("Use this register count to pass arguments"), 0},*/	
-    
-
-
-/* Nonzero if we need to generate special stack-allocating insns.
-   On most systems they are not needed.
-   When they are needed, also define ALTERNATE_ALLOCATE_STACK (see m68k.md)
-   to perform the necessary actions.  */
-/* #undef TARGET_ALTERNATE_ALLOCATE_STACK 
-#define TARGET_ALTERNATE_ALLOCATE_STACK 0 */ 
-
-      
+
 /* Specs, switches.  */
 
 /* amiga/amigaos are the new "standard" defines for the Amiga.
    MCH_AMIGA, AMIGA, __chip etc. are used in other compilers and are
    provided for compatibility reasons.
    When creating shared libraries, use different 'errno'.  */
-
-
 
 #undef TARGET_OS_CPP_BUILTINS
 #define TARGET_OS_CPP_BUILTINS()					\
@@ -79,8 +37,8 @@ Boston, MA 02111-1307, USA.  */
       builtin_define ("__saveds=__attribute__((__saveds__))");		\
       builtin_define ("__interrupt=__attribute__((__interrupt__))");	\
       builtin_define ("__stackext=__attribute__((__stackext__))");	\
-      builtin_define ("__regargs_x=__attribute__((__regparm__))");	\
-      builtin_define ("__stdargs_x=__attribute__((__stkparm__))");	\
+      builtin_define ("__regargs=__attribute__((__regparm__))");	\
+      builtin_define ("__stdargs=__attribute__((__stkparm__))");	\
       builtin_define ("__aligned=__attribute__((__aligned__(4)))");	\
       if (target_flags & (MASK_RESTORE_A4|MASK_ALWAYS_RESTORE_A4))	\
         builtin_define ("errno=(*ixemul_errno)");			\
@@ -94,9 +52,10 @@ Boston, MA 02111-1307, USA.  */
 
 /* Inform the program which CPU we compile for.  */
 
-/* #undef TARGET_CPU_CPP_BUILTINS */
-/*
- use --with-cpu=mc68040 etc.. instead on config. code was after #define TARGET_CPU_CPP_BUILTINS()
+#undef TARGET_CPU_CPP_BUILTINS
+#define TARGET_CPU_CPP_BUILTINS()					\
+  do									\
+    {									\
       if (TARGET_68040_ONLY)						\
 	{								\
 	  if (TARGET_68060)						\
@@ -109,12 +68,6 @@ Boston, MA 02111-1307, USA.  */
       else if (TARGET_68020)						\
 	builtin_define_std ("mc68020");					\
       builtin_define_std ("mc68000");					\
-*/
-/*
-#define TARGET_CPU_CPP_BUILTINS()					\
-  do									\
-    {	                                \
-     builtin_define_std ("mc68040");	   								\
       if (flag_pic > 2)							\
 	{								\
 	  builtin_define ("__pic__");					\
@@ -125,7 +78,7 @@ Boston, MA 02111-1307, USA.  */
       builtin_assert ("machine=m68k");					\
     }									\
   while (0)
-*/
+
 /* Define __HAVE_68881__ in preprocessor according to the -m flags.
    This will control the use of inline 68881 insns in certain macros.
    Note: it should be set in TARGET_CPU_CPP_BUILTINS but TARGET_68881
@@ -133,30 +86,23 @@ Boston, MA 02111-1307, USA.  */
    Differentiate between libnix and ixemul.  */
 
 #define CPP_SPEC							\
-  "%{m68881:-D__HAVE_68881__}"
-/*
+  "%{m68881:-D__HAVE_68881__} "						\
   "%{noixemul:%{!ansi:%{!std=*:-Dlibnix}%{std=gnu*:-Dlibnix}} -D__libnix -D__libnix__} " \
   "%{!noixemul:%{!ansi:%{!std=*:-Dixemul}%{std=gnu*:-Dixemul}} -D__ixemul -D__ixemul__}"
-*/
 
 /* Translate '-resident' to '-fbaserel' (they differ in linking stage only).
    Don't put function addresses in registers for PC-relative code.  */
 
-/*
 #define CC1_SPEC							\
   "%{resident:-fbaserel} "						\
   "%{resident32:-fbaserel32} "						\
   "%{msmall-code:-fno-function-cse}"
-*/
 
 /* Various -m flags require special flags to the assembler.  */
 
-#undef ASM_SPEC
 #define ASM_SPEC							\
-  "%(asm_cpu) %(asm_cpu_default)"
-/* %{msmall-code:-sc}" */
+  "%(asm_cpu) %(asm_cpu_default) %{msmall-code:-sc}"
 
-#undef ASM_CPU_SPEC
 #define ASM_CPU_SPEC							\
   "%{m68000|mc68000:-m68010} "						\
   "%{m6802*|mc68020:-m68020} "						\
@@ -165,7 +111,7 @@ Boston, MA 02111-1307, USA.  */
   "%{m68060}"
 
 #define ASM_CPU_DEFAULT_SPEC						\
-  "%{!m680*:%{!mc680*:-m68040}}"
+  "%{!m680*:%{!mc680*:-m68010}}"
 
 /* If debugging, tell the linker to output amiga-hunk symbols *and* a BSD
    compatible debug hunk.
@@ -173,17 +119,12 @@ Boston, MA 02111-1307, USA.  */
    commandline options.  */
 
 #define LINK_SPEC							\
-  "%{g:-amiga-debug-hunk} "						\
-  "%(link_cpu)"
-
-/*
+  "%{noixemul:-fl libnix} "						\
   "%{resident*:-amiga-datadata-reloc} "					\
   "%{resident|fbaserel:-m amiga_bss -fl libb} "				\
   "%{resident32|fbaserel32:-m amiga_bss -fl libb32} "			\
   "%{g:-amiga-debug-hunk} "						\
   "%(link_cpu)"
-  "%{noixemul:-fl libnix} " 
-*/
 
 #define LINK_CPU_SPEC							\
   "%{m6802*|mc68020|m68030|m68040|m68060:-fl libm020} "			\
@@ -194,8 +135,6 @@ Boston, MA 02111-1307, USA.  */
    32-bit versions, libnix, profiling or plain crt0.o.  */
 
 #define STARTFILE_SPEC							\
-  "ncrt0.o%s"
-/*
   "%{!noixemul:"							\
     "%{fbaserel:%{!resident:bcrt0.o%s}}"				\
     "%{resident:rcrt0.o%s}"						\
@@ -206,18 +145,9 @@ Boston, MA 02111-1307, USA.  */
   "%{noixemul:"								\
     "%{resident:libnix/nrcrt0.o%s} "					\
     "%{!resident:%{fbaserel:libnix/nbcrt0.o%s}%{!fbaserel:libnix/ncrt0.o%s}}}"
-*/
 
-/* 
 #define ENDFILE_SPEC							\
   "%{noixemul:-lstubs}"
-*/
-
-/* put return values in FPU build in FP0 Reg */  
-#undef FUNCTION_VALUE_REGNO_P
-#define FUNCTION_VALUE_REGNO_P(N) \
-  ((N) == D0_REG || (N) == A0_REG || (TARGET_68881 && (N) == FP0_REG))
-   
 
 /* Automatically search libamiga.a for AmigaOS specific functions.  Note
    that we first search the standard C library to resolve as much as
@@ -233,13 +163,11 @@ Boston, MA 02111-1307, USA.  */
    example) calls like sprintf come from -lamiga rather than -lc. */
 
 #define LIB_SPEC							\
-  "%{!nostdlib:-lc -lamiga -lnet -lunix -lm -lc}"
-/*  "%{!noixemul:"							\
+  "%{!noixemul:"							\
     "%{p|pg:-lc_p}"							\
     "%{!p:%{!pg:-lc -lamiga -lc}}}"					\
   "%{noixemul:"								\
     "-lnixmain -lnix -lamiga %{mstackcheck|mstackextend:-lstack}}"
-*/
 
 /* This macro defines names of additional specifications to put in the specs
    that can be used in various specifications like CC1_SPEC.  Its definition
@@ -250,7 +178,7 @@ Boston, MA 02111-1307, USA.  */
    program.
 
    Do not define this macro if it does not need to do anything.  */
-#undef EXTRA_SPECS
+
 #define EXTRA_SPECS							\
   { "asm_cpu",		ASM_CPU_SPEC },					\
   { "asm_cpu_default",	ASM_CPU_DEFAULT_SPEC },				\
@@ -310,12 +238,8 @@ Boston, MA 02111-1307, USA.  */
     { "always-restore-a4", MASK_ALWAYS_RESTORE_A4,			\
       N_("Restore a4 in all functions") },				\
     { "no-always-restore-a4", - MASK_ALWAYS_RESTORE_A4,			\
-      N_("Do not restore a4 in all functions") }, \
-    { "regparm_x", MASK_REGPARM,						\
-      N_("Pass arguments through registers") },				\
-    { "no-regparm_x", - MASK_REGPARM,					\
-      N_("Don't pass arguments through registers") },
-      
+      N_("Do not restore a4 in all functions") },
+
 #undef SUBTARGET_OVERRIDE_OPTIONS
 #define SUBTARGET_OVERRIDE_OPTIONS					\
 do									\
@@ -324,7 +248,7 @@ do									\
       error ("-fbaserel32 is not supported on the 68000 or 68010\n");	\
   }									\
 while (0)
-
+
 /* Various ABI issues.  */
 
 /* This is (almost;-) BSD, so it wants DBX format.  */
@@ -367,16 +291,7 @@ while (0)
    with an error code above the `error' or even `failure' level
    (which is configurable with the FAILAT command)).  */
 
-/* +2004-06-24  Ulrich Weigand  <uweigand@de.ibm.com>
-+
-+	* c-decl.c (finish_function): Do not check for DEFAULT_MAIN_RETURN.
-+	* system.h (DEFAULT_MAIN_RETURN): Poison.
-+	* doc/tm.texi (DEFAULT_MAIN_RETURN): Remove documentation.
-+
-
-poison VAR
 #define DEFAULT_MAIN_RETURN c_expand_return (integer_zero_node)
-*/
 
 #undef WCHAR_TYPE
 #define WCHAR_TYPE "unsigned int"
@@ -396,11 +311,12 @@ poison VAR
 #define TARGET_ASM_EH_FRAME_SECTION amiga_eh_frame_section
 #endif
 
-/* Use sjlj exceptions because dwarf work only on elf targets */
-#undef DWARF2_UNWIND_INFO
+/* Use sjlj exceptions until problems with DWARF2 unwind info on a.out
+   targets using GNU ld are fixed.  */
+/*
 #define DWARF2_UNWIND_INFO	0
-
-
+*/
+#define NO_DWARF2_UNWIND_INFO
 
 /* GAS supports alignment up to 32768 bytes.  */
 #undef ASM_OUTPUT_ALIGN
@@ -424,7 +340,7 @@ while (0)
   emit_library_call (gen_rtx_SYMBOL_REF (Pmode, "__flush_cache"),	\
 		     0, VOIDmode, 2, (TRAMP), Pmode,			\
 		     GEN_INT (TRAMPOLINE_SIZE), SImode)
-
+
 /* Baserel support.  */
 
 /* Given that symbolic_operand(X), return TRUE if no special
@@ -467,8 +383,8 @@ while (0)
 
 /* Select and switch to a section for EXP.  */
 
-/* #undef TARGET_ASM_SELECT_SECTION
-#define TARGET_ASM_SELECT_SECTION amigaos_select_section */
+#undef TARGET_ASM_SELECT_SECTION
+#define TARGET_ASM_SELECT_SECTION amigaos_select_section
 
 /* Preserve A4 for baserel code if necessary.  */
 
@@ -487,7 +403,7 @@ do {									\
 
 #define ALTERNATE_PIC_SETUP(STREAM)					\
   (amigaos_alternate_pic_setup (STREAM))
-
+
 /* Attribute support.  */
 
 /* Generate the test of d0 before return to set cc register in 'interrupt'
@@ -501,76 +417,10 @@ do									\
       asm_fprintf ((STREAM), "\ttstl %Rd0\n");				\
   }									\
 while (0)
-
+
 /* begin-GG-local: explicit register specification for parameters */
 
 /* Note: this is an extension of m68k_args */
-
-
-/* A C type for declaring a variable that is used as the first
-   argument of `FUNCTION_ARG' and other related values.  */
-/* Max. number of data, address and float registers to be used for passing
-   integer, pointer and float arguments when TARGET_REGPARM.
-   It's 4, so d0-d3, a0-a3 and fp0-fp3 can be used.  */
-#undef M68K_MAX_REGPARM
-#define M68K_MAX_REGPARM 4
-
-/* The default number of data, address and float registers to use when
-   user specified '-mregparm' switch, not '-mregparm=<value>' option.  */
-#undef M68K_DEFAULT_REGPARM
-#define M68K_DEFAULT_REGPARM 2
-
-#undef FUNCTION_ARG_ADVANCE
-#define FUNCTION_ARG_ADVANCE(CUM, MODE, TYPE, NAMED)	\
-  (m68k_function_arg_advance (&(CUM)))
-
-#undef FUNCTION_ARG
-#define FUNCTION_ARG(CUM, MODE, TYPE, NAMED) \
-  (m68k_function_arg (&(CUM), (MODE), (TYPE)))
-
-#undef INIT_CUMULATIVE_ARGS
-#define INIT_CUMULATIVE_ARGS(CUM, FNTYPE, LIBNAME, INDIRECT, N_NAMED_ARGS) \
- (m68k_init_cumulative_args (&(CUM), (FNTYPE)))
-
-
-#define MASK_REGPARM	(1<<24)
-#define TARGET_REGPARM (target_flags & MASK_REGPARM)
-
-#undef CLASS_MAX_NREGS
-#define CLASS_MAX_NREGS(CLASS, MODE)	\
- ((CLASS) == FP_REGS ? GET_MODE_NUNITS (MODE) \
- : ((GET_MODE_SIZE (MODE) + UNITS_PER_WORD - 1) / UNITS_PER_WORD))
-
-/* 1 if N is a possible register number for function argument passing.  */
-#undef FUNCTION_ARG_REGNO_P
-#define FUNCTION_ARG_REGNO_P(N)			\
-  ((((int)N) >= 0 && (N) < M68K_MAX_REGPARM)		\
-   || ((N) >= 8 && (N) < 8 + M68K_MAX_REGPARM)	\
-   || (TARGET_68881 && (N) >= 16 && (N) < 16 + M68K_MAX_REGPARM))
-
-/*
-   On the m68k, this is a structure:
-   num_of_regs: number of data, address and float registers to use for
-     arguments passing (if it's 2, than pass arguments in d0, d1, a0, a1,
-     fp0 and fp1). 0 - pass everything on stack. vararg calls are
-     always passed entirely on stack.
-   regs_already_used: bitmask of the already used registers.
-   last_arg_reg - register number of the most recently passed argument.
-     -1 if passed on stack.
-   last_arg_len - number of registers used by the most recently passed
-     argument.
-*/
-
-struct m68k_args
-{
-  int num_of_regs;
-  long regs_already_used;
-  int last_arg_reg;
-  int last_arg_len;
-};
-#undef CUMULATIVE_ARGS
-#define CUMULATIVE_ARGS struct m68k_args
-
 struct amigaos_args
 {
   int num_of_regs;
@@ -579,6 +429,10 @@ struct amigaos_args
   int last_arg_len;
   void *formal_type; /* New field: formal type of the current argument.  */
 };
+
+/* A C type for declaring a variable that is used as the first
+   argument of `FUNCTION_ARG' and other related values.  */
+
 #undef CUMULATIVE_ARGS
 #define CUMULATIVE_ARGS struct amigaos_args
 
@@ -604,8 +458,9 @@ struct amigaos_args
 #undef FUNCTION_ARG
 #define FUNCTION_ARG(CUM, MODE, TYPE, NAMED) \
   (amigaos_function_arg (&(CUM), (MODE), (TYPE)))
-/* end-GG-local */
 
+/* end-GG-local */
+
 /* Stack checking and automatic extension support.  */
 
 #define PROLOGUE_BEGIN_HOOK(STREAM, FSIZE)				\
@@ -633,7 +488,6 @@ struct amigaos_args
 
 #define ALTERNATE_RETURN(STREAM)
 
-/*
 #define HAVE_restore_stack_nonlocal TARGET_STACKEXTEND
 #define gen_restore_stack_nonlocal gen_stack_cleanup_call
 
@@ -653,8 +507,7 @@ do									\
     DONE;								\
   }									\
 while (0)
-*/
-
+
 /* begin-GG-local: dynamic libraries */
 
 extern int amigaos_do_collecting (void);
@@ -668,7 +521,6 @@ extern void amigaos_postlink_hook (const char *);
    We need a few special ones, like stripping after linking.  */
 
 #define DO_COLLECTING (do_collecting || amigaos_do_collecting())
-#define COLLECT2_POSTLINK_HOOK(OUTPUT_FILE) amigaos_postlink_hook(OUTPUT_FILE) /* new */
 
 /* This macro is called in collect2 for every GCC argument name.
    ARG is a part of commandline (without '\0' at the end).  */
@@ -695,4 +547,7 @@ amigaos_prelink_hook((const char **)(LD1_ARGV), (STRIP))
    "nm" and "ldd".  OUTPUT_FILE is the executable's filename.  */
 
 #define COLLECT2_POSTLINK_HOOK(OUTPUT_FILE) amigaos_postlink_hook(OUTPUT_FILE)
-/* end-GG-local */ 
+/* end-GG-local */
+
+/* Don't use any specific register allocation order.  */
+#undef REG_ALLOC_ORDER

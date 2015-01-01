@@ -34,7 +34,7 @@ extern struct rtx_def* gen_stack_cleanup_call (rtx, rtx);
 extern void amigaos_alternate_allocate_stack (rtx *);
 #ifdef TREE_CODE
 extern void amigaos_init_cumulative_args (CUMULATIVE_ARGS *, tree);
-/* extern void amigaos_function_arg_advance (CUMULATIVE_ARGS *); */
+extern void amigaos_function_arg_advance (CUMULATIVE_ARGS *);
 extern struct rtx_def *amigaos_function_arg (CUMULATIVE_ARGS *, enum machine_mode, tree);
 #endif
 #endif
@@ -42,4 +42,4 @@ extern struct rtx_def *amigaos_function_arg (CUMULATIVE_ARGS *, enum machine_mod
 extern tree amigaos_handle_decl_attribute (tree *, tree, tree, int, bool *);
 extern tree amigaos_handle_type_attribute (tree *, tree, tree, int, bool *);
 extern int amigaos_comp_type_attributes (tree, tree);
-#endif 
+#endif
