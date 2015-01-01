@@ -129,6 +129,7 @@ ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared --without-random
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver
+  LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
 endif
 
 ifeq ($(SDK_ITEMS),)
