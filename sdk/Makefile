@@ -128,10 +128,10 @@ endif
 ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCARES := --disable-shared --without-random
-  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver
+  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver --with-ssl --with-zlib
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
   LIBJPEG_ENV := LDFLAGS="-lm"
-  LIBCURL_ENV := LDFLAGS="-lm"
+  LIBCURL_ENV := LIBS="-lm"
 endif
 
 ifeq ($(SDK_ITEMS),)
