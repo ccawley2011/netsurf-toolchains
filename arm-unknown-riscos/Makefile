@@ -1,6 +1,6 @@
 # Use a tested trunk version of GCCSDK
 UPSTREAM_GCCSDK_TARBALL := gcc4
-UPSTREAM_GCCSDK_REVISION := 6747
+UPSTREAM_GCCSDK_REVISION := 6787
 UPSTREAM_GCCSDK_URI := svn://svn.riscos.info/gccsdk/trunk/gcc4@$(UPSTREAM_GCCSDK_REVISION)
 
 # OSLib 7.00
