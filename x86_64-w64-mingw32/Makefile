@@ -80,15 +80,16 @@ $(BUILDSTEPS)/mingw-headers.d: $(BUILDSTEPS)/mingw-srcdir.d
 	mkdir -p $(BUILDDIR)/mingw-headers
 	cd $(BUILDDIR)/mingw-headers && PATH="$(PREFIX)/bin:$(PATH)" \
 		$(MINGW_SRCDIR)/mingw-w64-headers/configure \
-		--prefix=$(PREFIX)/x86_64-w64-mingw32 --host=$(TARGET_NAME) 
+		--prefix=$(PREFIX)/$(TARGET_NAME) --host=$(TARGET_NAME)
 	cd $(BUILDDIR)/mingw-headers && PATH="$(PREFIX)/bin:$(PATH)" make
 	cd $(BUILDDIR)/mingw-headers && PATH="$(PREFIX)/bin:$(PATH)" make install
 	touch $@
 
 $(BUILDSTEPS)/mingw-crt.d: $(BUILDSTEPS)/mingw-srcdir.d
 	mkdir -p $(BUILDDIR)/mingw-crt
-	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" $(MINGW_SRCDIR)/configure \
-	--prefix=$(PREFIX)/x86_64-w64-mingw32 --host=$(TARGET_NAME) 
+	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" \
+		$(MINGW_SRCDIR)/configure \
+		--prefix=$(PREFIX)/$(TARGET_NAME) --host=$(TARGET_NAME)
 	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" make
 	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" make install
 	touch $@
