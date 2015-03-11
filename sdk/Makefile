@@ -47,10 +47,10 @@ VERSION_SPIDERMONKEY := 1.7.0
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
 
 # Tools
-cc__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc)
-cxx__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*g++)
-ar__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ar)
-ranlib__ := $(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ranlib)
+cc__ := $(word 1,$(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc))
+cxx__ := $(word 1,$(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*g++))
+ar__ := $(word 1,$(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ar))
+ranlib__ := $(word 1,$(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ranlib))
 
 # Flags
 cflags__ := -I$(GCCSDK_INSTALL_ENV)/include
