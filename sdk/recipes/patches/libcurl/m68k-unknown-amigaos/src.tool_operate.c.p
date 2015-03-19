@@ -1,11 +1,11 @@
---- src/tool_operate.c.old	2012-10-19 21:42:57.000000000 +0100
-+++ src/tool_operate.c	2012-10-19 21:43:27.000000000 +0100
-@@ -1731,15 +1731,6 @@
+--- src/tool_operate.c.orig	2015-02-24 21:49:02.000000000 +0000
++++ src/tool_operate.c	2015-03-19 22:13:50.477958123 +0000
+@@ -1620,15 +1620,6 @@
            }
          }
  
 -#ifdef __AMIGA__
--        if(!res && outs.s_isreg && outs.filename) {
+-        if(!result && outs.s_isreg && outs.filename) {
 -          /* Set the url (up to 80 chars) as comment for the file */
 -          if(strlen(url) > 78)
 -            url[79] = '\0';
@@ -15,4 +15,4 @@
 -
  #ifdef HAVE_UTIME
          /* File time can only be set _after_ the file has been closed */
-         if(!res && config->remote_time && outs.s_isreg && outs.filename) {
+         if(!result && config->remote_time && outs.s_isreg && outs.filename) {
