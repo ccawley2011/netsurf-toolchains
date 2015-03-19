@@ -12,9 +12,9 @@
 +
  #ifdef TERMIOS
  # include <termios.h>
- # define TTY_STRUCT		struct termios
+ # define TTY_STRUCT             struct termios
 @@ -268,7 +274,7 @@
- 	typedef int sig_atomic_t;
+ typedef int sig_atomic_t;
  #endif
  
 -#if defined(OPENSSL_SYS_MACINTOSH_CLASSIC) || defined(MAC_OS_GUSI_SOURCE) || defined(OPENSSL_SYS_NETWARE)
