@@ -123,6 +123,7 @@ endif
 ifeq ($(TARGET),i686-w64-mingw32)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libgnurx.d $(COMMON_SDK_ITEMS))
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap --without-random
+  LIBCURL_ENV := LIBS="-lgdi32"
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
