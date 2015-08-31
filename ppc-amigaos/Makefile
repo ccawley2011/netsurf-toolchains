@@ -19,8 +19,8 @@ UPSTREAM_MPC_VERSION := 0.8.2
 UPSTREAM_MPC_TARBALL := mpc-$(UPSTREAM_MPC_VERSION).tar.gz
 UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TARBALL)
 
-UPSTREAM_NDK_TARBALL := SDK_53.24.lha
-UPSTREAM_NDK_URI := "http://hyperion-entertainment.biz/index.php?option=com_registration&view=download&format=raw&file=69&Itemid=63"
+UPSTREAM_NDK_TARBALL := SDK_53.29.lha
+UPSTREAM_NDK_URI := "http://hyperion-entertainment.biz/index.php/downloads?view=download&format=raw&file=82"
 
 UPSTREAM_OPENURL_VERSION := 7.8
 UPSTREAM_OPENURL_TARBALL := openurl
@@ -80,9 +80,9 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 	mkdir -p $(BUILDDIR)/ndk/tmp/
 	lha xw=$(BUILDDIR)/ndk $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL)
 	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/base.lha
-	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/newlib-53.28.lha
-	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/clib2-1.205.lha
-	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/pthread.lha
+	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/newlib-53.30.lha
+	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/clib2-1.206.lha
+	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/pthreads-53.11.lha
 	mkdir -p $(PREFIX)/$(TARGET_NAME)/SDK
 	cp -r $(BUILDDIR)/ndk/tmp/Include $(PREFIX)/$(TARGET_NAME)/SDK/include
 	cp -r $(BUILDDIR)/ndk/tmp/newlib $(PREFIX)/$(TARGET_NAME)/SDK/newlib
