@@ -22,9 +22,9 @@ UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TA
 UPSTREAM_NDK_TARBALL := SDK_53.29.lha
 UPSTREAM_NDK_URI := "http://hyperion-entertainment.biz/index.php/downloads?view=download&format=raw&file=82"
 
-UPSTREAM_OPENURL_VERSION := 7.8
-UPSTREAM_OPENURL_TARBALL := openurl
-UPSTREAM_OPENURL_URI := http://svn.code.sf.net/p/openurllib/code/releases/$(UPSTREAM_OPENURL_VERSION)/developer/C
+UPSTREAM_OPENURL_VERSION := 7.16
+UPSTREAM_OPENURL_TARBALL := openurl-$(UPSTREAM_OPENURL_VERSION)
+UPSTREAM_OPENURL_URI := https://github.com/jens-maus/libopenurl/archive/$(UPSTREAM_OPENURL_VERSION).tar.gz
 
 # need to force the auto* version in use
 GCC_AUTOCONF := autoconf2.64
@@ -89,7 +89,9 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 	cp -r $(BUILDDIR)/ndk/tmp/clib2 $(PREFIX)/$(TARGET_NAME)/SDK/clib2
 	cp -r $(BUILDDIR)/ndk/tmp/Local/common/include/* $(PREFIX)/$(TARGET_NAME)/SDK/newlib/include/
 	cp -r $(BUILDDIR)/ndk/tmp/Local/newlib/lib/* $(PREFIX)/$(TARGET_NAME)/SDK/newlib/lib/
-	cp -r $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)/include/* $(PREFIX)/$(TARGET_NAME)/SDK/include/include_h/
+	mkdir -p $(BUILDDIR)/openurl
+	cd $(BUILDDIR)/openurl && tar xaf $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)
+	cp -r $(BUILDDIR)/openurl/libopenurl-$(UPSTREAM_OPENURL_VERSION)/include/* $(PREFIX)/$(TARGET_NAME)/SDK/include/include_h/
 	touch $@
 
 ###
@@ -157,7 +159,7 @@ $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL):
 	wget -q -O $@ $(UPSTREAM_NDK_URI)
 
 $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL):
-	svn export $(UPSTREAM_OPENURL_URI) $@
+	wget -q -O $@ $(UPSTREAM_OPENURL_URI)
 
 ###
 # Rule to create buildsteps dir
