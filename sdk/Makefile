@@ -29,6 +29,7 @@ VERSION_LIBTRE := 0.8.0
 VERSION_OPENSSL := 1.0.1p
 VERSION_LIBPNG := 1.6.17
 VERSION_LIBJPEG := 8d
+VERSION_LIBJPEG_TURBO := 1.4.2
 VERSION_LIBCARES := 1.10.0
 VERSION_LIBCURL := 7.45.0
 VERSION_LIBGNURX := 2.5.1
@@ -79,14 +80,17 @@ FETCHSRC := $(CURDIR)/fetchsrc
 # Compute the SDK components
 SDK_ITEMS :=
 
-COMMON_SDK_ITEMS := zlib.d openssl.d libpng.d libjpeg.d libcares.d libcurl.d libexpat.d
+COMMON_SDK_ITEMS := zlib.d openssl.d libpng.d libcares.d libcurl.d libexpat.d
 
 LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap ldaps rtsp telnet gopher tftp pop3 imap smtp manual)
 FREETYPE_ENV := LIBPNG_CFLAGS=$$($(GCCSDK_INSTALL_ENV)/bin/libpng-config --cflags) LIBPNG_LDFLAGS=$$($(GCCSDK_INSTALL_ENV)/bin/libpng-config --ldflags)
 
+# per target environments
+LIBJPEG_TURBO_BUILDDIR:=$(BUILDDIR)/libjpegturbo
+
 # Target Specific setup
 ifeq ($(TARGET),arm-unknown-riscos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) spidermonkey.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) spidermonkey.d libjpeg-turbo.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --with-random="/dev/urandom" $(LIBCURL_DISABLES)
   ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
@@ -98,7 +102,7 @@ ifeq ($(TARGET),arm-unknown-riscos)
 endif
 
 ifeq ($(TARGET),m68k-atari-mint)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d freetype.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libjpeg.d libcf.d ldg.d windom.d hermes.d freetype.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver 
   EXTRAARGS_LIBICONV := --enable-extra-encodings
@@ -106,7 +110,7 @@ ifeq ($(TARGET),m68k-atari-mint)
 endif
 
 ifeq ($(TARGET),m5475-atari-mint)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libcf.d ldg.d windom.d hermes.d freetype.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d $(COMMON_SDK_ITEMS) libjpeg.d libcf.d ldg.d windom.d hermes.d freetype.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver
   EXTRAARGS_LIBICONV := --enable-extra-encodings
@@ -114,25 +118,26 @@ ifeq ($(TARGET),m5475-atari-mint)
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d spidermonkey.d $(COMMON_SDK_ITEMS))
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d spidermonkey.d $(COMMON_SDK_ITEMS) libjpeg.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --enable-threaded-resolver LIBS=-lpthread
   VERSION_SPIDERMONKEY := 1.7.0
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libgnurx.d $(COMMON_SDK_ITEMS))
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libgnurx.d $(COMMON_SDK_ITEMS) libjpeg.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap --without-random
   LIBCURL_ENV := CFLAGS="-DCARES_STATICLIB" LIBS="-lgdi32"
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS))
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS) libjpeg.d)
   EXTRAARGS_LIBCARES := --disable-shared --without-random
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver --with-ssl --with-zlib
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
   LIBJPEG_ENV := LDFLAGS="-lm"
+  LIBJPEG_TURBO_ENV := LDFLAGS="-lm"
   LIBCURL_ENV := LIBS="-lm"
 endif
 
@@ -371,6 +376,7 @@ $(BUILDSTEPS)/libpng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libpng-$(VERS
 $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/libpng/$(subst $(SOURCEDIR)/,,$@)" $@
 
+
 # libjpeg
 $(BUILDSTEPS)/libjpeg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-src.d
 	mkdir -p $(BUILDDIR)/libjpeg
@@ -385,6 +391,23 @@ $(BUILDSTEPS)/libjpeg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/jpegsrc.v$(V
 
 $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ijg.org/files/$(subst $(SOURCEDIR)/,,$@)" $@
+
+
+# libjpegturbo
+$(BUILDSTEPS)/libjpeg-turbo.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-turbo-src.d
+	mkdir -p $(LIBJPEG_TURBO_BUILDDIR)
+	cd $(LIBJPEG_TURBO_BUILDDIR) && tar xaf $(SOURCEDIR)/libjpeg-turbo-src-$(VERSION_LIBJPEG_TURBO).tar.gz
+	for p in `ls $(RECIPES)/patches/libjpegturbo/*.p` ; do $(PATCH) -d $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) -p0 <$$p ; done
+	cd $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) && $(env) $(LIBJPEG_TURBO_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) && $(env) make install
+	touch $@
+
+$(BUILDSTEPS)/libjpeg-turbo-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libjpeg-turbo-src-$(VERSION_LIBJPEG_TURBO).tar.gz
+	touch $@
+
+$(SOURCEDIR)/libjpeg-turbo-src-$(VERSION_LIBJPEG_TURBO).tar.gz:
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://sourceforge.net/projects/libjpeg-turbo/files/$(VERSION_LIBJPEG_TURBO)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO).tar.gz/download" $@
+
 
 # libcares
 $(BUILDSTEPS)/libcares.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcares-src.d
