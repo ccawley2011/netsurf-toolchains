@@ -1,5 +1,5 @@
---- Makefile.orig	2014-12-09 22:08:21.680152640 +0000
-+++ Makefile	2014-12-10 00:21:11.194955257 +0000
+--- gcc4/Makefile.orig	2014-12-09 22:08:21.680152640 +0000
++++ gcc4/Makefile	2014-12-10 00:21:11.194955257 +0000
 @@ -163,7 +163,7 @@
  RONATIVE_CONFIG_ARGS := --host=$(TARGET) --target=$(TARGET) --prefix=$(PREFIX_RONATIVE)
  
