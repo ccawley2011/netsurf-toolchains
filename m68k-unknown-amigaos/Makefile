@@ -27,9 +27,9 @@ UPSTREAM_CLIB2_URI := anonymous:@clib2.cvs.sourceforge.net:/cvsroot/clib2
 UPSTREAM_NDK_TARBALL := ndk-3.9-includes.tar.bz2
 UPSTREAM_NDK_URI := http://kas1e.mikendezign.com/zerohero_crosscompilers_backup/files/m68k-amigaos/ndk-3.9-includes.tar.bz2
 
-UPSTREAM_OPENURL_VERSION := 7.15
-UPSTREAM_OPENURL_TARBALL := openurl
-UPSTREAM_OPENURL_URI := http://svn.code.sf.net/p/openurllib/code/releases/$(UPSTREAM_OPENURL_VERSION)/developer/C
+UPSTREAM_OPENURL_VERSION := 7.16
+UPSTREAM_OPENURL_TARBALL := openurl-$(UPSTREAM_OPENURL_VERSION)
+UPSTREAM_OPENURL_URI := https://github.com/jens-maus/libopenurl/archive/$(UPSTREAM_OPENURL_VERSION).tar.gz
 
 # need to force the auto* version in use
 GCC_AUTOCONF := autoconf2.64
@@ -96,7 +96,9 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 	for p in `ls $(RECIPES)/patches/ndk/*.p` ; do patch -d $(PREFIX)/$(TARGET_NAME) -p0 <$$p ; done
 	for dir in `find $(RECIPES)/files/ndk/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/ndk##'` ; do mkdir -p $(PREFIX)/$(TARGET_NAME)$$dir ; done
 	for file in `find $(RECIPES)/files/ndk/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/ndk##'` ; do cp -p $(RECIPES)/files/ndk$$file $(PREFIX)/$(TARGET_NAME)$$file ; done
-	cp -r $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)/include/* $(PREFIX)/$(TARGET_NAME)/sys-include/
+	mkdir -p $(BUILDDIR)/openurl
+	cd $(BUILDDIR)/openurl && tar xaf $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)
+	cp -r $(BUILDDIR)/openurl/libopenurl-$(UPSTREAM_OPENURL_VERSION)/include/* $(PREFIX)/$(TARGET_NAME)/sys-include/
 	touch $@
 
 ###
@@ -192,7 +194,7 @@ $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL):
 	wget -q -O $@ $(UPSTREAM_NDK_URI)
 
 $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL):
-	svn export $(UPSTREAM_OPENURL_URI) $@
+	wget -q -O $@ $(UPSTREAM_OPENURL_URI)
 
 ###
 # Rule to create buildsteps dir
