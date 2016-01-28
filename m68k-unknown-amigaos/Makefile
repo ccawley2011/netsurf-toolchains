@@ -20,9 +20,9 @@ UPSTREAM_MPC_VERSION := 0.8.2
 UPSTREAM_MPC_TARBALL := mpc-$(UPSTREAM_MPC_VERSION).tar.gz
 UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TARBALL)
 
-UPSTREAM_CLIB2_VERSION := 2010-12-30
-UPSTREAM_CLIB2_TARBALL := clib2-$(UPSTREAM_CLIB2_VERSION).tar.xz
-UPSTREAM_CLIB2_URI := anonymous:@clib2.cvs.sourceforge.net:/cvsroot/clib2
+UPSTREAM_CLIB2_VERSION := 1_206
+UPSTREAM_CLIB2_TARBALL := V$(UPSTREAM_CLIB2_VERSION).tar.gz
+UPSTREAM_CLIB2_URI := https://github.com/adtools/clib2/archive/$(UPSTREAM_CLIB2_TARBALL)
 
 UPSTREAM_NDK_TARBALL := ndk-3.9-includes.tar.bz2
 UPSTREAM_NDK_URI := http://kas1e.mikendezign.com/zerohero_crosscompilers_backup/files/m68k-amigaos/ndk-3.9-includes.tar.bz2
@@ -76,7 +76,7 @@ $(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/clib2.d
 
 $(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL)
 	tar xaf $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL)
-	mv library $(BUILDDIR)/clib2
+	mv clib2-$(UPSTREAM_CLIB2_VERSION)/library $(BUILDDIR)/clib2
 	for p in `ls $(RECIPES)/patches/clib2/*.p` ; do patch -d $(BUILDDIR)/clib2 -p0 <$$p ; done
 	for dir in `find $(RECIPES)/files/clib2/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do mkdir -p $(BUILDDIR)/clib2$$dir ; done
 	for file in `find $(RECIPES)/files/clib2/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do cp -p $(RECIPES)/files/clib2$$file $(BUILDDIR)/clib2$$file ; done
@@ -185,10 +185,7 @@ $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL):
 	svn co $(UPSTREAM_BINUTILS_URI) $@
 
 $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL):
-	cvs -Q -d:pserver:$(UPSTREAM_CLIB2_URI) login
-	cvs -z9 -d:pserver:$(UPSTREAM_CLIB2_URI) checkout -D $(UPSTREAM_CLIB2_VERSION) library
-	tar -caf $@ library
-	rm -rf library
+	wget -q -O $@ $(UPSTREAM_CLIB2_URI)
 
 $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL):
 	wget -q -O $@ $(UPSTREAM_NDK_URI)
