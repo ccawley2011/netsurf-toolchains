@@ -1,21 +1,20 @@
-UPSTREAM_GCC_VERSION := 467
-UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION)
-UPSTREAM_GCC_URI := http://svn.code.sf.net/p/adtools/code/branches/gcc/4.5.x@$(UPSTREAM_GCC_VERSION)
+UPSTREAM_GCC_VERSION := 5.3.0
+UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION).tar.bz2
+UPSTREAM_GCC_URI := http://ftp.gnu.org/gnu/gcc/gcc-$(UPSTREAM_GCC_VERSION)/$(UPSTREAM_GCC_TARBALL)
 
-UPSTREAM_BINUTILS_VERSION := 467
-UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION)
-UPSTREAM_BINUTILS_URI := http://svn.code.sf.net/p/adtools/code/trunk/binutils@$(UPSTREAM_BINUTILS_VERSION)
+UPSTREAM_BINUTILS_VERSION := 2.23.2
+UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION).tar.bz2
+UPSTREAM_BINUTILS_URI := ftp://ftp.gnu.org/gnu/binutils/$(UPSTREAM_BINUTILS_TARBALL)
 
-UPSTREAM_GMP_VERSION := 4.3.2
+UPSTREAM_GMP_VERSION := 5.0.5
 UPSTREAM_GMP_TARBALL := gmp-$(UPSTREAM_GMP_VERSION).tar.bz2
 UPSTREAM_GMP_URI := http://ftp.gnu.org/gnu/gmp/$(UPSTREAM_GMP_TARBALL)
 
-# Would use 3.0.0, but that dislikes in-tree gmp sources
-UPSTREAM_MPFR_VERSION := 2.4.2
+UPSTREAM_MPFR_VERSION := 3.1.2
 UPSTREAM_MPFR_TARBALL := mpfr-$(UPSTREAM_MPFR_VERSION).tar.bz2
 UPSTREAM_MPFR_URI := http://www.mpfr.org/mpfr-$(UPSTREAM_MPFR_VERSION)/$(UPSTREAM_MPFR_TARBALL)
 
-UPSTREAM_MPC_VERSION := 0.8.2
+UPSTREAM_MPC_VERSION := 0.9
 UPSTREAM_MPC_TARBALL := mpc-$(UPSTREAM_MPC_VERSION).tar.gz
 UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TARBALL)
 
@@ -118,7 +117,8 @@ $(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d $(SOURCESDIR)/$(UPSTR
 	touch $@
 
 $(BUILDSTEPS)/srcdir-step1.d: $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d
-	cp -r $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL) $(GCC_SRCDIR)
+	tar xjf $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL)
+	mv gcc-$(UPSTREAM_GCC_VERSION) $(GCC_SRCDIR)
 	touch $@
 
 $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d: $(BUILDSTEPS)/buildsteps.d $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL)
@@ -128,17 +128,16 @@ $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d: $(BUILDSTEPS)/buildsteps.d $(SOURCESDIR
 # Rules to build and install binutils
 ###
 
-# Ugh. Upstream binutils is not remotely 64-bit safe.
-# Build a 32bit binary until this gets fixed
 $(BUILDSTEPS)/binutils.d: $(BUILDSTEPS)/binutils-srcdir.d
 	mkdir -p $(BUILDDIR)/binutils
-	cd $(BUILDDIR)/binutils && CFLAGS="-m32" LDFLAGS="-m32" $(BINUTILS_SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) --disable-nls
+	cd $(BUILDDIR)/binutils && $(BINUTILS_SRCDIR)/configure --prefix=$(PREFIX) --target=$(TARGET_NAME) --disable-nls --enable-plugins
 	cd $(BUILDDIR)/binutils && make
 	cd $(BUILDDIR)/binutils && make install
 	touch $@
 
 $(BUILDSTEPS)/binutils-srcdir.d: $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL)
-	cp -r $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL) $(BINUTILS_SRCDIR)
+	tar xjf $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL)
+	mv binutils-$(UPSTREAM_BINUTILS_VERSION) $(BINUTILS_SRCDIR)
 	for p in `ls $(RECIPES)/patches/binutils/*.p` ; do patch -d $(BINUTILS_SRCDIR) -p0 <$$p ; done
 	touch $@
 
@@ -147,7 +146,7 @@ $(BUILDSTEPS)/binutils-srcdir.d: $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL)
 ###
 
 $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL):
-	svn co $(UPSTREAM_GCC_URI) $@
+	wget -q -O $@ $(UPSTREAM_GCC_URI)
 
 $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL):
 	wget -q -O $@ $(UPSTREAM_GMP_URI)
@@ -159,7 +158,7 @@ $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL):
 	wget -q -O $@ $(UPSTREAM_MPC_URI)
 
 $(SOURCESDIR)/$(UPSTREAM_BINUTILS_TARBALL):
-	svn co $(UPSTREAM_BINUTILS_URI) $@
+	wget -q -O $@ $(UPSTREAM_BINUTILS_URI)
 
 $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL):
 	wget -q -O $@ $(UPSTREAM_NDK_URI)
