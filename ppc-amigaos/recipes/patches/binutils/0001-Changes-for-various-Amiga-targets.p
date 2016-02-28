@@ -156,8 +156,8 @@ Subject: [PATCH 1/7] Changes for various Amiga targets.
 
 diff --git a/bfd/ChangeLog-9697 b/bfd/ChangeLog-9697
 index e9a5c1d60a313aaf09d1a8add619022cfdf575fa..1c2bb3f3c91d32e8b95f8b0cf16b98c58cde454b 100644
---- a/bfd/ChangeLog-9697
-+++ b/bfd/ChangeLog-9697
+--- bfd/ChangeLog-9697
++++ bfd/ChangeLog-9697
 @@ -46,12 +46,19 @@ Mon Dec 22 13:20:57 1997  Ian Lance Taylor  <ian@cygnus.com>
  
  Mon Dec 22 13:04:33 1997  Joel Sherrill  <joel@oarcorp.com>
@@ -341,8 +341,8 @@ index e9a5c1d60a313aaf09d1a8add619022cfdf575fa..1c2bb3f3c91d32e8b95f8b0cf16b98c5
  	(h8300_symbol_address_p): New function.
 diff --git a/bfd/ChangeLog-9899 b/bfd/ChangeLog-9899
 index 6d7f5cd616db22097b8238d8686f60484c9e6ee6..6e25901995a73646a13037d32c14563df20f74b3 100644
---- a/bfd/ChangeLog-9899
-+++ b/bfd/ChangeLog-9899
+--- bfd/ChangeLog-9899
++++ bfd/ChangeLog-9899
 @@ -5570,12 +5570,17 @@ Wed Jan 21 21:16:06 1998  Manfred Hollstein  <manfred@s-direktnet.de>
  	(GET_SCNDHR_NLNNO): Likewise.
  
@@ -363,8 +363,8 @@ index 6d7f5cd616db22097b8238d8686f60484c9e6ee6..6e25901995a73646a13037d32c14563d
  
 diff --git a/bfd/Makefile.am b/bfd/Makefile.am
 index 9ab2aa947a0a96ba5a469652c579a4d181793646..c224a3cecc392df96a6bc20c8dc73eb81c677269 100644
---- a/bfd/Makefile.am
-+++ b/bfd/Makefile.am
+--- bfd/Makefile.am
++++ bfd/Makefile.am
 @@ -232,13 +232,16 @@ ALL_MACHINES_CFILES = \
  	cpu-z80.c \
  	cpu-z8k.c
@@ -485,8 +485,8 @@ index 9ab2aa947a0a96ba5a469652c579a4d181793646..c224a3cecc392df96a6bc20c8dc73eb8
 -@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $< $(NO_WERROR)
 diff --git a/bfd/Makefile.in b/bfd/Makefile.in
 index 99902757111d8011447cde1dda030e5a9c817ff2..bcdf435a15eb144bca66d8bfe04122a45e647446 100644
---- a/bfd/Makefile.in
-+++ b/bfd/Makefile.in
+--- bfd/Makefile.in
++++ bfd/Makefile.in
 @@ -532,13 +532,16 @@ ALL_MACHINES_CFILES = \
  	cpu-z8k.c
  
@@ -658,7 +658,7 @@ diff --git a/bfd/amigaos.c b/bfd/amigaos.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..9d715d64d458e6599c19ed65fbb61c253d2ab208
 --- /dev/null
-+++ b/bfd/amigaos.c
++++ bfd/amigaos.c
 @@ -0,0 +1,3189 @@
 +/* BFD back-end for Commodore-Amiga AmigaOS binaries.
 +   Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998
@@ -3853,7 +3853,7 @@ diff --git a/bfd/amigaoslink.c b/bfd/amigaoslink.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..9067a0a06b933c67bfd3542b299d1adb281182c3
 --- /dev/null
-+++ b/bfd/amigaoslink.c
++++ bfd/amigaoslink.c
 @@ -0,0 +1,1032 @@
 +/* BFD back-end for Commodore-Amiga AmigaOS binaries. Linker routines.
 +   Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998
@@ -4891,7 +4891,7 @@ diff --git a/bfd/aout-amiga.c b/bfd/aout-amiga.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..ced7584521b89943b1636d2b4c9b884242cd81c6
 --- /dev/null
-+++ b/bfd/aout-amiga.c
++++ bfd/aout-amiga.c
 @@ -0,0 +1,152 @@
 +/* BFD back-end for Amiga style m68k a.out binaries.
 +   Copyright (C) 1990, 1991, 1992, 1993, 1994 Free Software Foundation, Inc.
@@ -5047,8 +5047,8 @@ index 0000000000000000000000000000000000000000..ced7584521b89943b1636d2b4c9b8842
 +}
 diff --git a/bfd/aoutx.h b/bfd/aoutx.h
 index 1e0ad38f95bcf990a9ffd4cfb89eae3f6496740c..2641f975fd575d0a651540dc886eeee68cf4b173 100644
---- a/bfd/aoutx.h
-+++ b/bfd/aoutx.h
+--- bfd/aoutx.h
++++ bfd/aoutx.h
 @@ -127,12 +127,16 @@ DESCRIPTION
  #include "libaout.h"
  #include "libbfd.h"
@@ -5135,8 +5135,8 @@ index 1e0ad38f95bcf990a9ffd4cfb89eae3f6496740c..2641f975fd575d0a651540dc886eeee6
        r_extern = 0;
 diff --git a/bfd/bfd-in2.h b/bfd/bfd-in2.h
 index e496083d6ebb0842cfe0a7777dc76cdbd18c7134..8a4d566298f86c56c4a2d21895a39e0d7c5002d7 100644
---- a/bfd/bfd-in2.h
-+++ b/bfd/bfd-in2.h
+--- bfd/bfd-in2.h
++++ bfd/bfd-in2.h
 @@ -3128,12 +3128,16 @@ instruction.  */
    BFD_RELOC_PPC_EMB_RELSEC16,
    BFD_RELOC_PPC_EMB_RELST_LO,
@@ -5203,8 +5203,8 @@ index e496083d6ebb0842cfe0a7777dc76cdbd18c7134..8a4d566298f86c56c4a2d21895a39e0d
    bfd_target_ieee_flavour,
 diff --git a/bfd/bfd.c b/bfd/bfd.c
 index eed18960855bdc51be8b57ddba27975afb6b02ef..3487694a541417ec20453ca9116bbb86c383f979 100644
---- a/bfd/bfd.c
-+++ b/bfd/bfd.c
+--- bfd/bfd.c
++++ bfd/bfd.c
 @@ -261,12 +261,13 @@ CODE_FRAGMENT
  .      struct mach_o_data_struct *mach_o_data;
  .      struct mach_o_fat_data_struct *mach_o_fat_data;
@@ -5221,8 +5221,8 @@ index eed18960855bdc51be8b57ddba27975afb6b02ef..3487694a541417ec20453ca9116bbb86
  .  void *usrdata;
 diff --git a/bfd/bfdio.c b/bfd/bfdio.c
 index be05581aeb4026addd3f4caf2b185ae73d893a24..a15208b16635c7174592b6ccf26685c4b1d05bc8 100644
---- a/bfd/bfdio.c
-+++ b/bfd/bfdio.c
+--- bfd/bfdio.c
++++ bfd/bfdio.c
 @@ -325,12 +325,37 @@ bfd_seek (bfd *abfd, file_ptr position, int direction)
  
    if (abfd->iovec)
@@ -5263,8 +5263,8 @@ index be05581aeb4026addd3f4caf2b185ae73d893a24..a15208b16635c7174592b6ccf26685c4
        bfd_tell (abfd);
 diff --git a/bfd/config.bfd b/bfd/config.bfd
 index 6025f2641b47915c79a7d643963e9d9080e0ed5c..fcbbce847bc65a44ee68deedd93b2943aac9f77f 100644
---- a/bfd/config.bfd
-+++ b/bfd/config.bfd
+--- bfd/config.bfd
++++ bfd/config.bfd
 @@ -78,15 +78,17 @@ c30*)		 targ_archs=bfd_tic30_arch ;;
  c4x*)		 targ_archs=bfd_tic4x_arch ;;
  c54x*)		 targ_archs=bfd_tic54x_arch ;;
@@ -5362,8 +5362,8 @@ index 6025f2641b47915c79a7d643963e9d9080e0ed5c..fcbbce847bc65a44ee68deedd93b2943
      ;;
 diff --git a/bfd/configure b/bfd/configure
 index e965796ef43d9346cd917bf20243707633fc632e..018a5913f1d96081342c66a64f0167b11cdb1add 100755
---- a/bfd/configure
-+++ b/bfd/configure
+--- bfd/configure
++++ bfd/configure
 @@ -15172,13 +15172,15 @@ do
      case "$vec" in
      # This list is alphabetized to make it easy to compare
@@ -5424,8 +5424,8 @@ index e965796ef43d9346cd917bf20243707633fc632e..018a5913f1d96081342c66a64f0167b1
  				tb="$tb elfn32-mips.lo elfxx-mips.lo elf-vxworks.lo elf32.lo $elf ecofflink.lo"; target_size=64 ;;
 diff --git a/bfd/configure.host b/bfd/configure.host
 index 7c63de58397426d08501dd7a0fd527cb59a9809c..afa7c909a787d9121d01e4e99d8047cf7f11f0b7 100644
---- a/bfd/configure.host
-+++ b/bfd/configure.host
+--- bfd/configure.host
++++ bfd/configure.host
 @@ -53,12 +53,13 @@ mips64*-*-linux*)	host64=true;;
  mips64*-*-freebsd* | mips64*-*-kfreebsd*-gnu) host64=true;;
  mips*-*-sysv4*)		;;
@@ -5442,8 +5442,8 @@ index 7c63de58397426d08501dd7a0fd527cb59a9809c..afa7c909a787d9121d01e4e99d8047cf
  *-*-solaris2.11)	HDEFINES=-DCP_ACP=1 ;;
 diff --git a/bfd/configure.in b/bfd/configure.in
 index 4b4cb617ef74f5fb33e4de13856d685f5ffba025..5d882b3701b6e0d93f97be655123a2bb2728d63a 100644
---- a/bfd/configure.in
-+++ b/bfd/configure.in
+--- bfd/configure.in
++++ bfd/configure.in
 @@ -664,13 +664,15 @@ do
      case "$vec" in
      # This list is alphabetized to make it easy to compare
@@ -5504,8 +5504,8 @@ index 4b4cb617ef74f5fb33e4de13856d685f5ffba025..5d882b3701b6e0d93f97be655123a2bb
  				tb="$tb elfn32-mips.lo elfxx-mips.lo elf-vxworks.lo elf32.lo $elf ecofflink.lo"; target_size=64 ;;
 diff --git a/bfd/doc/Makefile.am b/bfd/doc/Makefile.am
 index 7476ee5bab710b6b418072124b473cf0d340b247..1ddc9e3d2153b55f6f26645e5fc584074bb369fd 100644
---- a/bfd/doc/Makefile.am
-+++ b/bfd/doc/Makefile.am
+--- bfd/doc/Makefile.am
++++ bfd/doc/Makefile.am
 @@ -1,11 +1,11 @@
  ## Process this file with automake to generate Makefile.in
  
@@ -5560,8 +5560,8 @@ index 7476ee5bab710b6b418072124b473cf0d340b247..1ddc9e3d2153b55f6f26645e5fc58407
  	$(srcdir)/../bfdwin.c		\
 diff --git a/bfd/doc/Makefile.in b/bfd/doc/Makefile.in
 index 7ba351d742bf53f9e5f51ad7ef74150295519f1a..67db3caf9886839b8d8f52a2a1878de878bb2f6a 100644
---- a/bfd/doc/Makefile.in
-+++ b/bfd/doc/Makefile.in
+--- bfd/doc/Makefile.in
++++ bfd/doc/Makefile.in
 @@ -268,13 +268,13 @@ target_vendor = @target_vendor@
  tdefaults = @tdefaults@
  top_build_prefix = @top_build_prefix@
@@ -5618,8 +5618,8 @@ index 7ba351d742bf53f9e5f51ad7ef74150295519f1a..67db3caf9886839b8d8f52a2a1878de8
  	    */header.sed) break ;; \
 diff --git a/bfd/doc/bfd.texinfo b/bfd/doc/bfd.texinfo
 index 45ffa73240ea22a74debe916fcd7e068a947a7dc..7b9774b71a3cb9b3c154c8c75a41de29a6813146 100644
---- a/bfd/doc/bfd.texinfo
-+++ b/bfd/doc/bfd.texinfo
+--- bfd/doc/bfd.texinfo
++++ bfd/doc/bfd.texinfo
 @@ -286,12 +286,13 @@ structures.
  @chapter BFD back ends
  @menu
@@ -5663,7 +5663,7 @@ diff --git a/bfd/elf32-amiga.c b/bfd/elf32-amiga.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..cf6c6cb9efdd15c786932adedd2476ec3a4bc08d
 --- /dev/null
-+++ b/bfd/elf32-amiga.c
++++ bfd/elf32-amiga.c
 @@ -0,0 +1,3844 @@
 +/* PowerPC-specific support for 32-bit ELF
 +   Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002
@@ -9514,8 +9514,8 @@ similarity index 97%
 copy from bfd/elf32-ppc.c
 copy to bfd/elf32-amigaos.c
 index 6454a8350da35adf6ed1e2209d9e4774ab7c50e3..9bf9535888f2345d60a8f802680ae03f41f67a5f 100644
---- a/bfd/elf32-ppc.c
-+++ b/bfd/elf32-amigaos.c
+--- bfd/elf32-ppc.c
++++ bfd/elf32-amigaos.c
 @@ -31,32 +31,50 @@
  #include <stdarg.h>
  #include "bfd.h"
@@ -10292,7 +10292,7 @@ diff --git a/bfd/elf32-i386-amithlon.c b/bfd/elf32-i386-amithlon.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..4e029a5e90187a96013ed97e078fba920d95db28
 --- /dev/null
-+++ b/bfd/elf32-i386-amithlon.c
++++ bfd/elf32-i386-amithlon.c
 @@ -0,0 +1,198 @@
 +/* Intel IA-32 specific support for 32-bit big endian ELF on Amithlon.
 +   Copyright 2002 Free Software Foundation, Inc.
@@ -10494,8 +10494,8 @@ index 0000000000000000000000000000000000000000..4e029a5e90187a96013ed97e078fba92
 +#include "elf32-i386.c"
 diff --git a/bfd/elf32-i386.c b/bfd/elf32-i386.c
 index 0a6b22ec19ec9daee29e49c64c5d3ba2299e99c1..46396c83d45bab97de1470ee44ffa21f9d03e4b4 100644
---- a/bfd/elf32-i386.c
-+++ b/bfd/elf32-i386.c
+--- bfd/elf32-i386.c
++++ bfd/elf32-i386.c
 @@ -29,12 +29,16 @@
  #include "elf-vxworks.h"
  #include "bfd_stdint.h"
@@ -10603,7 +10603,7 @@ diff --git a/bfd/elf32-morphos.c b/bfd/elf32-morphos.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..accc2d426bede6c9441313115fcd5ab5f99630f9
 --- /dev/null
-+++ b/bfd/elf32-morphos.c
++++ bfd/elf32-morphos.c
 @@ -0,0 +1,7137 @@
 +/* PowerPC-specific support for 32-bit ELF
 +   Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002
@@ -17744,8 +17744,8 @@ index 0000000000000000000000000000000000000000..accc2d426bede6c9441313115fcd5ab5
 +#include "elf32-target.h"
 diff --git a/bfd/elf32-ppc.c b/bfd/elf32-ppc.c
 index 6454a8350da35adf6ed1e2209d9e4774ab7c50e3..5c92c53da7b3dec8f85a0a0b930190635f89dcfb 100644
---- a/bfd/elf32-ppc.c
-+++ b/bfd/elf32-ppc.c
+--- bfd/elf32-ppc.c
++++ bfd/elf32-ppc.c
 @@ -4412,12 +4412,16 @@ ppc_elf_check_relocs (bfd *abfd,
  	      p->count += 1;
  	      if (!must_be_dyn_reloc (info, r_type))
@@ -17767,7 +17767,7 @@ diff --git a/bfd/hosts/amigaos.h b/bfd/hosts/amigaos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..dc62d7f837f333ae8d2c5b47d01144cb0d3625f2
 --- /dev/null
-+++ b/bfd/hosts/amigaos.h
++++ bfd/hosts/amigaos.h
 @@ -0,0 +1,5 @@
 +/* Host configuration for AmigaOS */
 +#ifndef hosts_amigaos_h
@@ -17778,7 +17778,7 @@ diff --git a/bfd/hosts/morphos.h b/bfd/hosts/morphos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..d3c60ea9f5767ad0bfa22ba2c8c1e5ed9d94d481
 --- /dev/null
-+++ b/bfd/hosts/morphos.h
++++ bfd/hosts/morphos.h
 @@ -0,0 +1,5 @@
 +/* Host configuration for MorphOS */
 +#ifndef hosts_morphos_h
@@ -17789,7 +17789,7 @@ diff --git a/bfd/libamiga.h b/bfd/libamiga.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..351f0fa16a45680982f5b5807c8ba756defe1764
 --- /dev/null
-+++ b/bfd/libamiga.h
++++ bfd/libamiga.h
 @@ -0,0 +1,187 @@
 +/* BFD back-end for Commodore-Amiga AmigaOS binaries. Data structures.
 +   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998
@@ -17980,8 +17980,8 @@ index 0000000000000000000000000000000000000000..351f0fa16a45680982f5b5807c8ba756
 +#endif /* MEMF_ANY */
 diff --git a/bfd/libbfd.h b/bfd/libbfd.h
 index 6c48d641f606b9ed6158b4567021769bacfbd54a..3cb9b36fe2379a5d7f118472e106c151d6153aea 100644
---- a/bfd/libbfd.h
-+++ b/bfd/libbfd.h
+--- bfd/libbfd.h
++++ bfd/libbfd.h
 @@ -1345,12 +1345,16 @@ static const char *const bfd_reloc_code_real_names[] = { "@@uninitialized@@",
    "BFD_RELOC_PPC_EMB_RELSEC16",
    "BFD_RELOC_PPC_EMB_RELST_LO",
@@ -18018,8 +18018,8 @@ index 6c48d641f606b9ed6158b4567021769bacfbd54a..3cb9b36fe2379a5d7f118472e106c151
    "BFD_RELOC_ARM_PCREL_CALL",
 diff --git a/bfd/linker.c b/bfd/linker.c
 index d3ef9a43a5bca8096221870248daf58007c6ef78..4f0aa188f5017ea68023530f6ae9eaa6b98b5b11 100644
---- a/bfd/linker.c
-+++ b/bfd/linker.c
+--- bfd/linker.c
++++ bfd/linker.c
 @@ -430,13 +430,14 @@ static bfd_boolean generic_link_add_symbol_list
    (bfd *, struct bfd_link_info *, bfd_size_type count, asymbol **,
     bfd_boolean);
@@ -18113,8 +18113,8 @@ index d3ef9a43a5bca8096221870248daf58007c6ef78..4f0aa188f5017ea68023530f6ae9eaa6
  {
 diff --git a/bfd/reloc.c b/bfd/reloc.c
 index 47d052d1345847a7178f4c7ebe4f529396ae0a4f..6c3bb68f2da65b201b6288b8709fd60d9b0d5b2c 100644
---- a/bfd/reloc.c
-+++ b/bfd/reloc.c
+--- bfd/reloc.c
++++ bfd/reloc.c
 @@ -2803,12 +2803,20 @@ ENUMX
    BFD_RELOC_PPC_EMB_RELST_HA
  ENUMX
@@ -18162,8 +18162,8 @@ index 47d052d1345847a7178f4c7ebe4f529396ae0a4f..6c3bb68f2da65b201b6288b8709fd60d
    BFD_RELOC_CTOR
 diff --git a/bfd/targets.c b/bfd/targets.c
 index fa206d24bef3a22255f6be42221647db3142eb06..9df24504bab564048f724fbbb641ca13c5805602 100644
---- a/bfd/targets.c
-+++ b/bfd/targets.c
+--- bfd/targets.c
++++ bfd/targets.c
 @@ -144,12 +144,13 @@ DESCRIPTION
  	the entry points which call them. Too bad we can't have one
  	macro to define them both!
@@ -18294,8 +18294,8 @@ index fa206d24bef3a22255f6be42221647db3142eb06..9df24504bab564048f724fbbb641ca13
  	&bfd_elf32_ntradbigmips_vec,
 diff --git a/binutils/objcopy.c b/binutils/objcopy.c
 index 020d54d6fbe27a5c90600e1d034a93e8fade0ff6..88bd071eefa8b5426eaadfd6431e9de5d4a4591b 100644
---- a/binutils/objcopy.c
-+++ b/binutils/objcopy.c
+--- binutils/objcopy.c
++++ binutils/objcopy.c
 @@ -1101,12 +1101,17 @@ filter_symbols (bfd *abfd, bfd *obfd, asymbol **osyms,
        bfd_boolean undefined;
        bfd_boolean rem_leading_char;
@@ -18438,8 +18438,8 @@ index 020d54d6fbe27a5c90600e1d034a93e8fade0ff6..88bd071eefa8b5426eaadfd6431e9de5
  
 diff --git a/binutils/readelf.c b/binutils/readelf.c
 index d9ec436af6fbea0bbc3dfa8e9cd40fcf9be140cf..f52d7168af3bc6559bd2483ff1fc126da385b38d 100644
---- a/binutils/readelf.c
-+++ b/binutils/readelf.c
+--- binutils/readelf.c
++++ binutils/readelf.c
 @@ -150,12 +150,13 @@
  #include "elf/vax.h"
  #include "elf/x86-64.h"
@@ -18486,8 +18486,8 @@ index d9ec436af6fbea0bbc3dfa8e9cd40fcf9be140cf..f52d7168af3bc6559bd2483ff1fc126d
  	      break;
 diff --git a/binutils/rename.c b/binutils/rename.c
 index 5923a3f4ce2b2b5b0da96ff8225bf3c7750563bc..354b6fd1eab7f632995fed27698c76826ee8e753 100644
---- a/binutils/rename.c
-+++ b/binutils/rename.c
+--- binutils/rename.c
++++ binutils/rename.c
 @@ -27,13 +27,13 @@
  #else /* ! HAVE_GOOD_UTIME_H */
  #ifdef HAVE_UTIMES
@@ -18520,8 +18520,8 @@ index 5923a3f4ce2b2b5b0da96ff8225bf3c7750563bc..354b6fd1eab7f632995fed27698c7682
  
 diff --git a/config.sub b/config.sub
 index 59bb593f109c8d795df4cbb96b015222eed91c07..88ccfd90050ad0d8d341c091b9920f62fc5996f8 100755
---- a/config.sub
-+++ b/config.sub
+--- config.sub
++++ config.sub
 @@ -353,13 +353,13 @@ case $basic_machine in
  		basic_machine=armel-unknown
  		;;
@@ -18576,7 +18576,7 @@ diff --git a/config/mh-amigaos b/config/mh-amigaos
 new file mode 100644
 index 0000000000000000000000000000000000000000..4889ea41c6889e2e15c06c8f355c30b5eb2aa5f4
 --- /dev/null
-+++ b/config/mh-amigaos
++++ config/mh-amigaos
 @@ -0,0 +1,13 @@
 +# Host makefile fragment for Commodore Amiga running AmigaOS.
 +
@@ -18595,7 +18595,7 @@ diff --git a/config/mh-morphos b/config/mh-morphos
 new file mode 100644
 index 0000000000000000000000000000000000000000..c00202aec0389eaa067ea48818a7d8fa4fd5fc6b
 --- /dev/null
-+++ b/config/mh-morphos
++++ config/mh-morphos
 @@ -0,0 +1,13 @@
 +# Host makefile fragment for Commodore Amiga running AmigaOS.
 +
@@ -18612,8 +18612,8 @@ index 0000000000000000000000000000000000000000..c00202aec0389eaa067ea48818a7d8fa
 +HARDLINK = cp
 diff --git a/configure b/configure
 index 6079e6c07511e12bb51ae5197e7110d79c36b098..9667d72a79baf032fa22e054b88fb03e64673b63 100755
---- a/configure
-+++ b/configure
+--- configure
++++ configure
 @@ -3630,12 +3630,15 @@ case "${noconfigdirs}" in
  esac
  
@@ -18648,8 +18648,8 @@ index 6079e6c07511e12bb51ae5197e7110d79c36b098..9667d72a79baf032fa22e054b88fb03e
      ;;
 diff --git a/configure.ac b/configure.ac
 index 5efb4a32f114f23b90f838a5108f5016dc01bf43..fea7239acf315d982587796d8b93de4c894a14d8 100644
---- a/configure.ac
-+++ b/configure.ac
+--- configure.ac
++++ configure.ac
 @@ -1056,12 +1056,15 @@ case "${noconfigdirs}" in
  esac
  
@@ -18684,8 +18684,8 @@ index 5efb4a32f114f23b90f838a5108f5016dc01bf43..fea7239acf315d982587796d8b93de4c
      ;;
 diff --git a/gas/ChangeLog-9697 b/gas/ChangeLog-9697
 index f39e99554e87446d7eb8f0869701984c5df2137d..08dbfbc1d36608ec8e553593d445431cb1792cc5 100644
---- a/gas/ChangeLog-9697
-+++ b/gas/ChangeLog-9697
+--- gas/ChangeLog-9697
++++ gas/ChangeLog-9697
 @@ -874,12 +874,18 @@ Tue Aug 26 12:23:25 1997  Ian Lance Taylor  <ian@cygnus.com>
  	Gabriel Paubert <paubert@iram.es>.
  
@@ -18726,8 +18726,8 @@ index f39e99554e87446d7eb8f0869701984c5df2137d..08dbfbc1d36608ec8e553593d445431c
  Fri Nov  8 13:55:03 1996  Martin M. Hunt  <hunt@pizza.cygnus.com>
 diff --git a/gas/ChangeLog-9899 b/gas/ChangeLog-9899
 index ae38e5dd9223cf4e26355263197ea9f2cd0296c0..76861df24938b7ec7a3051da5cf20c44465b145e 100644
---- a/gas/ChangeLog-9899
-+++ b/gas/ChangeLog-9899
+--- gas/ChangeLog-9899
++++ gas/ChangeLog-9899
 @@ -3574,12 +3574,16 @@ Wed Jun  3 14:10:36 1998  Ian Lance Taylor  <ian@cygnus.com>
  
  Wed Jun  3 09:16:00 1998  Catherine Moore  <clm@cygnus.com>
@@ -18747,8 +18747,8 @@ index ae38e5dd9223cf4e26355263197ea9f2cd0296c0..76861df24938b7ec7a3051da5cf20c44
  Tue Jun  2 15:36:13 1998  Ian Lance Taylor  <ian@cygnus.com>
 diff --git a/gas/Makefile.am b/gas/Makefile.am
 index 256e2322fd80f84d8fa8fab735c85446dff4f506..851de3dc36be1138ad52026f7ace0ebd49da94b6 100644
---- a/gas/Makefile.am
-+++ b/gas/Makefile.am
+--- gas/Makefile.am
++++ gas/Makefile.am
 @@ -245,23 +245,25 @@ TARGET_CPU_HFILES = \
  	config/tc-z8k.h \
  	config/xtensa-relax.h
@@ -18806,8 +18806,8 @@ index 256e2322fd80f84d8fa8fab735c85446dff4f506..851de3dc36be1138ad52026f7ace0ebd
  BASEDIR = $(srcdir)/..
 diff --git a/gas/Makefile.in b/gas/Makefile.in
 index 94812d96db9cb13bdbdd0243a6b9a021e95e0a0b..c04f7d53feacb96ac3a82109375c3c94bcb15d56 100644
---- a/gas/Makefile.in
-+++ b/gas/Makefile.in
+--- gas/Makefile.in
++++ gas/Makefile.in
 @@ -513,23 +513,25 @@ TARGET_CPU_HFILES = \
  	config/tc-z8k.h \
  	config/xtensa-relax.h
@@ -18906,8 +18906,8 @@ index 94812d96db9cb13bdbdd0243a6b9a021e95e0a0b..c04f7d53feacb96ac3a82109375c3c94
  	  mkdir testsuite; \
 diff --git a/gas/as.c b/gas/as.c
 index fa4141f92bc887cfd403ec3eb93a7a20f26b642a..7b35f0e3f23662e09e8ce56c525239cf68b5dd3a 100644
---- a/gas/as.c
-+++ b/gas/as.c
+--- gas/as.c
++++ gas/as.c
 @@ -105,12 +105,17 @@ int keep_it = 0;
  segT reg_section;
  segT expr_section;
@@ -18960,8 +18960,8 @@ index fa4141f92bc887cfd403ec3eb93a7a20f26b642a..7b35f0e3f23662e09e8ce56c525239cf
    expr_section = subseg_new ("*GAS `expr' section*", 0);
 diff --git a/gas/config/m68k-parse.h b/gas/config/m68k-parse.h
 index 4f91385f9222dc52c8cc9f490860729c2183e445..08e766c5523b90ac3cd2d685b239c0a7ed4d8230 100644
---- a/gas/config/m68k-parse.h
-+++ b/gas/config/m68k-parse.h
+--- gas/config/m68k-parse.h
++++ gas/config/m68k-parse.h
 @@ -293,12 +293,15 @@ struct m68k_exp
    /* The type of pic relocation if any.  */
    enum pic_relocation pic_reloc;
@@ -18980,8 +18980,8 @@ index 4f91385f9222dc52c8cc9f490860729c2183e445..08e766c5523b90ac3cd2d685b239c0a7
  {
 diff --git a/gas/config/m68k-parse.y b/gas/config/m68k-parse.y
 index 2c58266fb8e6bd8d57515fe5200daaf9a1e450a2..742cbf2eeaaa15766a4d44de76a9d58d56993367 100644
---- a/gas/config/m68k-parse.y
-+++ b/gas/config/m68k-parse.y
+--- gas/config/m68k-parse.y
++++ gas/config/m68k-parse.y
 @@ -972,31 +972,35 @@ yylex ()
        else if (parens == 0
  	       && (*s == ',' || *s == ']'))
@@ -19025,7 +19025,7 @@ diff --git a/gas/config/obj-amigahunk.c b/gas/config/obj-amigahunk.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..8755475ecfdfd5aafbf876ed1f87c9d343b560e9
 --- /dev/null
-+++ b/gas/config/obj-amigahunk.c
++++ gas/config/obj-amigahunk.c
 @@ -0,0 +1,212 @@
 +/* AmigaOS object file format
 +   Copyright (C) 1992, 1993, 1994, 1995 Free Software Foundation, Inc.
@@ -19243,7 +19243,7 @@ diff --git a/gas/config/obj-amigahunk.h b/gas/config/obj-amigahunk.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..0b7d80eeb291878dc871ce0591b2223bf6cb1de2
 --- /dev/null
-+++ b/gas/config/obj-amigahunk.h
++++ gas/config/obj-amigahunk.h
 @@ -0,0 +1,54 @@
 +/* obj-amigahunk.h, AmigaOS object file format for gas, the assembler.
 +   Copyright (C) 1992, 1993, 1994, 1995 Free Software Foundation, Inc.
@@ -19301,8 +19301,8 @@ index 0000000000000000000000000000000000000000..0b7d80eeb291878dc871ce0591b2223b
 +#define AOUT_STABS
 diff --git a/gas/config/obj-elf.c b/gas/config/obj-elf.c
 index d7c766513ccc4111f51904a7e01904b7ebe96a03..bb8d9d1ebee6b76deee86848202fd06d5b1a4dfa 100644
---- a/gas/config/obj-elf.c
-+++ b/gas/config/obj-elf.c
+--- gas/config/obj-elf.c
++++ gas/config/obj-elf.c
 @@ -1390,13 +1390,13 @@ obj_elf_vtable_inherit (int ignore ATTRIBUTE_UNUSED)
    if (bad)
      return NULL;
@@ -19335,8 +19335,8 @@ index d7c766513ccc4111f51904a7e01904b7ebe96a03..bb8d9d1ebee6b76deee86848202fd06d
  #ifdef NEED_ECOFF_DEBUG
 diff --git a/gas/config/tc-i386.h b/gas/config/tc-i386.h
 index de132d69d7ac3f854ea517a15267e8c75365714d..14b67f0506eacf6d3dbb11dbd08689fa69354678 100644
---- a/gas/config/tc-i386.h
-+++ b/gas/config/tc-i386.h
+--- gas/config/tc-i386.h
++++ gas/config/tc-i386.h
 @@ -24,13 +24,20 @@
  #define TC_I386 1
  
@@ -19407,8 +19407,8 @@ index de132d69d7ac3f854ea517a15267e8c75365714d..14b67f0506eacf6d3dbb11dbd08689fa
    PROCESSOR_I486,
 diff --git a/gas/config/tc-m68k.c b/gas/config/tc-m68k.c
 index 21accf605b22ebc5af491e173faeef93888b6667..8b5f6c60f2141ee91d6e9d1d639815abdf4e5042 100644
---- a/gas/config/tc-m68k.c
-+++ b/gas/config/tc-m68k.c
+--- gas/config/tc-m68k.c
++++ gas/config/tc-m68k.c
 @@ -35,12 +35,22 @@
  #endif
  
@@ -20368,8 +20368,8 @@ index 21accf605b22ebc5af491e173faeef93888b6667..8b5f6c60f2141ee91d6e9d1d639815ab
  m68k_elf_final_processing (void)
 diff --git a/gas/config/tc-m68k.h b/gas/config/tc-m68k.h
 index bcf4607ebebe16d575166d666a536fb1fbdfeaee..144b7c7d783bab80bd84fa0e57cfce9f349a528f 100644
---- a/gas/config/tc-m68k.h
-+++ b/gas/config/tc-m68k.h
+--- gas/config/tc-m68k.h
++++ gas/config/tc-m68k.h
 @@ -30,20 +30,27 @@ struct fix;
  #ifdef TE_SUN3
  #define TARGET_FORMAT "a.out-sunos-big"
@@ -20434,8 +20434,8 @@ index bcf4607ebebe16d575166d666a536fb1fbdfeaee..144b7c7d783bab80bd84fa0e57cfce9f
        if (aim == 0 && this_type->rlx_forward == 127)			  \
 diff --git a/gas/config/tc-ppc.c b/gas/config/tc-ppc.c
 index 208d76d847128c833f73713eff2b78deb610a764..11949323d80802138ec23fb8174727c0a7c4fd45 100644
---- a/gas/config/tc-ppc.c
-+++ b/gas/config/tc-ppc.c
+--- gas/config/tc-ppc.c
++++ gas/config/tc-ppc.c
 @@ -1421,22 +1421,28 @@ ppc_target_format (void)
  #  else
    return (ppc_obj64 ? "aixcoff64-rs6000" : "aixcoff-rs6000");
@@ -20573,8 +20573,8 @@ index 208d76d847128c833f73713eff2b78deb610a764..11949323d80802138ec23fb8174727c0
  	  size = 2;
 diff --git a/gas/config/tc-sh.c b/gas/config/tc-sh.c
 index 4db1a0913602aaf18d1390cc315f6db0fbdef649..ba0ed8e89e44a9ab8411662047e6f85b4f28d5d9 100644
---- a/gas/config/tc-sh.c
-+++ b/gas/config/tc-sh.c
+--- gas/config/tc-sh.c
++++ gas/config/tc-sh.c
 @@ -800,13 +800,13 @@ sh_cons_fix_new (fragS *frag, int off, int size, expressionS *exp)
      {
      error:
@@ -20772,7 +20772,7 @@ diff --git a/gas/config/te-amiga.h b/gas/config/te-amiga.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..a7b93727031092cdeb4bf66e3813663d66d79c3b
 --- /dev/null
-+++ b/gas/config/te-amiga.h
++++ gas/config/te-amiga.h
 @@ -0,0 +1,24 @@
 +/*
 + * te-amiga.h -- Amiga target environment declarations.
@@ -20802,7 +20802,7 @@ diff --git a/gas/config/te-amigaos.h b/gas/config/te-amigaos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..8bd15a3d19b3f383e6756d6e307bd10dc4dcfb6f
 --- /dev/null
-+++ b/gas/config/te-amigaos.h
++++ gas/config/te-amigaos.h
 @@ -0,0 +1,14 @@
 +/*
 + * te-amigaos.h -- Amiga target environment declarations.
@@ -20823,8 +20823,8 @@ similarity index 65%
 copy from gas/config/te-nbsd.h
 copy to gas/config/te-amithlon.h
 index ce291014824771b2081438766002c479eeb60d9b..2fbd88551330d46e5cd585d142d67e6b7efe1624 100644
---- a/gas/config/te-nbsd.h
-+++ b/gas/config/te-amithlon.h
+--- gas/config/te-nbsd.h
++++ gas/config/te-amithlon.h
 @@ -1,24 +1,26 @@
 -/* te-nbsd.h -- NetBSD target environment declarations.
 -   Copyright 1987, 1990, 1991, 1992, 1994, 1998, 2000, 2005, 2007
@@ -20863,7 +20863,7 @@ diff --git a/gas/config/te-morphos.h b/gas/config/te-morphos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..43b0826fa79d9e9c97485cc6dd7d919771defbf9
 --- /dev/null
-+++ b/gas/config/te-morphos.h
++++ gas/config/te-morphos.h
 @@ -0,0 +1,14 @@
 +/*
 + * te-amiga.h -- Amiga target environment declarations.
@@ -20881,8 +20881,8 @@ index 0000000000000000000000000000000000000000..43b0826fa79d9e9c97485cc6dd7d9197
 +#endif
 diff --git a/gas/configure b/gas/configure
 index 2e674491f392b756186c52f7b0d28de8a20398c5..6eabef030df837c80ab009e12ad99a3086df5e43 100755
---- a/gas/configure
-+++ b/gas/configure
+--- gas/configure
++++ gas/configure
 @@ -12500,12 +12500,19 @@ _ACEOF
  
  cat >>confdefs.h <<_ACEOF
@@ -20931,8 +20931,8 @@ index 2e674491f392b756186c52f7b0d28de8a20398c5..6eabef030df837c80ab009e12ad99a30
  $as_echo_n "checking for $ac_word... " >&6; }
 diff --git a/gas/configure.in b/gas/configure.in
 index 14f6edfe5deb041e968454931c451e1da226e0d1..183d98e8a4ac56e2e8a7a87f7b824f302bbb04f4 100644
---- a/gas/configure.in
-+++ b/gas/configure.in
+--- gas/configure.in
++++ gas/configure.in
 @@ -598,12 +598,19 @@ if test `set . $emfiles ; shift ; echo $#` -gt 0 ; then
  fi
  AC_SUBST(extra_objects)
@@ -20979,8 +20979,8 @@ index 14f6edfe5deb041e968454931c451e1da226e0d1..183d98e8a4ac56e2e8a7a87f7b824f30
  AM_PO_SUBDIRS
 diff --git a/gas/configure.tgt b/gas/configure.tgt
 index 9e44de000145c39abfd3ea325656a4d4bc066198..61f24acdb98484f43ac0c08d3cacfd38b1c1fb8b 100644
---- a/gas/configure.tgt
-+++ b/gas/configure.tgt
+--- gas/configure.tgt
++++ gas/configure.tgt
 @@ -40,13 +40,14 @@ case ${cpu} in
    cr16*)		cpu_type=cr16 endian=little ;;
    crisv32)		cpu_type=cris arch=crisv32 ;;
@@ -21043,8 +21043,8 @@ index 9e44de000145c39abfd3ea325656a4d4bc066198..61f24acdb98484f43ac0c08d3cacfd38
    ppc-*-beos*)				fmt=coff ;;
 diff --git a/gas/read.c b/gas/read.c
 index 21c42b27342fb8e2c687417bcdacc4c16e3905b7..9de62b9c512025212d52a19833ffe28004944dd1 100644
---- a/gas/read.c
-+++ b/gas/read.c
+--- gas/read.c
++++ gas/read.c
 @@ -43,12 +43,16 @@
  #include "wchar.h"
  
@@ -21133,8 +21133,8 @@ index 21c42b27342fb8e2c687417bcdacc4c16e3905b7..9de62b9c512025212d52a19833ffe280
  
 diff --git a/gas/read.h b/gas/read.h
 index 4e5d1bbd2dc7b0724a2fc047db01f97aec8a4bac..59e787e754a14e11195607d382f81992423584cb 100644
---- a/gas/read.h
-+++ b/gas/read.h
+--- gas/read.h
++++ gas/read.h
 @@ -130,12 +130,16 @@ extern void do_repeat (int,const char *,const char *);
  extern void do_repeat_with_expander (int, const char *, const char *, const char *);
  extern void end_repeat (int);
@@ -21154,8 +21154,8 @@ index 4e5d1bbd2dc7b0724a2fc047db01f97aec8a4bac..59e787e754a14e11195607d382f81992
  extern symbolS *s_comm_internal (int, symbolS *(*) (int, symbolS *, addressT));
 diff --git a/gas/write.c b/gas/write.c
 index 56ebb6c565bea35df43565b53206156270a41b66..8a9746c927a3e8b7007cdec9c7f16e47509b5f45 100644
---- a/gas/write.c
-+++ b/gas/write.c
+--- gas/write.c
++++ gas/write.c
 @@ -149,13 +149,14 @@ fix_new_internal (fragS *frag,		/* Which frag?  */
  		  int size,		/* 1, 2, or 4 usually.  */
  		  symbolS *add_symbol,	/* X_add_symbol.  */
@@ -21309,8 +21309,8 @@ index 56ebb6c565bea35df43565b53206156270a41b66..8a9746c927a3e8b7007cdec9c7f16e47
  
 diff --git a/gas/write.h b/gas/write.h
 index 8303f1be98b6548e4e30a326f042f78e07aed7f5..5f3598655b2665fa86d7b5291643f563536e2f31 100644
---- a/gas/write.h
-+++ b/gas/write.h
+--- gas/write.h
++++ gas/write.h
 @@ -172,16 +172,16 @@ extern void write_object_file (void);
  extern long relax_frag (segT, fragS *, long);
  extern int relax_segment (struct frag *, segT, int);
@@ -21332,8 +21332,8 @@ index 8303f1be98b6548e4e30a326f042f78e07aed7f5..5f3598655b2665fa86d7b5291643f563
  #endif /* __write_h__ */
 diff --git a/gprof/Makefile.am b/gprof/Makefile.am
 index edd100ac924458a1e69da65cab55ddb6a3b61555..286d29546ecdfa6cfafbfc7f7fb83a0fdeadfb83 100644
---- a/gprof/Makefile.am
-+++ b/gprof/Makefile.am
+--- gprof/Makefile.am
++++ gprof/Makefile.am
 @@ -36,13 +36,13 @@ noinst_HEADERS = \
  	corefile.h gmon.h gmon_io.h gmon_out.h gprof.h hertz.h hist.h \
  	search_list.h source.h sym_ids.h symtab.h utils.h
@@ -21351,8 +21351,8 @@ index edd100ac924458a1e69da65cab55ddb6a3b61555..286d29546ecdfa6cfafbfc7f7fb83a0f
  # This empty rule is a hack against gmake patched by Apple.
 diff --git a/gprof/Makefile.in b/gprof/Makefile.in
 index a9d7073c799863dc3b39124f83dbcba73bf8bf85..4d487c22a56406d567643a6bd53310e501fa99aa 100644
---- a/gprof/Makefile.in
-+++ b/gprof/Makefile.in
+--- gprof/Makefile.in
++++ gprof/Makefile.in
 @@ -1013,13 +1013,13 @@ uninstall-man: uninstall-man1
  	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
  	uninstall uninstall-am uninstall-binPROGRAMS uninstall-dvi-am \
@@ -21370,8 +21370,8 @@ index a9d7073c799863dc3b39124f83dbcba73bf8bf85..4d487c22a56406d567643a6bd53310e5
  	awk -f $(srcdir)/gen-c-prog.awk > ./$*.c \
 diff --git a/gprof/configure b/gprof/configure
 index 6ffdbe30cef942eb7e28f26674b03c8ff5907711..665d5009457e7e17d7acc0c8bfb81301cd546b32 100755
---- a/gprof/configure
-+++ b/gprof/configure
+--- gprof/configure
++++ gprof/configure
 @@ -11850,12 +11850,25 @@ $as_echo "found xgettext program is not GNU xgettext; ignore it" >&6; }
    fi
  
@@ -21400,8 +21400,8 @@ index 6ffdbe30cef942eb7e28f26674b03c8ff5907711..665d5009457e7e17d7acc0c8bfb81301
    enableval=$enable_maintainer_mode; USE_MAINTAINER_MODE=$enableval
 diff --git a/gprof/configure.in b/gprof/configure.in
 index 631e3e467314f3740c737f1534537c7532a00d08..7b4586b0aeee56169f321af15214054feec0c349 100644
---- a/gprof/configure.in
-+++ b/gprof/configure.in
+--- gprof/configure.in
++++ gprof/configure.in
 @@ -28,12 +28,23 @@ LT_INIT
  AC_CHECK_FUNCS(setmode)
  
@@ -21428,8 +21428,8 @@ index 631e3e467314f3740c737f1534537c7532a00d08..7b4586b0aeee56169f321af15214054f
  
 diff --git a/gprof/gconfig.in b/gprof/gconfig.in
 index 25679910ee73fb2ae8f1c3f7b1cb2951166da71f..4ad8775fd559a1c06b6f572b4af24ca46f7f7f3e 100644
---- a/gprof/gconfig.in
-+++ b/gprof/gconfig.in
+--- gprof/gconfig.in
++++ gprof/gconfig.in
 @@ -1,12 +1,8 @@
  /* gconfig.in.  Generated from configure.in by autoheader.  */
  
@@ -21447,7 +21447,7 @@ diff --git a/include/elf/amigaos.h b/include/elf/amigaos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..2cbcd490a300f0248aecf2ca6d50865181a3c1f0
 --- /dev/null
-+++ b/include/elf/amigaos.h
++++ include/elf/amigaos.h
 @@ -0,0 +1,27 @@
 +/* AmigaOS ELF support for BFD.
 +   Copyright 2001 Free Software Foundation, Inc.
@@ -21478,8 +21478,8 @@ index 0000000000000000000000000000000000000000..2cbcd490a300f0248aecf2ca6d508651
 +#endif /* _ELF_AMIGAOS_H */
 diff --git a/include/elf/ppc.h b/include/elf/ppc.h
 index f80a1e8a3e9c5852902beaafbb6a2a9e36d815c3..9893a88d96a77d730d91ef2bfe89a18d75029dd1 100644
---- a/include/elf/ppc.h
-+++ b/include/elf/ppc.h
+--- include/elf/ppc.h
++++ include/elf/ppc.h
 @@ -128,12 +128,24 @@ START_RELOC_NUMBERS (elf_ppc_reloc_type)
    RELOC_NUMBER (R_PPC_EMB_RELST_LO,	112)
    RELOC_NUMBER (R_PPC_EMB_RELST_HI,	113)
@@ -21507,8 +21507,8 @@ index f80a1e8a3e9c5852902beaafbb6a2a9e36d815c3..9893a88d96a77d730d91ef2bfe89a18d
    RELOC_NUMBER (R_PPC_VLE_LO16D,	220)
 diff --git a/include/libiberty.h b/include/libiberty.h
 index cacde800ea3dda438ea8292ab4b9354a63ad048b..595ecf48242a2067dd71c4dda07a57994bdb4981 100644
---- a/include/libiberty.h
-+++ b/include/libiberty.h
+--- include/libiberty.h
++++ include/libiberty.h
 @@ -103,13 +103,13 @@ extern int countargv (char**);
  /* HAVE_DECL_* is a three-state macro: undefined, 0 or 1.  If it is
     undefined, we haven't run the autoconf check so provide the
@@ -21526,8 +21526,8 @@ index cacde800ea3dda438ea8292ab4b9354a63ad048b..595ecf48242a2067dd71c4dda07a5799
  #define basename basename_cannot_be_used_without_a_prototype
 diff --git a/ld/ChangeLog-9197 b/ld/ChangeLog-9197
 index 9307f333e3b156758598c19ff0873c21fc1dad29..0f0e189765f0438cd3bbd7a04f36c8e006cef91c 100644
---- a/ld/ChangeLog-9197
-+++ b/ld/ChangeLog-9197
+--- ld/ChangeLog-9197
++++ ld/ChangeLog-9197
 @@ -144,12 +144,17 @@ Wed Oct 22 11:29:25 1997  Ian Lance Taylor  <ian@cygnus.com>
  Fri Oct 17 00:00:13 1997  Richard Henderson  <rth@cygnus.com>
  
@@ -21584,8 +21584,8 @@ index 9307f333e3b156758598c19ff0873c21fc1dad29..0f0e189765f0438cd3bbd7a04f36c8e0
  
 diff --git a/ld/ChangeLog-9899 b/ld/ChangeLog-9899
 index 866e4a0cfbb8a086ae01716e4a806e3386914cab..de288123cb7b80422bfc2973640bbdd16c6af900 100644
---- a/ld/ChangeLog-9899
-+++ b/ld/ChangeLog-9899
+--- ld/ChangeLog-9899
++++ ld/ChangeLog-9899
 @@ -1881,12 +1881,17 @@ Wed Mar 18 09:42:24 1998  Nick Clifton  <nickc@cygnus.com>
  	* configure.tgt (targ_extra_emuls): Add thumb-pe target.
  
@@ -21606,8 +21606,8 @@ index 866e4a0cfbb8a086ae01716e4a806e3386914cab..de288123cb7b80422bfc2973640bbdd1
  Thu Feb 26 17:09:53 1998  Michael Meissner  <meissner@cygnus.com>
 diff --git a/ld/Makefile.am b/ld/Makefile.am
 index e343ab06531054392ae09d67ecb2dc3022053c07..cbaa4c736f8e87f05a60d8580174e207069872fd 100644
---- a/ld/Makefile.am
-+++ b/ld/Makefile.am
+--- ld/Makefile.am
++++ ld/Makefile.am
 @@ -128,12 +128,16 @@ LIBIBERTY = ../libiberty/libiberty.a
  
  ALL_EMULATION_SOURCES = \
@@ -21726,8 +21726,8 @@ index e343ab06531054392ae09d67ecb2dc3022053c07..cbaa4c736f8e87f05a60d8580174e207
  	${GENSCRIPTS} ppcmacos "$(tdir_ppcmacos)"
 diff --git a/ld/Makefile.in b/ld/Makefile.in
 index 7da93b46501b8f8aa076134b903e1cdf34025941..43947832717c60ff3a89a8fcea838f5151afd56e 100644
---- a/ld/Makefile.in
-+++ b/ld/Makefile.in
+--- ld/Makefile.in
++++ ld/Makefile.in
 @@ -435,12 +435,16 @@ BFDLIB = ../bfd/libbfd.la
  LIBIBERTY = ../libiberty/libiberty.a
  ALL_EMULATION_SOURCES = \
@@ -21893,8 +21893,8 @@ index 7da93b46501b8f8aa076134b903e1cdf34025941..43947832717c60ff3a89a8fcea838f51
  	${GENSCRIPTS} ppcmacos "$(tdir_ppcmacos)"
 diff --git a/ld/configure.host b/ld/configure.host
 index f47b961176fa37c2786aa9ff322b21b06081cdfd..c7e1e700c24e48e783d07023b678dbd59bee0b11 100644
---- a/ld/configure.host
-+++ b/ld/configure.host
+--- ld/configure.host
++++ ld/configure.host
 @@ -170,12 +170,16 @@ mips*-sgi-irix4* | mips*-sgi-irix5*)
  
  mips*-sgi-irix6*)
@@ -21914,8 +21914,8 @@ index f47b961176fa37c2786aa9ff322b21b06081cdfd..c7e1e700c24e48e783d07023b678dbd5
    ;;
 diff --git a/ld/configure.tgt b/ld/configure.tgt
 index 72bc5bca48d7c93f838de826a0685c13ef1db3c2..ddba96d6da87eb2f033eae77509639b6a630ec2a 100644
---- a/ld/configure.tgt
-+++ b/ld/configure.tgt
+--- ld/configure.tgt
++++ ld/configure.tgt
 @@ -298,12 +298,13 @@ x86_64-*-pe | x86_64-*-pep) targ_emul=i386pep ;
  			targ_extra_ofiles="deffilep.o pep-dll.o pe-dll.o" ;;
  x86_64-*-mingw*)	targ_emul=i386pep ;
@@ -21980,7 +21980,7 @@ diff --git a/ld/emulparams/amiga.sh b/ld/emulparams/amiga.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..c2915d47d7964c6406eae9079ce90d695ecdbfda
 --- /dev/null
-+++ b/ld/emulparams/amiga.sh
++++ ld/emulparams/amiga.sh
 @@ -0,0 +1,6 @@
 +SCRIPT_NAME=amiga
 +OUTPUT_FORMAT="amiga"
@@ -21992,7 +21992,7 @@ diff --git a/ld/emulparams/amiga_bss.sh b/ld/emulparams/amiga_bss.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..5405d737448875ea39e5d9c4edfd59ee32c8a7b4
 --- /dev/null
-+++ b/ld/emulparams/amiga_bss.sh
++++ ld/emulparams/amiga_bss.sh
 @@ -0,0 +1,6 @@
 +SCRIPT_NAME=amiga_bss
 +OUTPUT_FORMAT="amiga"
@@ -22004,7 +22004,7 @@ diff --git a/ld/emulparams/amigaos.sh b/ld/emulparams/amigaos.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..605b81e76bcbbd2322561d7d9502190dc7c00674
 --- /dev/null
-+++ b/ld/emulparams/amigaos.sh
++++ ld/emulparams/amigaos.sh
 @@ -0,0 +1,26 @@
 +#. ${srcdir}/emulparams/elf32ppccommon.sh
 +TEMPLATE_NAME=amigaos
@@ -22036,7 +22036,7 @@ diff --git a/ld/emulparams/amithlon.sh b/ld/emulparams/amithlon.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..14b1c776396e2424af51c9b409e2d05f2881a84d
 --- /dev/null
-+++ b/ld/emulparams/amithlon.sh
++++ ld/emulparams/amithlon.sh
 @@ -0,0 +1,11 @@
 +SCRIPT_NAME=amithlon
 +OUTPUT_FORMAT="elf32-i386be-amithlon"
@@ -22053,7 +22053,7 @@ diff --git a/ld/emulparams/morphos.sh b/ld/emulparams/morphos.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..45908c662f9b6085877dd39621e813da45a9f5f7
 --- /dev/null
-+++ b/ld/emulparams/morphos.sh
++++ ld/emulparams/morphos.sh
 @@ -0,0 +1,6 @@
 +TEMPLATE_NAME=morphos
 +SCRIPT_NAME=morphos
@@ -22065,7 +22065,7 @@ diff --git a/ld/emulparams/morphos_baserel.sh b/ld/emulparams/morphos_baserel.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..46c483484813395904772673d1ae1eed0bc9109f
 --- /dev/null
-+++ b/ld/emulparams/morphos_baserel.sh
++++ ld/emulparams/morphos_baserel.sh
 @@ -0,0 +1,6 @@
 +TEMPLATE_NAME=morphos
 +SCRIPT_NAME=morphos_baserel
@@ -22077,7 +22077,7 @@ diff --git a/ld/emulparams/ppcamiga.sh b/ld/emulparams/ppcamiga.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..3f266cf5265f13748eeb78f67dd93227ade92de5
 --- /dev/null
-+++ b/ld/emulparams/ppcamiga.sh
++++ ld/emulparams/ppcamiga.sh
 @@ -0,0 +1,8 @@
 +SCRIPT_NAME=amiga
 +OUTPUT_FORMAT="amiga"
@@ -22091,7 +22091,7 @@ diff --git a/ld/emulparams/ppcamiga_bss.sh b/ld/emulparams/ppcamiga_bss.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..8d1720fb17c876d55b75f0885eb9f6eb0c7e9f1e
 --- /dev/null
-+++ b/ld/emulparams/ppcamiga_bss.sh
++++ ld/emulparams/ppcamiga_bss.sh
 @@ -0,0 +1,8 @@
 +SCRIPT_NAME=amiga_bss
 +OUTPUT_FORMAT="amiga"
@@ -22105,7 +22105,7 @@ diff --git a/ld/emultempl/amiga.em b/ld/emultempl/amiga.em
 new file mode 100644
 index 0000000000000000000000000000000000000000..c6abc5c644d3d93609d66972752e6cd3d474d70e
 --- /dev/null
-+++ b/ld/emultempl/amiga.em
++++ ld/emultempl/amiga.em
 @@ -0,0 +1,288 @@
 +# This shell script emits a C file. -*- C -*-
 +# It does some substitutions.
@@ -22403,7 +22403,7 @@ diff --git a/ld/emultempl/amithlon.em b/ld/emultempl/amithlon.em
 new file mode 100644
 index 0000000000000000000000000000000000000000..5e453a72f8c01e621d110d505b83d1abbcd19831
 --- /dev/null
-+++ b/ld/emultempl/amithlon.em
++++ ld/emultempl/amithlon.em
 @@ -0,0 +1,1698 @@
 +# This shell script emits a C file. -*- C -*-
 +# It does some substitutions.
@@ -24107,7 +24107,7 @@ diff --git a/ld/emultempl/morphos.em b/ld/emultempl/morphos.em
 new file mode 100644
 index 0000000000000000000000000000000000000000..cd3b9a790fb286187d8fa3e11af9382f1603d16b
 --- /dev/null
-+++ b/ld/emultempl/morphos.em
++++ ld/emultempl/morphos.em
 @@ -0,0 +1,1104 @@
 +# This shell script emits a C file. -*- C -*-
 +# It does some substitutions.
@@ -25215,8 +25215,8 @@ index 0000000000000000000000000000000000000000..cd3b9a790fb286187d8fa3e11af9382f
 +EOF
 diff --git a/ld/emultempl/ppc32elf.em b/ld/emultempl/ppc32elf.em
 index 6843770ca9431d7a4b698bfda7060082b215c41f..801d1d6424bc1f61bb0e7171de9f9b5178bc8100 100644
---- a/ld/emultempl/ppc32elf.em
-+++ b/ld/emultempl/ppc32elf.em
+--- ld/emultempl/ppc32elf.em
++++ ld/emultempl/ppc32elf.em
 @@ -26,12 +26,15 @@
  fragment <<EOF
  
@@ -25272,8 +25272,8 @@ index 6843770ca9431d7a4b698bfda7060082b215c41f..801d1d6424bc1f61bb0e7171de9f9b51
    { "secure-plt", no_argument, NULL, OPTION_NEW_PLT },
 diff --git a/ld/ldctor.c b/ld/ldctor.c
 index b29c1e0cbb13463f58989042722775698365cf9a..18d5f9370c7a0e9b009c74fdff48a4c45659245f 100644
---- a/ld/ldctor.c
-+++ b/ld/ldctor.c
+--- ld/ldctor.c
++++ ld/ldctor.c
 @@ -256,14 +256,18 @@ ldctor_build_sets (void)
        reloc_howto_type *howto;
        int reloc_size, size;
@@ -25327,8 +25327,8 @@ index b29c1e0cbb13463f58989042722775698365cf9a..18d5f9370c7a0e9b009c74fdff48a4c4
  
 diff --git a/ld/ldfile.c b/ld/ldfile.c
 index e9091e9fa9ab0cb1182a102de48096ac13215a39..034eb2a7e452623f8c2571f4d6186b981c10c11d 100644
---- a/ld/ldfile.c
-+++ b/ld/ldfile.c
+--- ld/ldfile.c
++++ ld/ldfile.c
 @@ -63,12 +63,46 @@ typedef struct search_arch
  } search_arch_type;
  
@@ -25445,8 +25445,8 @@ index e9091e9fa9ab0cb1182a102de48096ac13215a39..034eb2a7e452623f8c2571f4d6186b98
     continue processing other input files in case there
 diff --git a/ld/ldfile.h b/ld/ldfile.h
 index 945609250afc6fede2985dbdd59bf035cb835843..530fb0f3b78f7ce54421b074bea4fcd5ae28022d 100644
---- a/ld/ldfile.h
-+++ b/ld/ldfile.h
+--- ld/ldfile.h
++++ ld/ldfile.h
 @@ -56,7 +56,12 @@ extern bfd_boolean ldfile_try_open_bfd
  extern void ldfile_set_output_arch
    (const char *, enum bfd_architecture);
@@ -25462,8 +25462,8 @@ index 945609250afc6fede2985dbdd59bf035cb835843..530fb0f3b78f7ce54421b074bea4fcd5
  #endif
 diff --git a/ld/ldlang.c b/ld/ldlang.c
 index 459f277a3ea5baa2f38e7b95db0ac9ef67d648b8..d199cda1fd9bd4d8bfa12fe72a44501861ffe1ff 100644
---- a/ld/ldlang.c
-+++ b/ld/ldlang.c
+--- ld/ldlang.c
++++ ld/ldlang.c
 @@ -3389,12 +3389,19 @@ typedef struct bfd_sym_chain ldlang_undef_chain_list_type;
  
  #define ldlang_undef_chain_list_head entry_symbol.next
@@ -25486,8 +25486,8 @@ index 459f277a3ea5baa2f38e7b95db0ac9ef67d648b8..d199cda1fd9bd4d8bfa12fe72a445018
    ldlang_undef_chain_list_head = new_undef;
 diff --git a/ld/ldlang.h b/ld/ldlang.h
 index d5ea8d20e34c9c4697d0aa14b4af09d2df8f0d20..f6f061dfe6e92cdb3a5097baf644773cc402ad3f 100644
---- a/ld/ldlang.h
-+++ b/ld/ldlang.h
+--- ld/ldlang.h
++++ ld/ldlang.h
 @@ -302,12 +302,14 @@ typedef struct lang_input_statement_struct
    /* Point to the next file, but skips archive contents.  */
    union lang_statement_union *next_real_file;
@@ -25505,8 +25505,8 @@ index d5ea8d20e34c9c4697d0aa14b4af09d2df8f0d20..f6f061dfe6e92cdb3a5097baf644773c
    asection *section;
 diff --git a/ld/ldlex.c b/ld/ldlex.c
 index 50bb3b1e14133555e524ad059d7b578cfaac6b24..eb7e21a7741a0fc82b72f2c7e3d88d1888998db8 100644
---- a/ld/ldlex.c
-+++ b/ld/ldlex.c
+--- ld/ldlex.c
++++ ld/ldlex.c
 @@ -1,17 +1,17 @@
  
 -#line 3 "ldlex.c"
@@ -26021,8 +26021,8 @@ index 50bb3b1e14133555e524ad059d7b578cfaac6b24..eb7e21a7741a0fc82b72f2c7e3d88d18
     saving the current input info on the include stack.  */
 diff --git a/ld/ldmain.c b/ld/ldmain.c
 index 73353309c3595a2e53e160cbf2bcfd215a92aab2..8b7513d8e83264c0cb236781cdb753181612fb14 100644
---- a/ld/ldmain.c
-+++ b/ld/ldmain.c
+--- ld/ldmain.c
++++ ld/ldmain.c
 @@ -408,16 +408,23 @@ main (int argc, char **argv)
      }
  
@@ -26051,7 +26051,7 @@ diff --git a/ld/scripttempl/amiga.sc b/ld/scripttempl/amiga.sc
 new file mode 100644
 index 0000000000000000000000000000000000000000..f5c9d694742ecabb3a2a9c6b85e8f2aaf23e78f1
 --- /dev/null
-+++ b/ld/scripttempl/amiga.sc
++++ ld/scripttempl/amiga.sc
 @@ -0,0 +1,49 @@
 +cat <<EOF
 +OUTPUT_FORMAT("${OUTPUT_FORMAT}")
@@ -26106,7 +26106,7 @@ diff --git a/ld/scripttempl/amiga_bss.sc b/ld/scripttempl/amiga_bss.sc
 new file mode 100644
 index 0000000000000000000000000000000000000000..668ce7c0dee923dd0d4643a379bf24f4b352cef0
 --- /dev/null
-+++ b/ld/scripttempl/amiga_bss.sc
++++ ld/scripttempl/amiga_bss.sc
 @@ -0,0 +1,41 @@
 +cat <<EOF
 +OUTPUT_FORMAT("${OUTPUT_FORMAT}")
@@ -26154,8 +26154,8 @@ similarity index 88%
 copy from ld/scripttempl/elf64hppa.sc
 copy to ld/scripttempl/amigaos.sc
 index 18090e6b9b73969ba6c33ccb272d88fc125be19d..865c9ba63ca1746c6bc6b66153557a10da677e58 100644
---- a/ld/scripttempl/elf64hppa.sc
-+++ b/ld/scripttempl/amigaos.sc
+--- ld/scripttempl/elf64hppa.sc
++++ ld/scripttempl/amigaos.sc
 @@ -33,17 +33,14 @@
  #	OTHER_SDATA_SECTIONS - sections just after .sdata.
  #	OTHER_BSS_SYMBOLS - symbols that appear at the start of the
@@ -26525,8 +26525,8 @@ similarity index 76%
 copy from ld/scripttempl/mep.sc
 copy to ld/scripttempl/amithlon.sc
 index 3fc1352e19184c0319302e809cccf7cc861ec8d7..b8248cd4966e34e95c8b262e515ace1802c6db35 100644
---- a/ld/scripttempl/mep.sc
-+++ b/ld/scripttempl/amithlon.sc
+--- ld/scripttempl/mep.sc
++++ ld/scripttempl/amithlon.sc
 @@ -1,57 +1,45 @@
  #
  # Unusual variables checked by this code:
@@ -26900,8 +26900,8 @@ similarity index 88%
 copy from ld/scripttempl/elfi370.sc
 copy to ld/scripttempl/morphos.sc
 index a845b2980105fa8504b5bf8a83aeb6fc086caa6e..469a8f5f2cad237c9317faf5d23db7f2b7a63eee 100644
---- a/ld/scripttempl/elfi370.sc
-+++ b/ld/scripttempl/morphos.sc
+--- ld/scripttempl/elfi370.sc
++++ ld/scripttempl/morphos.sc
 @@ -1,17 +1,14 @@
  #
 -# This is just a raw copy of elfppc.sc and has not been otherwise modified
@@ -27107,8 +27107,8 @@ similarity index 69%
 copy from ld/scripttempl/elfi370.sc
 copy to ld/scripttempl/morphos_baserel.sc
 index a845b2980105fa8504b5bf8a83aeb6fc086caa6e..4f0f4aba86bddb4e76a9405c0da04df4c0091d9e 100644
---- a/ld/scripttempl/elfi370.sc
-+++ b/ld/scripttempl/morphos_baserel.sc
+--- ld/scripttempl/elfi370.sc
++++ ld/scripttempl/morphos_baserel.sc
 @@ -1,17 +1,14 @@
  #
 -# This is just a raw copy of elfppc.sc and has not been otherwise modified
@@ -27353,7 +27353,7 @@ diff --git a/libiberty/config/mh-amigaos b/libiberty/config/mh-amigaos
 new file mode 100644
 index 0000000000000000000000000000000000000000..495fa7e35897000efe600c9f1dd844b086731fcd
 --- /dev/null
-+++ b/libiberty/config/mh-amigaos
++++ libiberty/config/mh-amigaos
 @@ -0,0 +1,12 @@
 +# Host makefile fragment for Commodore Amiga running AmigaOS.
 +
@@ -27371,7 +27371,7 @@ diff --git a/libiberty/config/mh-morphos b/libiberty/config/mh-morphos
 new file mode 100644
 index 0000000000000000000000000000000000000000..064647ab3397b088317905a47cce0171e25a4bae
 --- /dev/null
-+++ b/libiberty/config/mh-morphos
++++ libiberty/config/mh-morphos
 @@ -0,0 +1,12 @@
 +# Host makefile fragment for Commodore Amiga running AmigaOS.
 +
@@ -27387,8 +27387,8 @@ index 0000000000000000000000000000000000000000..064647ab3397b088317905a47cce0171
 +HDEFINES =
 diff --git a/libiberty/lrealpath.c b/libiberty/lrealpath.c
 index b27c8de990e974c7294dfc4024ef44fbd3844a52..e94add4802d830aa3e04c9a784a8d081938ae0d5 100644
---- a/libiberty/lrealpath.c
-+++ b/libiberty/lrealpath.c
+--- libiberty/lrealpath.c
++++ libiberty/lrealpath.c
 @@ -69,12 +69,18 @@ extern char *canonicalize_file_name (const char *);
  # if defined (_WIN32)
  #  define WIN32_LEAN_AND_MEAN
@@ -27410,8 +27410,8 @@ index b27c8de990e974c7294dfc4024ef44fbd3844a52..e94add4802d830aa3e04c9a784a8d081
       the most common case.  Note that, if there isn't a compile time
 diff --git a/opcodes/m68k-dis.c b/opcodes/m68k-dis.c
 index bc2dd491592e56fb664cdf96fc32491c08e1e075..bc40541b7c5aecc30a7a74fd61f29225acd21fcd 100644
---- a/opcodes/m68k-dis.c
-+++ b/opcodes/m68k-dis.c
+--- opcodes/m68k-dis.c
++++ opcodes/m68k-dis.c
 @@ -36,13 +36,13 @@ const char * const fpcr_names[] =
    "%fpiar/%fpcr", "%fpsr/%fpcr", "%fpiar/%fpsr/%fpcr"
  };

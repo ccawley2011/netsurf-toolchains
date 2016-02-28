@@ -11,8 +11,8 @@ process_command().
 
 diff --git a/gcc/gcc.c b/gcc/gcc.c
 index 8239a6b2152ac192498cd8a50b0d4b9c7db45c62..f6f1ba3195a4ffc8e335d7abe797d4b006fc96d5 100644
---- a/gcc/gcc.c
-+++ b/gcc/gcc.c
+--- gcc/gcc.c
++++ gcc/gcc.c
 @@ -6898,12 +6898,22 @@ compare_files (char *cmpfile[])
  int
  driver::main (int argc, char **argv)

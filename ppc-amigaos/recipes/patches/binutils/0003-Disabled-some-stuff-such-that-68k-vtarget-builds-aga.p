@@ -10,8 +10,8 @@ This doesn't imply that it is working.
 
 diff --git a/gas/config/tc-m68k.c b/gas/config/tc-m68k.c
 index 8b5f6c60f2141ee91d6e9d1d639815abdf4e5042..9070a862b9c1266e84a8cea8da697f333227fa98 100644
---- a/gas/config/tc-m68k.c
-+++ b/gas/config/tc-m68k.c
+--- gas/config/tc-m68k.c
++++ gas/config/tc-m68k.c
 @@ -5158,22 +5158,22 @@ md_convert_frag_1 (fragS *fragP)
      case TAB (BRANCHBWPL, LONG):
        /* Here we are converting an unconditional branch into a pair of

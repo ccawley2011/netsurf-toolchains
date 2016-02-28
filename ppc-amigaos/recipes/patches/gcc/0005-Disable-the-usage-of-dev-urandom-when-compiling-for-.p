@@ -11,8 +11,8 @@ Subject: [PATCH 5/6] Disable the usage of /dev/urandom when compiling for
 
 diff --git a/gcc/gcc.c b/gcc/gcc.c
 index d4d061080ba1166fb14069094556246b32265da4..8239a6b2152ac192498cd8a50b0d4b9c7db45c62 100644
---- a/gcc/gcc.c
-+++ b/gcc/gcc.c
+--- gcc/gcc.c
++++ gcc/gcc.c
 @@ -9124,22 +9124,25 @@ print_asm_header_spec_function (int arg ATTRIBUTE_UNUSED,
  /* Get a random number for -frandom-seed */
  
@@ -41,8 +41,8 @@ index d4d061080ba1166fb14069094556246b32265da4..8239a6b2152ac192498cd8a50b0d4b9c
  
 diff --git a/gcc/toplev.c b/gcc/toplev.c
 index cb6c51739ffc40d19f83efafb02d7670e4da2915..3ba2210c953d2dde2ab919808b86ed3e7a4f4d1e 100644
---- a/gcc/toplev.c
-+++ b/gcc/toplev.c
+--- gcc/toplev.c
++++ gcc/toplev.c
 @@ -288,22 +288,22 @@ static void
  init_local_tick (void)
  {

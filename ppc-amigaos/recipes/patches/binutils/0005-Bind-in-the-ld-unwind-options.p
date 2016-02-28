@@ -9,8 +9,8 @@ Subject: [PATCH 5/7] Bind in the ld unwind options.
 
 diff --git a/ld/emulparams/amigaos.sh b/ld/emulparams/amigaos.sh
 index 605b81e76bcbbd2322561d7d9502190dc7c00674..2661d4ddcd1c5ecab9adea84af7f7d0ba054aa95 100644
---- a/ld/emulparams/amigaos.sh
-+++ b/ld/emulparams/amigaos.sh
+--- ld/emulparams/amigaos.sh
++++ ld/emulparams/amigaos.sh
 @@ -1,7 +1,9 @@
 -#. ${srcdir}/emulparams/elf32ppccommon.sh
 +. ${srcdir}/emulparams/elf32ppccommon.sh

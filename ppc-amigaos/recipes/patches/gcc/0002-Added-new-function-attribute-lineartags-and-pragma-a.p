@@ -39,8 +39,8 @@ functions.
 
 diff --git a/gcc/c-family/c-pragma.c b/gcc/c-family/c-pragma.c
 index 6894f0e7c3d1ea932ff05f370680be3d18dfcf94..24278250901bfa75c9aae9be63a62351f33e390e 100644
---- a/gcc/c-family/c-pragma.c
-+++ b/gcc/c-family/c-pragma.c
+--- gcc/c-family/c-pragma.c
++++ gcc/c-family/c-pragma.c
 @@ -1066,12 +1066,21 @@ handle_pragma_message (cpp_reader *ARG_UNUSED(dummy))
      warning (OPT_Wpragmas, "junk at end of %<#pragma message%>");
  
@@ -79,8 +79,8 @@ index 6894f0e7c3d1ea932ff05f370680be3d18dfcf94..24278250901bfa75c9aae9be63a62351
    invoke_plugin_callbacks (PLUGIN_PRAGMAS, NULL);
 diff --git a/gcc/c/c-parser.c b/gcc/c/c-parser.c
 index 86cbc404a4c10edac0ce2341ae0099f624ee36ea..cc77530b090576db35610468052d84763c3965fd 100644
---- a/gcc/c/c-parser.c
-+++ b/gcc/c/c-parser.c
+--- gcc/c/c-parser.c
++++ gcc/c/c-parser.c
 @@ -80,12 +80,74 @@ along with GCC; see the file COPYING3.  If not see
  #include "cgraph.h"
  #include "plugin.h"
@@ -264,8 +264,8 @@ index 86cbc404a4c10edac0ce2341ae0099f624ee36ea..cc77530b090576db35610468052d8476
  
 diff --git a/gcc/c/c-typeck.c b/gcc/c/c-typeck.c
 index a98622b16f546b88eb7fdce9ca7631c3ca37470a..2c03a10f1127c2bec5d9280ecc2f786fd5d13153 100644
---- a/gcc/c/c-typeck.c
-+++ b/gcc/c/c-typeck.c
+--- gcc/c/c-typeck.c
++++ gcc/c/c-typeck.c
 @@ -3100,12 +3100,14 @@ convert_arguments (location_t loc, vec<location_t> arg_loc, tree typelist,
    unsigned int parmnum;
    bool error_args = false;
@@ -331,8 +331,8 @@ index a98622b16f546b88eb7fdce9ca7631c3ca37470a..2c03a10f1127c2bec5d9280ecc2f786f
  	    {
 diff --git a/gcc/config/rs6000/amigaos-protos.h b/gcc/config/rs6000/amigaos-protos.h
 index eb5f8fc5f3d546b8d8e1cdd8118a3085079df50e..3b8c994cdbd192eaf7112c780f0106a4d96cbb90 100644
---- a/gcc/config/rs6000/amigaos-protos.h
-+++ b/gcc/config/rs6000/amigaos-protos.h
+--- gcc/config/rs6000/amigaos-protos.h
++++ gcc/config/rs6000/amigaos-protos.h
 @@ -27,12 +27,13 @@ extern void amigaos_function_arg_advance (CUMULATIVE_ARGS *, enum machine_mode,
  extern struct rtx_def *amigaos_function_arg (CUMULATIVE_ARGS *, enum machine_mode, tree, int);
  extern void amigaos_expand_builtin_va_start (tree valist, rtx nextarg);
@@ -349,8 +349,8 @@ index eb5f8fc5f3d546b8d8e1cdd8118a3085079df50e..3b8c994cdbd192eaf7112c780f0106a4
  extern int amigaos_not_baserel_tree_p(tree decl);
 diff --git a/gcc/config/rs6000/amigaos.c b/gcc/config/rs6000/amigaos.c
 index 0f575a38e4dc4aac0b454c56bf62f625c0f7eb9c..ccf4f912cb66cd424a2398c6535e05fa493f39f1 100644
---- a/gcc/config/rs6000/amigaos.c
-+++ b/gcc/config/rs6000/amigaos.c
+--- gcc/config/rs6000/amigaos.c
++++ gcc/config/rs6000/amigaos.c
 @@ -345,12 +345,19 @@ amigaos_handle_linearvarargs_attribute (tree *node, tree name,
        *no_add_attrs = true;
      }

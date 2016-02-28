@@ -10,8 +10,8 @@ Subject: [PATCH 4/7] Print symbol name when an unexpected type was
 
 diff --git a/bfd/elflink.c b/bfd/elflink.c
 index bcd3add478ab13addffee21b54919afd5cdcd7d6..f10801b99e366ad956faf039401cfcbf0c42aaa1 100644
---- a/bfd/elflink.c
-+++ b/bfd/elflink.c
+--- bfd/elflink.c
++++ bfd/elflink.c
 @@ -8801,12 +8801,13 @@ elf_link_output_extsym (struct bfd_hash_entry *bh, void *data)
  
    switch (h->root.type)

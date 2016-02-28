@@ -18,8 +18,8 @@ Subject: [PATCH 2/7] Fixed errors occuring with more recent versions of
 
 diff --git a/bfd/doc/bfd.texinfo b/bfd/doc/bfd.texinfo
 index 7b9774b71a3cb9b3c154c8c75a41de29a6813146..d3b14c56449321b5dfe33206b2c5cfcd87eb0b91 100644
---- a/bfd/doc/bfd.texinfo
-+++ b/bfd/doc/bfd.texinfo
+--- bfd/doc/bfd.texinfo
++++ bfd/doc/bfd.texinfo
 @@ -324,21 +324,21 @@ All of BFD lives in one directory.
  
  @node BFD Index,  , GNU Free Documentation License, Top
@@ -46,8 +46,8 @@ index 7b9774b71a3cb9b3c154c8c75a41de29a6813146..d3b14c56449321b5dfe33206b2c5cfcd
  @bye
 diff --git a/binutils/doc/binutils.texi b/binutils/doc/binutils.texi
 index 45174b739e568d8f7f01fc373035e010ffeced3d..ce7746c103d9f6a5770b43a850a2e26b68b4b58d 100644
---- a/binutils/doc/binutils.texi
-+++ b/binutils/doc/binutils.texi
+--- binutils/doc/binutils.texi
++++ binutils/doc/binutils.texi
 @@ -4410,45 +4410,45 @@ which fields in the ELF header should be updated.
  The long and short forms of options, shown here as alternatives, are
  equivalent. At least one of the @option{--output-mach},
@@ -102,8 +102,8 @@ index 45174b739e568d8f7f01fc373035e010ffeced3d..ce7746c103d9f6a5770b43a850a2e26b
  Display the version number of @command{elfedit}.
 diff --git a/gas/doc/c-arc.texi b/gas/doc/c-arc.texi
 index ea0fa4eb522c265700bdc3b6712894ec2ad61d7c..f27b3270abce6c40a7ff1b068313a14572c79b56 100644
---- a/gas/doc/c-arc.texi
-+++ b/gas/doc/c-arc.texi
+--- gas/doc/c-arc.texi
++++ gas/doc/c-arc.texi
 @@ -217,13 +217,13 @@ can shortcut the pipeline.
  @item .extInstruction @var{name},@var{opcode},@var{subopcode},@var{suffixclass},@var{syntaxclass}
  The ARCtangent A4 allows the user to specify extension instructions.
@@ -136,8 +136,8 @@ index ea0fa4eb522c265700bdc3b6712894ec2ad61d7c..f27b3270abce6c40a7ff1b068313a145
                  SYNTAX_3OP|OP1_MUST_BE_IMM
 diff --git a/gas/doc/c-arm.texi b/gas/doc/c-arm.texi
 index a46e08f4400ef64851828be4ab4df1046678699e..1944862d1caeb8f2aca57902f4ec1be55b68eb7e 100644
---- a/gas/doc/c-arm.texi
-+++ b/gas/doc/c-arm.texi
+--- gas/doc/c-arm.texi
++++ gas/doc/c-arm.texi
 @@ -387,13 +387,13 @@ features.  The default is to warn.
  Two slightly different syntaxes are support for ARM and THUMB
  instructions.  The default, @code{divided}, uses the old style where
@@ -210,8 +210,8 @@ index a46e08f4400ef64851828be4ab4df1046678699e..1944862d1caeb8f2aca57902f4ec1be5
  @table @code
 diff --git a/gas/doc/c-cr16.texi b/gas/doc/c-cr16.texi
 index 19f859f71d8f8712e8250fda07ee5b148d2d13ac..592dc5a5459d0e48ba1ca2e2846dc5e380f18e63 100644
---- a/gas/doc/c-cr16.texi
-+++ b/gas/doc/c-cr16.texi
+--- gas/doc/c-cr16.texi
++++ gas/doc/c-cr16.texi
 @@ -41,32 +41,39 @@ Operand expression type qualifier is an optional field in the instruction operan
  - @code{Specifies the CompactRISC Assembler generates a relocation entry for the operand, where pc has implied bit, the expression is adjusted accordingly. The linker uses the relocation entry to update the operand address at link time.}
  @end table
@@ -274,8 +274,8 @@ index 19f859f71d8f8712e8250fda07ee5b148d2d13ac..592dc5a5459d0e48ba1ca2e2846dc5e3
  
 diff --git a/gas/doc/c-mips.texi b/gas/doc/c-mips.texi
 index 9ed0420549220079a9c44d2eed0b9daca7805af5..6054ab90442b3de4622743ef73720b5c891334e4 100644
---- a/gas/doc/c-mips.texi
-+++ b/gas/doc/c-mips.texi
+--- gas/doc/c-mips.texi
++++ gas/doc/c-mips.texi
 @@ -231,13 +231,13 @@ option.
  @itemx -no-m4650
  Generate code for the MIPS @sc{r4650} chip.  This tells the assembler to accept
@@ -293,8 +293,8 @@ index 9ed0420549220079a9c44d2eed0b9daca7805af5..6054ab90442b3de4622743ef73720b5c
  specific to that chip, and to schedule for that chip's hazards.
 diff --git a/gas/doc/c-score.texi b/gas/doc/c-score.texi
 index 3af20a381dccc9738b4e6f5152a0f83edba9892e..40959f5b9cb2aef21b5e55289b6b9c981d57ce79 100644
---- a/gas/doc/c-score.texi
-+++ b/gas/doc/c-score.texi
+--- gas/doc/c-score.texi
++++ gas/doc/c-score.texi
 @@ -34,31 +34,31 @@ The following table lists all available SCORE options.
  This option sets the largest size of an object that can be referenced
  implicitly with the @code{gp} register. The default value is 8.
@@ -333,8 +333,8 @@ index 3af20a381dccc9738b4e6f5152a0f83edba9892e..40959f5b9cb2aef21b5e55289b6b9c98
  @item -march=score3
 diff --git a/gas/doc/c-tic54x.texi b/gas/doc/c-tic54x.texi
 index d61ec3af1a7de0b52e9a8230e65d8b55992c8540..2c3b0f2c111461debe9d4ea20d0219a04764c734 100644
---- a/gas/doc/c-tic54x.texi
-+++ b/gas/doc/c-tic54x.texi
+--- gas/doc/c-tic54x.texi
++++ gas/doc/c-tic54x.texi
 @@ -106,13 +106,13 @@ Expansion is recursive until a previously encountered symbol is seen, at
  which point substitution stops.  
  
@@ -405,8 +405,8 @@ index d61ec3af1a7de0b52e9a8230e65d8b55992c8540..2c3b0f2c111461debe9d4ea20d0219a0
  @item .bss @var{symbol}, @var{size} [, [@var{blocking_flag}] [,@var{alignment_flag}]]
 diff --git a/ld/ld.texinfo b/ld/ld.texinfo
 index 71e909e4b61606d4ca8d1f855d9cd10a3ae1947b..81d538bad91eee08ae24dc88f589b6d07719fff0 100644
---- a/ld/ld.texinfo
-+++ b/ld/ld.texinfo
+--- ld/ld.texinfo
++++ ld/ld.texinfo
 @@ -7860,21 +7860,21 @@ If you have more than one @code{SECT} statement for the same
  @node LD Index
  @unnumbered LD Index
