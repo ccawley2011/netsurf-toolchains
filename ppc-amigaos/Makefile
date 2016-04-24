@@ -29,6 +29,12 @@ UPSTREAM_ONCHIPMEM_VERSION := 53.1
 UPSTREAM_ONCHIPMEM_TARBALL := onchipmem_res-$(UPSTREAM_ONCHIPMEM_VERSION).lha
 UPSTREAM_ONCHIPMEM_URI := http://www.acube-systems.biz/download/onchipmem_res-$(UPSTREAM_ONCHIPMEM_VERSION).lha
 
+UPSTREAM_GUIGFX_TARBALL := guigfxlib.lha
+UPSTREAM_GUIGFX_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTREAM_GUIGFX_TARBALL)
+
+UPSTREAM_RENDER_TARBALL := renderlib.lha
+UPSTREAM_RENDER_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTREAM_RENDER_TARBALL)
+
 # need to force the auto* version in use
 GCC_AUTOCONF := autoconf2.64
 GCC_AUTOHEADER := autoheader2.64
@@ -79,7 +85,7 @@ $(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d $(
 # Rules to install the NDK
 ###
 
-$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL) $(SOURCESDIR)/$(UPSTREAM_ONCHIPMEM_TARBALL)
+$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL) $(SOURCESDIR)/$(UPSTREAM_ONCHIPMEM_TARBALL) $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL) $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL)
 	mkdir -p $(BUILDDIR)/ndk/tmp/
 	lha xw=$(BUILDDIR)/ndk $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL)
 	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/base.lha
@@ -97,6 +103,12 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 	mkdir -p $(BUILDDIR)/openurl
 	cd $(BUILDDIR)/openurl && tar xaf $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)
 	cp -r $(BUILDDIR)/openurl/libopenurl-$(UPSTREAM_OPENURL_VERSION)/include/* $(PREFIX)/$(TARGET_NAME)/SDK/include/include_h/
+	mkdir -p $(BUILDDIR)/guigfxlib
+	lha xw=$(BUILDDIR)/guigfxlib $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL)
+	cp -r $(BUILDDIR)/guigfxlib/include_os4/* $(PREFIX)/$(TARGET_NAME)/SDK/include/include_h/
+	mkdir -p $(BUILDDIR)/renderlib
+	lha xw=$(BUILDDIR)/renderlib $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL)
+	cp -r $(BUILDDIR)/renderlib/renderlib/include_os4/* $(PREFIX)/$(TARGET_NAME)/SDK/include/include_h/
 	touch $@
 
 ###
@@ -168,6 +180,12 @@ $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL):
 
 $(SOURCESDIR)/$(UPSTREAM_ONCHIPMEM_TARBALL):
 	wget -q -O $@ $(UPSTREAM_ONCHIPMEM_URI)
+
+$(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL):
+	wget -q -O $@ $(UPSTREAM_GUIGFX_URI)
+
+$(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL):
+	wget -q -O $@ $(UPSTREAM_RENDER_URI)
 
 ###
 # Rule to create buildsteps dir

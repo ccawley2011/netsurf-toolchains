@@ -31,6 +31,12 @@ UPSTREAM_OPENURL_VERSION := 7.16
 UPSTREAM_OPENURL_TARBALL := openurl-$(UPSTREAM_OPENURL_VERSION)
 UPSTREAM_OPENURL_URI := https://github.com/jens-maus/libopenurl/archive/$(UPSTREAM_OPENURL_VERSION).tar.gz
 
+UPSTREAM_GUIGFX_TARBALL := guigfxlib.lha
+UPSTREAM_GUIGFX_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTREAM_GUIGFX_TARBALL)
+
+UPSTREAM_RENDER_TARBALL := renderlib.lha
+UPSTREAM_RENDER_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTREAM_RENDER_TARBALL)
+
 # need to force the auto* version in use
 GCC_AUTOCONF := autoconf2.64
 GCC_AUTOHEADER := autoheader2.64
@@ -90,7 +96,7 @@ $(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(
 # Rules to install the NDK
 ###
 
-$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)
+$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL) $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL) $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL)
 	mkdir -p $(PREFIX)/$(TARGET_NAME)
 	tar -C $(PREFIX)/$(TARGET_NAME) --strip-components=2 -xjf $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL)
 	for p in `ls $(RECIPES)/patches/ndk/*.p` ; do patch -d $(PREFIX)/$(TARGET_NAME) -p0 <$$p ; done
@@ -99,6 +105,12 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 	mkdir -p $(BUILDDIR)/openurl
 	cd $(BUILDDIR)/openurl && tar xaf $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL)
 	cp -r $(BUILDDIR)/openurl/libopenurl-$(UPSTREAM_OPENURL_VERSION)/include/* $(PREFIX)/$(TARGET_NAME)/sys-include/
+	mkdir -p $(BUILDDIR)/guigfxlib
+	lha xw=$(BUILDDIR)/guigfxlib $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL)
+	cp -r $(BUILDDIR)/guigfxlib/include/* $(PREFIX)/$(TARGET_NAME)/sys-include/
+	mkdir -p $(BUILDDIR)/renderlib
+	lha xw=$(BUILDDIR)/renderlib $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL)
+	cp -r $(BUILDDIR)/renderlib/renderlib/include/* $(PREFIX)/$(TARGET_NAME)/sys-include/
 	touch $@
 
 ###
@@ -192,6 +204,13 @@ $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL):
 
 $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL):
 	wget -q -O $@ $(UPSTREAM_OPENURL_URI)
+
+$(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL):
+	wget -q -O $@ $(UPSTREAM_GUIGFX_URI)
+
+$(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL):
+	wget -q -O $@ $(UPSTREAM_RENDER_URI)
+
 
 ###
 # Rule to create buildsteps dir
