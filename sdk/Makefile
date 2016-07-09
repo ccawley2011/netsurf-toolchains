@@ -29,7 +29,7 @@ VERSION_LIBTRE := 0.8.0
 VERSION_OPENSSL := 1.0.1t
 VERSION_LIBPNG := 1.6.21
 VERSION_LIBJPEG := 8d
-VERSION_LIBJPEG_TURBO := 1.4.2
+VERSION_LIBJPEG_TURBO := 1.5.0
 VERSION_LIBCARES := 1.10.0
 VERSION_LIBCURL := 7.45.0
 VERSION_LIBGNURX := 2.5.1
@@ -118,7 +118,7 @@ ifeq ($(TARGET),m5475-atari-mint)
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d spidermonkey.d $(COMMON_SDK_ITEMS) libjpeg.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d spidermonkey.d $(COMMON_SDK_ITEMS) libjpeg-turbo.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --enable-threaded-resolver LIBS=-lpthread
   VERSION_SPIDERMONKEY := 1.7.0
