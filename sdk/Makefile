@@ -391,6 +391,9 @@ $(BUILDSTEPS)/libjpeg-turbo.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-tu
 	mkdir -p $(LIBJPEG_TURBO_BUILDDIR)
 	cd $(LIBJPEG_TURBO_BUILDDIR) && tar xaf $(SOURCEDIR)/libjpeg-turbo-src-$(VERSION_LIBJPEG_TURBO).tar.gz
 	for p in `ls $(RECIPES)/patches/libjpegturbo/*.p` ; do $(PATCH) -d $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/libjpegturbo/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libjpegturbo/$(TARGET)/*.p` ; do $(PATCH) -d $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) -p0 <$$p ; done
+endif
 	cd $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) && $(env) $(LIBJPEG_TURBO_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) && $(env) make install
 	touch $@
