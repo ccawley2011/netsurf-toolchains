@@ -26,20 +26,20 @@ endif
 VERSION_ZLIB := 1.2.8
 VERSION_LIBICONV := 1.14
 VERSION_LIBTRE := 0.8.0
-VERSION_OPENSSL := 1.0.1t
-VERSION_LIBPNG := 1.6.21
+VERSION_OPENSSL := 1.0.1u
+VERSION_LIBPNG := 1.6.25
 VERSION_LIBJPEG := 8d
-VERSION_LIBJPEG_TURBO := 1.5.0
-VERSION_LIBCARES := 1.10.0
-VERSION_LIBCURL := 7.50.1
+VERSION_LIBJPEG_TURBO := 1.5.1
+VERSION_LIBCARES := 1.12.0
+VERSION_LIBCURL := 7.50.3
 VERSION_LIBGNURX := 2.5.1
 VERSION_LIBPBL := 1_04
 VERSION_LIBCF := CVS-20130415
-VERSION_LIBEXPAT := 2.1.0
+VERSION_LIBEXPAT := 2.2.0
 VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 VERSION_HERMES := 1.3.3
-VERSION_FREETYPE := 2.5.5
+VERSION_FREETYPE := 2.7
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -443,14 +443,14 @@ $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
 # libexpat
 $(BUILDSTEPS)/libexpat.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libexpat-src.d
 	mkdir -p $(BUILDDIR)/libexpat
-	cd $(BUILDDIR)/libexpat && tar xaf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz
+	cd $(BUILDDIR)/libexpat && tar xaf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2
 	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) make install
 	touch $@
 
-$(BUILDSTEPS)/libexpat-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz
+$(BUILDSTEPS)/libexpat-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2
 	touch $@
 
-$(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/expat/expat/$(VERSION_LIBEXPAT)/expat-$(VERSION_LIBEXPAT).tar.gz" $@
+$(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2:
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/expat/expat/$(VERSION_LIBEXPAT)/expat-$(VERSION_LIBEXPAT).tar.bz2" $@
 
