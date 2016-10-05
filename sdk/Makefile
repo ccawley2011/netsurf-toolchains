@@ -40,9 +40,6 @@ VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 VERSION_HERMES := 1.3.3
 VERSION_FREETYPE := 2.5.5
-VERSION_NSPR := 4.9.3
-#VERSION_SPIDERMONKEY := 1.8.5
-VERSION_SPIDERMONKEY := 1.7.0
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -90,15 +87,9 @@ LIBJPEG_TURBO_BUILDDIR:=$(BUILDDIR)/libjpegturbo
 
 # Target Specific setup
 ifeq ($(TARGET),arm-unknown-riscos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) spidermonkey.d libjpeg-turbo.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) libjpeg-turbo.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --with-random="/dev/urandom" $(LIBCURL_DISABLES)
-  ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
-    EXTRAARGS_SPIDERMONKEY := BUILD_OPT=1 OS_ARCH=RISCOS OS_CPUARCH=arm OS_CONFIG=RISCOS
-  else
-    EXTRAARGS_SPIDERMONKEY := --disable-tracejit --disable-thumb2 --without-thumb --enable-static --disable-shared --disable-shared-js --with-cpu-arch=armv3 --disable-tests --disable-methodjit
-    SDK_ITEMS += $(addprefix $(BUILDSTEPS)/, nspr.d)
-  endif
 endif
 
 ifeq ($(TARGET),m68k-atari-mint)
@@ -118,10 +109,9 @@ ifeq ($(TARGET),m5475-atari-mint)
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d spidermonkey.d $(COMMON_SDK_ITEMS) libjpeg-turbo.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS) libjpeg-turbo.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --enable-threaded-resolver LIBS=-lpthread
-  VERSION_SPIDERMONKEY := 1.7.0
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
@@ -463,54 +453,4 @@ $(BUILDSTEPS)/libexpat-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/expat-$(VER
 
 $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.gz:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/expat/expat/$(VERSION_LIBEXPAT)/expat-$(VERSION_LIBEXPAT).tar.gz" $@
-
-
-# nspr
-$(BUILDSTEPS)/nspr.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/nspr-src.d
-	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --disable-shared --without-thumb --without-thumb-interwork --with-arch=armv3
-	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make
-	cd $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR)/mozilla/nsprpub && $(env) make install
-	touch $@
-
-$(BUILDSTEPS)/nspr-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
-	$(RM) -rf $(BUILDDIR)/nspr
-	mkdir -p $(BUILDDIR)/nspr
-	cd $(BUILDDIR)/nspr && tar xaf $(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz
-	for p in `ls $(RECIPES)/patches/nspr/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/nspr/nspr-$(VERSION_NSPR) -p0 <$$p ; done
-	touch $@
-
-$(SOURCEDIR)/nspr-$(VERSION_NSPR).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$(VERSION_NSPR)/src/nspr-$(VERSION_NSPR).tar.gz" $@
-
-
-# spidermonkey (libmozjs) 
-$(BUILDSTEPS)/spidermonkey.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/spidermonkey-src.d
-ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
-	$(env) make -C $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src -f Makefile.ref JS_DIST=$(GCCSDK_INSTALL_ENV) $(EXTRAARGS_SPIDERMONKEY)
-	$(env) make -C $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src -f Makefile.ref JS_DIST=$(GCCSDK_INSTALL_ENV) $(EXTRAARGS_SPIDERMONKEY) export
-else
-	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET)  --with-system-nspr --with-nspr-prefix=$(GCCSDK_INSTALL_ENV) $(EXTRAARGS_SPIDERMONKEY)
-	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make 
-	cd $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src && $(env) make install
-endif 
-	touch $@
-
-$(BUILDSTEPS)/spidermonkey-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/spidermonkey-$(VERSION_SPIDERMONKEY).tar.gz
-	$(RM) -rf $(BUILDDIR)/spidermonkey
-	mkdir -p $(BUILDDIR)/spidermonkey
-	cd $(BUILDDIR)/spidermonkey && tar xaf $(SOURCEDIR)/spidermonkey-$(VERSION_SPIDERMONKEY).tar.gz
-ifeq ($(VERSION_SPIDERMONKEY),1.7.0)
-	mkdir $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)
-	mv $(BUILDDIR)/spidermonkey/js $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/
-	mkdir $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY)/js/src/RISCOS_OPT.OBJ
-endif
-	for p in `ls $(RECIPES)/patches/spidermonkey/$(TARGET)-$(VERSION_SPIDERMONKEY)/*.p` ; do $(PATCH) -d $(BUILDDIR)/spidermonkey/js-$(VERSION_SPIDERMONKEY) -p0 <$$p ; done
-	touch $@
-
-$(SOURCEDIR)/spidermonkey-1.8.5.tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz" $@
-
-
-$(SOURCEDIR)/spidermonkey-1.7.0.tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ftp.mozilla.org/pub/mozilla.org/js/js-1.7.0.tar.gz" $@
 
