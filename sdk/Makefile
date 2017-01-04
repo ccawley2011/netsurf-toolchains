@@ -23,7 +23,7 @@ ifeq ($(GCCSDK_INSTALL_CROSSBIN),)
 endif
 
 # Upstream package versions
-VERSION_ZLIB := 1.2.8
+VERSION_ZLIB := 1.2.10
 VERSION_LIBICONV := 1.14
 VERSION_LIBTRE := 0.8.0
 VERSION_OPENSSL := 1.0.1u
