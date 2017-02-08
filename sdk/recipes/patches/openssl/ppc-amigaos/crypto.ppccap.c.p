@@ -1,5 +1,5 @@
---- /home/chris/netsurf/toolchains/sdk/builddir-ppc-amigaos/openssl/openssl-1.0.2k/crypto/ppccap.c	2017-01-26 13:22:03.000000000 +0000
-+++ ppccap.c	2017-02-08 17:33:45.674017881 +0000
+--- crypto/ppccap.c	2017-01-26 13:22:03.000000000 +0000
++++ crypto/ppccap.c	2017-02-08 17:48:09.982015412 +0000
 @@ -73,6 +73,7 @@ void sha512_block_data_order(void *ctx,
          sha512_block_ppc(ctx, inp, len);
  }
@@ -18,15 +18,15 @@
 +{
 +    uint32 family, vec;
 +
-+    GetCPUInfoTags(GCIT_Family, &family, GCIT_VectorUnit, &vec, TAG_DONE);
++    IExec->GetCPUInfoTags(GCIT_Family, &family, GCIT_VectorUnit, &vec, TAG_DONE);
 +
-+    OPENSSL_ppccap_P = PPC_FPU;
++    OPENSSL_ppccap_P = 0; //PPC_FPU
 +
 +    if((family == CPUFAMILY_PA6T) || (family == CPUFAMILY_E5500))
 +        OPENSSL_ppccap_P |= PPC_FPU64;
 +
 +    if((vec == VECTORTYPE_ALTIVEC) &&
-+       ((SysBase->lib_Version == 51 && SysBase->lib_Revision >= 12) || SysBase->lib_Version > 51))
++       (LIB_IS_AT_LEAST(SysBase, 51, 12)))
 +    {
 +        OPENSSL_ppccap_P |= PPC_ALTIVEC;
 +    }
