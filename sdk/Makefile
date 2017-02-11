@@ -133,7 +133,6 @@ ifeq ($(TARGET),m68k-unknown-amigaos)
   LIBJPEG_ENV := LDFLAGS="-lm"
   LIBJPEG_TURBO_ENV := LDFLAGS="-lm"
   LIBCURL_ENV := LIBS="-lm"
-  EXTRAARGS_OPENSSL := no-asm
 endif
 
 ifeq ($(SDK_ITEMS),)
@@ -343,6 +342,9 @@ $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 	for p in `ls $(RECIPES)/patches/openssl/*.p` ; do $(PATCH) -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
 ifneq ($(realpath $(RECIPES)/patches/openssl/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/openssl/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
+endif
+ifneq ($(realpath $(RECIPES)/files/openssl/$(TARGET)),)
+	cp -r $(RECIPES)/files/openssl/$(TARGET)/* $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL)
 endif
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-threads $(EXTRAARGS_OPENSSL)
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) make install
