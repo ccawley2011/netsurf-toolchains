@@ -90,6 +90,7 @@ ifeq ($(TARGET),arm-unknown-riscos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) libjpeg-turbo.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --with-random="/dev/urandom" $(LIBCURL_DISABLES)
+  EXTRAARGS_OPENSSL := no-asm
 endif
 
 ifeq ($(TARGET),m68k-atari-mint)
@@ -98,6 +99,7 @@ ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver 
   EXTRAARGS_LIBICONV := --enable-extra-encodings
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
+  EXTRAARGS_OPENSSL := no-asm
 endif
 
 ifeq ($(TARGET),m5475-atari-mint)
@@ -106,6 +108,7 @@ ifeq ($(TARGET),m5475-atari-mint)
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver
   EXTRAARGS_LIBICONV := --enable-extra-encodings
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
+  EXTRAARGS_OPENSSL := no-asm
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
@@ -119,6 +122,7 @@ ifeq ($(TARGET),i686-w64-mingw32)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap --without-random
   LIBCURL_ENV := CFLAGS="-DCARES_STATICLIB" LIBS="-lgdi32"
+  EXTRAARGS_OPENSSL := no-asm
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
@@ -129,6 +133,7 @@ ifeq ($(TARGET),m68k-unknown-amigaos)
   LIBJPEG_ENV := LDFLAGS="-lm"
   LIBJPEG_TURBO_ENV := LDFLAGS="-lm"
   LIBCURL_ENV := LIBS="-lm"
+  EXTRAARGS_OPENSSL := no-asm
 endif
 
 ifeq ($(SDK_ITEMS),)
@@ -339,7 +344,7 @@ $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDST
 ifneq ($(realpath $(RECIPES)/patches/openssl/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/openssl/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
 endif
-	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-asm no-threads
+	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-threads $(EXTRAARGS_OPENSSL)
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) make install
 	touch $@
 
