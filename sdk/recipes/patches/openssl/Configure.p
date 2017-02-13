@@ -5,7 +5,7 @@
  "beos-x86-bone", "gcc:-DL_ENDIAN -DTERMIOS -O3 -fomit-frame-pointer -mcpu=pentium -Wall::-D_REENTRANT:BEOS:-lbe -lbind -lsocket:BN_LLONG ${x86_gcc_des} ${x86_gcc_opts}:${x86_elf_asm}:beos:beos-shared:-fPIC:-shared:.so",
  
 +"arm-unknown-riscos","arm-unknown-riscos-gcc:-DL_ENDIAN -DTERMIOS -DNO_SYS_UN_H -O3 -fomit-frame-pointer -Wall::-D_REENTRANT:::BN_LLONG DES_RISC1::::::::::::::::::::echo",
-+"m68k-atari-mint","m68k-atari-mint-gcc:-DB_ENDIAN -DTERMIOS -DNO_SYSLOG -DNO_SYS_UN_H -DOPENSSL_USE_IPV6=0 -O3 -fomit-frame-pointer -Wall::-D_REENTRANT:::BN_LLONG DES_RISC1::::::::::::::::::::m68k-atari-mint-ranlib",
++"m68k-atari-mint","m68k-atari-mint-gcc:-DB_ENDIAN -DTERMIOS -DNO_SYSLOG -DNO_SYS_UN_H -DOPENSSL_USE_IPV6=0 -m68020 -O3 -fomit-frame-pointer -Wall::-D_REENTRANT:::BN_LLONG::bn_m68k.o::::::::::::::::::m68k-atari-mint-ranlib",
 +"m5475-atari-mint","m5475-atari-mint-gcc:-DB_ENDIAN -DTERMIOS -DNO_SYSLOG -DNO_SYS_UN_H -DOPENSSL_USE_IPV6=0 -O3 -fomit-frame-pointer -Wall::-D_REENTRANT:::BN_LLONG DES_RISC1::::::::::::::::::::m5475-atari-mint-ranlib",
 +"m68k-unknown-amigaos","m68k-unknown-amigaos-gcc:-DB_ENDIAN -DOPENSSL_SYS_AMIGAOS3 -DNO_SYSLOG -DHAVE_FORK=0 -DNO_SYS_PARAM_H -DNO_SYS_UN_H -m68020 -O3 -fomit-frame-pointer -Wall::-D_REENTRANT::-lnet -lm:BN_LLONG::bn_m68k.o::::::::::::::::::m68k-unknown-amigaos-ranlib",
 +"ppc-amigaos","ppc-amigaos-gcc:-DB_ENDIAN -DOPENSSL_SYS_AMIGAOS4 -DNO_SYSLOG -DHAVE_FORK=0 -DNO_SYS_PARAM_H -DNO_SYS_UN_H -O3 -fomit-frame-pointer -Wall::-D_REENTRANT:::BN_LLONG RC4_CHAR RC4_CHUNK:${ppc32_asm}:linux32::::::ppc-amigaos-ranlib",
