@@ -39,8 +39,15 @@
 /* OS3 has a different but compatible TimeVal definition */
 struct TimeVal
 {
-    uint32 Seconds;
-    uint32 Microseconds;
+    ULONG Seconds;
+    ULONG Microseconds;
+};
+
+/* ...and ditto for TimeRequest */
+struct TimeRequest
+{
+    struct IORequest Request;
+    struct TimeVal Time;
 };
 
 #endif /* !__amigaos4__ */
