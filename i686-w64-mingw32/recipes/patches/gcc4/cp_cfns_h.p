@@ -1,5 +1,5 @@
---- gcc/gcc/cp/cfns.h.orig	2017-09-15 16:50:55.872127506 +0100
-+++ gcc/gcc/cp/cfns.h	2017-09-15 16:51:18.147443810 +0100
+--- gcc/cp/cfns.h.orig	2017-09-15 16:50:55.872127506 +0100
++++ gcc/cp/cfns.h	2017-09-15 16:51:18.147443810 +0100
 @@ -47,14 +47,6 @@
  You should have received a copy of the GNU General Public License
  along with GCC; see the file COPYING3.  If not see
