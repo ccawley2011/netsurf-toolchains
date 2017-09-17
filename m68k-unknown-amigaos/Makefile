@@ -243,7 +243,7 @@ $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL):
 	wget -q -O $@ $(UPSTREAM_RENDER_URI)
 
 $(SOURCESDIR)/$(UPSTREAM_BISON_TARBALL):
-       wget -q -O $@ $(UPSTREAM_BISON_URI) $@
+	wget -q -O $@ $(UPSTREAM_BISON_URI)
 
 ###
 # Rule to create buildsteps dir
