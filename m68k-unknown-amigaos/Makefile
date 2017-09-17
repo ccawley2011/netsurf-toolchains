@@ -1,3 +1,8 @@
+#!/bin/make
+# NetSurf cross compilation for amiga m68k
+
+# sources
+
 UPSTREAM_GCC_VERSION := 3.4.6
 UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION).tar.bz2
 UPSTREAM_GCC_URI := http://ftp.gnu.org/gnu/gcc/gcc-$(UPSTREAM_GCC_VERSION)/$(UPSTREAM_GCC_TARBALL)
@@ -37,6 +42,11 @@ UPSTREAM_GUIGFX_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTRE
 UPSTREAM_RENDER_TARBALL := renderlib.lha
 UPSTREAM_RENDER_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTREAM_RENDER_TARBALL)
 
+# need to build a suitable version of bison or compiler build fails
+UPSTREAM_BISON_VERSION := 2.7.1
+UPSTREAM_BISON_TARBALL := bison-$(UPSTREAM_BISON_VERSION).tar.gz
+UPSTREAM_BISON_URI := https://ftp.gnu.org/gnu/bison/$(UPSTREAM_BISON_TARBALL)
+
 # need to force the auto* version in use
 GCC_AUTOCONF := autoconf2.64
 GCC_AUTOHEADER := autoheader2.64
@@ -49,8 +59,10 @@ SOURCESDIR := $(TOP)/sources
 BUILDDIR := $(TOP)/builddir
 BUILDSTEPS := $(BUILDDIR)/build-steps
 SRCDIR := $(BUILDDIR)/srcdir
+
 GCC_SRCDIR := $(SRCDIR)/gcc
 BINUTILS_SRCDIR := $(SRCDIR)/binutils
+BISON_SRCDIR := $(SRCDIR)/bison
 
 TARGET_NAME := m68k-unknown-amigaos
 
@@ -117,7 +129,7 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 # Rules to build and install the bootstrap compiler
 ###
 
-$(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d
+$(BUILDSTEPS)/bootstrap-compiler.d: $(BUILDSTEPS)/bison.d $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d
 	cd $(BUILDDIR) && $(GCC_ENV_PARAMS) $(GCC_SRCDIR)/configure \
 				--prefix=$(PREFIX) \
 				--target=$(TARGET_NAME) \
@@ -157,6 +169,25 @@ $(BUILDSTEPS)/srcdir-step1.d: $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d
 	touch $@
 
 $(BUILDSTEPS)/$(UPSTREAM_GCC_TARBALL).d: $(BUILDSTEPS)/buildsteps.d $(SOURCESDIR)/$(UPSTREAM_GCC_TARBALL)
+	touch $@
+
+###
+# Rules to build bison for the bootstrap compiler build
+###
+
+$(BUILDSTEPS)/bison.d: $(BUILDSTEPS)/srcdir-bison.d
+	mkdir -p $(BUILDDIR)/bison
+	cd $(BUILDDIR)/bison && $(BISON_SRCDIR)/configure --prefix=$(PREFIX)
+	cd $(BUILDDIR)/bison && make
+	cd $(BUILDDIR)/bison && make install
+	touch $@
+
+$(BUILDSTEPS)/srcdir-bison.d: $(BUILDSTEPS)/$(UPSTREAM_BISON_TARBALL).d
+	tar axf $(SOURCESDIR)/$(UPSTREAM_BISON_TARBALL)
+	mv bison-$(UPSTREAM_BISON_VERSION) $(BISON_SRCDIR)
+	touch $@
+
+$(BUILDSTEPS)/$(UPSTREAM_BISON_TARBALL).d: $(BUILDSTEPS)/buildsteps.d $(SOURCESDIR)/$(UPSTREAM_BISON_TARBALL)
 	touch $@
 
 ###
@@ -211,6 +242,8 @@ $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL):
 $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL):
 	wget -q -O $@ $(UPSTREAM_RENDER_URI)
 
+$(SOURCESDIR)/$(UPSTREAM_BISON_TARBALL):
+       wget -q -O $@ $(UPSTREAM_BISON_URI) $@
 
 ###
 # Rule to create buildsteps dir
