@@ -1,17 +1,19 @@
---- crypto/ppccap.c	2017-01-26 13:22:03.000000000 +0000
-+++ crypto/ppccap.c	2017-02-08 17:48:09.982015412 +0000
-@@ -73,6 +73,7 @@ void sha512_block_data_order(void *ctx,
-         sha512_block_ppc(ctx, inp, len);
+--- crypto/ppccap.c.orig	2017-11-22 13:14:44.655536374 +0000
++++ crypto/ppccap.c	2017-11-22 13:16:03.666387174 +0000
+@@ -135,6 +135,8 @@
  }
+ #endif
  
 +#ifndef OPENSSL_SYS_AMIGAOS4
++
  static sigjmp_buf ill_jmp;
  static void ill_handler(int sig)
  {
-@@ -157,3 +158,24 @@ void OPENSSL_cpuid_setup(void)
+@@ -341,3 +343,24 @@
      sigaction(SIGILL, &ill_oact, NULL);
      sigprocmask(SIG_SETMASK, &oset, NULL);
  }
++
 +#else
 +#include <proto/exec.h>
 +void OPENSSL_cpuid_setup(void)
@@ -32,4 +34,3 @@
 +    }
 +}
 +#endif
-+

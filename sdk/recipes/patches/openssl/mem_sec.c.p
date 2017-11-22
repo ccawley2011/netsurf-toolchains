@@ -5,7 +5,7 @@
  #include <string.h>
  
 -#if defined(OPENSSL_SYS_LINUX) || defined(OPENSSL_SYS_UNIX)
-+#if ! defined(OPENSSL_SYS_RISCOS) && (defined(OPENSSL_SYS_LINUX) || defined(OPENSSL_SYS_UNIX))
++#if ! defined(OPENSSL_SYS_RISCOS) && ! defined(OPENSSL_SYS_AMIGAOS3) && ! defined(OPENSSL_SYS_AMIGAOS4) && (defined(OPENSSL_SYS_LINUX) || defined(OPENSSL_SYS_UNIX))
  # define IMPLEMENTED
  # include <stdlib.h>
  # include <assert.h>
