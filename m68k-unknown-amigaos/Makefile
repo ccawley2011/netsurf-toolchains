@@ -42,6 +42,10 @@ UPSTREAM_GUIGFX_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTRE
 UPSTREAM_RENDER_TARBALL := renderlib.lha
 UPSTREAM_RENDER_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTREAM_RENDER_TARBALL)
 
+UPSTREAM_CODESETS_VERSION := 6.20
+UPSTREAM_CODESETS_TARBALL := codesets-$(UPSTREAM_CODESETS_VERSION).lha
+UPSTREAM_CODESETS_URI := https://github.com/jens-maus/libcodesets/releases/download/$(UPSTREAM_CODESETS_VERSION)/$(UPSTREAM_CODESETS_TARBALL)
+
 # need to build a suitable version of bison or compiler build fails
 UPSTREAM_BISON_VERSION := 2.7.1
 UPSTREAM_BISON_TARBALL := bison-$(UPSTREAM_BISON_VERSION).tar.gz
@@ -108,7 +112,7 @@ $(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(
 # Rules to install the NDK
 ###
 
-$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL) $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL) $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL)
+$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL) $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL) $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL) $(SOURCESDIR)/$(UPSTREAM_CODESETS_TARBALL)
 	mkdir -p $(PREFIX)/$(TARGET_NAME)
 	tar -C $(PREFIX)/$(TARGET_NAME) --strip-components=2 -xjf $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL)
 	for p in `ls $(RECIPES)/patches/ndk/*.p` ; do patch -d $(PREFIX)/$(TARGET_NAME) -p0 <$$p ; done
@@ -123,6 +127,9 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 	mkdir -p $(BUILDDIR)/renderlib
 	lha xw=$(BUILDDIR)/renderlib $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL)
 	cp -r $(BUILDDIR)/renderlib/renderlib/include/* $(PREFIX)/$(TARGET_NAME)/sys-include/
+	mkdir -p $(BUILDDIR)/codesets
+	lha xw=$(BUILDDIR)/codesets $(SOURCESDIR)/$(UPSTREAM_CODESETS_TARBALL)
+	cp -r $(BUILDDIR)/codesets/codesets/Developer/include/* $(PREFIX)/$(TARGET_NAME)/sys-include/
 	touch $@
 
 ###
@@ -244,6 +251,9 @@ $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL):
 
 $(SOURCESDIR)/$(UPSTREAM_BISON_TARBALL):
 	wget -q -O $@ $(UPSTREAM_BISON_URI)
+
+$(SOURCESDIR)/$(UPSTREAM_CODESETS_TARBALL):
+	wget -q -O $@ $(UPSTREAM_CODESETS_URI)
 
 ###
 # Rule to create buildsteps dir
