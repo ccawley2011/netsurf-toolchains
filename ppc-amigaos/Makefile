@@ -35,6 +35,10 @@ UPSTREAM_GUIGFX_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTRE
 UPSTREAM_RENDER_TARBALL := renderlib.lha
 UPSTREAM_RENDER_URI := http://neoscientists.org/~bifat/binarydistillery/$(UPSTREAM_RENDER_TARBALL)
 
+UPSTREAM_CODESETS_VERSION := 6.20
+UPSTREAM_CODESETS_TARBALL := codesets-$(UPSTREAM_CODESETS_VERSION).lha
+UPSTREAM_CODESETS_URI := https://github.com/jens-maus/libcodesets/releases/download/$(UPSTREAM_CODESETS_VERSION)/$(UPSTREAM_CODESETS_TARBALL)
+
 # need to force the auto* version in use
 GCC_AUTOCONF := autoconf2.64
 GCC_AUTOHEADER := autoheader2.64
@@ -85,7 +89,7 @@ $(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/srcdir-step3.d $(BUILDSTEPS)/binutils.d $(
 # Rules to install the NDK
 ###
 
-$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL) $(SOURCESDIR)/$(UPSTREAM_ONCHIPMEM_TARBALL) $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL) $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL)
+$(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTREAM_OPENURL_TARBALL) $(SOURCESDIR)/$(UPSTREAM_ONCHIPMEM_TARBALL) $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL) $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL) $(SOURCESDIR)/$(UPSTREAM_CODESETS_TARBALL)
 	mkdir -p $(BUILDDIR)/ndk/tmp/
 	lha xw=$(BUILDDIR)/ndk $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL)
 	lha xw=$(BUILDDIR)/ndk/tmp $(BUILDDIR)/ndk/SDK_Install/base.lha
@@ -109,6 +113,9 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 	mkdir -p $(BUILDDIR)/renderlib
 	lha xw=$(BUILDDIR)/renderlib $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL)
 	cp -r $(BUILDDIR)/renderlib/renderlib/include_os4/* $(PREFIX)/$(TARGET_NAME)/SDK/include/include_h/
+	mkdir -p $(BUILDDIR)/codesets
+	lha xw=$(BUILDDIR)/codesets $(SOURCESDIR)/$(UPSTREAM_CODESETS_TARBALL)
+	cp -r $(BUILDDIR)/codesets/codesets/Developer/include/* $(PREFIX)/$(TARGET_NAME)/SDK/include/include_h/
 	touch $@
 
 ###
@@ -186,6 +193,9 @@ $(SOURCESDIR)/$(UPSTREAM_GUIGFX_TARBALL):
 
 $(SOURCESDIR)/$(UPSTREAM_RENDER_TARBALL):
 	wget -q -O $@ $(UPSTREAM_RENDER_URI)
+
+$(SOURCESDIR)/$(UPSTREAM_CODESETS_TARBALL):
+	wget -q -O $@ $(UPSTREAM_CODESETS_URI)
 
 ###
 # Rule to create buildsteps dir
