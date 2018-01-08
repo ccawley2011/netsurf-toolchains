@@ -11,8 +11,8 @@ process_command().
 
 diff --git a/gcc/gcc.c b/gcc/gcc.c
 index eb56ea7242ab51c941b88d72f8dee2a0381e2c8f..4184cf1f3ac8063f9ae8f4b76da1e5e33c6f76cd 100644
---- a/gcc/gcc.c
-+++ b/gcc/gcc.c
+--- gcc/gcc.c
++++ gcc/gcc.c
 @@ -7166,12 +7166,22 @@ driver::~driver ()
  int
  driver::main (int argc, char **argv)

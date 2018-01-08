@@ -10,8 +10,8 @@ Subject: [PATCH 7/8] Keep symbols for stripped sections. This is important for
 
 diff --git a/binutils/objcopy.c b/binutils/objcopy.c
 index 4beee77179b85479d5b43507d9eb2a6e0caf384e..8750db51279ec56080aba114cd61780d061b168f 100644
---- a/binutils/objcopy.c
-+++ b/binutils/objcopy.c
+--- binutils/objcopy.c
++++ binutils/objcopy.c
 @@ -1239,13 +1239,23 @@ filter_symbols (bfd *abfd, bfd *obfd, asymbol **osyms,
        if (!keep
  	  && ((keep_file_symbols && (flags & BSF_FILE))

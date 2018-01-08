@@ -10,8 +10,8 @@ Changed the g++ driver to reflect this.
 
 diff --git a/gcc/cp/g++spec.c b/gcc/cp/g++spec.c
 index 03cbde090cb361f7f6244c97a91c8ad567d9a092..c8dec4b7a0ad1d95811dd9a50a7916e3b4c76336 100644
---- a/gcc/cp/g++spec.c
-+++ b/gcc/cp/g++spec.c
+--- gcc/cp/g++spec.c
++++ gcc/cp/g++spec.c
 @@ -101,14 +101,14 @@ lang_specific_driver (struct cl_decoded_option **in_decoded_options,
    /* By default, we throw on the math library if we have one.  */
    int need_math = (MATH_LIBRARY[0] != '\0');

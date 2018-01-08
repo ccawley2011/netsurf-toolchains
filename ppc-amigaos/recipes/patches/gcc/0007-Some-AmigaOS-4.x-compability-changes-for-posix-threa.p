@@ -10,8 +10,8 @@ Subject: [PATCH 7/9] Some AmigaOS 4.x compability changes for posix thread
 
 diff --git a/libgcc/gthr-posix.h b/libgcc/gthr-posix.h
 index 555c0fe2458fa3e0e96d769d3f36ae35db47e1bb..daee24052b68cea2159d68abd6cf6817e0d7a81b 100644
---- a/libgcc/gthr-posix.h
-+++ b/libgcc/gthr-posix.h
+--- libgcc/gthr-posix.h
++++ libgcc/gthr-posix.h
 @@ -29,12 +29,16 @@ see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
  /* POSIX threads specific definitions.
     Easy, since the interface is just one-to-one mapping.  */

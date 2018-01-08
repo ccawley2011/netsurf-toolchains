@@ -9,8 +9,8 @@ Subject: [PATCH 9/9] Added e500 support for AmigaOS.
 
 diff --git a/gcc/config.gcc b/gcc/config.gcc
 index d262672083d57bd77846ba9277aeb3ef5279d11e..3699a9831cccbb6a74ed0f8b2ddf5574bee1f086 100644
---- a/gcc/config.gcc
-+++ b/gcc/config.gcc
+--- gcc/config.gcc
++++ gcc/config.gcc
 @@ -2295,13 +2295,13 @@ nvptx-*)
  	;;
  pdp11-*-*)

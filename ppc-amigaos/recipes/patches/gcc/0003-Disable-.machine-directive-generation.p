@@ -13,8 +13,8 @@ This reverts parts of a commit from 2015-03-03.
 
 diff --git a/gcc/config/rs6000/rs6000.c b/gcc/config/rs6000/rs6000.c
 index cd79b2034b59168b07c84dd6bf32faaf4a648cd0..14b40fe386382a6b418176084c57ec8db73b4280 100644
---- a/gcc/config/rs6000/rs6000.c
-+++ b/gcc/config/rs6000/rs6000.c
+--- gcc/config/rs6000/rs6000.c
++++ gcc/config/rs6000/rs6000.c
 @@ -5689,12 +5689,14 @@ rs6000_file_start (void)
      }
  

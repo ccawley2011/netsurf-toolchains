@@ -21,7 +21,7 @@ diff --git a/libstdc++-v3/config/os/amigaos/ctype_base.h b/libstdc++-v3/config/o
 new file mode 100644
 index 0000000000000000000000000000000000000000..260b6142b6fc6a11a1e5f0bf7820b592d09f285e
 --- /dev/null
-+++ b/libstdc++-v3/config/os/amigaos/ctype_base.h
++++ libstdc++-v3/config/os/amigaos/ctype_base.h
 @@ -0,0 +1,59 @@
 +// Locale support -*- C++ -*-
 +
@@ -86,7 +86,7 @@ diff --git a/libstdc++-v3/config/os/amigaos/ctype_configure_char.cc b/libstdc++-
 new file mode 100644
 index 0000000000000000000000000000000000000000..e6f4895aee78da54bc6b1e01df00816206361c41
 --- /dev/null
-+++ b/libstdc++-v3/config/os/amigaos/ctype_configure_char.cc
++++ libstdc++-v3/config/os/amigaos/ctype_configure_char.cc
 @@ -0,0 +1,99 @@
 +// Locale support -*- C++ -*-
 +
@@ -191,7 +191,7 @@ diff --git a/libstdc++-v3/config/os/amigaos/ctype_inline.h b/libstdc++-v3/config
 new file mode 100644
 index 0000000000000000000000000000000000000000..cfa0146ae6b70623c2fe63b864ceef7bce0d5fe0
 --- /dev/null
-+++ b/libstdc++-v3/config/os/amigaos/ctype_inline.h
++++ libstdc++-v3/config/os/amigaos/ctype_inline.h
 @@ -0,0 +1,173 @@
 +// Locale support -*- C++ -*-
 +
@@ -370,7 +370,7 @@ diff --git a/libstdc++-v3/config/os/amigaos/error_constants.h b/libstdc++-v3/con
 new file mode 100644
 index 0000000000000000000000000000000000000000..74492cf61c875eac28cb8a86d5bfdb3b8807aa16
 --- /dev/null
-+++ b/libstdc++-v3/config/os/amigaos/error_constants.h
++++ libstdc++-v3/config/os/amigaos/error_constants.h
 @@ -0,0 +1,178 @@
 +// Specific definitions for generic platforms  -*- C++ -*-
 +
@@ -554,7 +554,7 @@ diff --git a/libstdc++-v3/config/os/amigaos/os_defines.h b/libstdc++-v3/config/o
 new file mode 100644
 index 0000000000000000000000000000000000000000..346f063958cd7e80ebf97be4acee0bdf391cb811
 --- /dev/null
-+++ b/libstdc++-v3/config/os/amigaos/os_defines.h
++++ libstdc++-v3/config/os/amigaos/os_defines.h
 @@ -0,0 +1,43 @@
 +// Specific definitions for AmigaOS -*- C++ -*-
 +
@@ -601,8 +601,8 @@ index 0000000000000000000000000000000000000000..346f063958cd7e80ebf97be4acee0bdf
 +#endif
 diff --git a/libstdc++-v3/configure.host b/libstdc++-v3/configure.host
 index 0b366eafaae8cfa0abd09128bd8ac16b9f775c7c..e54afbc0c30a4b0a40949d9ed78f64661224c253 100644
---- a/libstdc++-v3/configure.host
-+++ b/libstdc++-v3/configure.host
+--- libstdc++-v3/configure.host
++++ libstdc++-v3/configure.host
 @@ -223,12 +223,15 @@ case "${host_os}" in
      atomicity_dir="os/aix"
      ;;

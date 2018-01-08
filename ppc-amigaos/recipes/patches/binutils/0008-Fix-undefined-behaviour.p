@@ -15,8 +15,8 @@ Changes have been backported from more recent version of binutils.
 
 diff --git a/binutils/dwarf.c b/binutils/dwarf.c
 index 6e93906af385ff3dd0f8785792a1e8cc3d04a774..9fc4a594cfe83693f44f686fc752987b3e2a5653 100644
---- a/binutils/dwarf.c
-+++ b/binutils/dwarf.c
+--- binutils/dwarf.c
++++ binutils/dwarf.c
 @@ -214,13 +214,13 @@ read_leb128 (unsigned char *data, unsigned int *length_return, int sign)
    while (byte & 0x80);
  
@@ -34,8 +34,8 @@ index 6e93906af385ff3dd0f8785792a1e8cc3d04a774..9fc4a594cfe83693f44f686fc752987b
  static dwarf_signed_vma
 diff --git a/gas/config/tc-ppc.c b/gas/config/tc-ppc.c
 index 11949323d80802138ec23fb8174727c0a7c4fd45..14346e30661d408d5dba4d456cc274f2f4dc3820 100644
---- a/gas/config/tc-ppc.c
-+++ b/gas/config/tc-ppc.c
+--- gas/config/tc-ppc.c
++++ gas/config/tc-ppc.c
 @@ -1466,13 +1466,13 @@ insn_validate (const struct powerpc_opcode *op)
  	  as_bad (_("operand index error for %s"), op->name);
  	  return TRUE;
@@ -53,8 +53,8 @@ index 11949323d80802138ec23fb8174727c0a7c4fd45..14346e30661d408d5dba4d456cc274f2
  	      else
 diff --git a/gas/read.c b/gas/read.c
 index 9de62b9c512025212d52a19833ffe28004944dd1..dfd466be7934cfd379b2a0c99f08c7ea877fdbe0 100644
---- a/gas/read.c
-+++ b/gas/read.c
+--- gas/read.c
++++ gas/read.c
 @@ -5172,13 +5172,13 @@ output_big_sleb128 (char *p, LITTLENUM_TYPE *bignum, int size)
  
    /* Mop up any left-over bits (of which there will be less than 7).  */
@@ -72,8 +72,8 @@ index 9de62b9c512025212d52a19833ffe28004944dd1..dfd466be7934cfd379b2a0c99f08c7ea
    return p - orig;
 diff --git a/gas/write.c b/gas/write.c
 index 8a9746c927a3e8b7007cdec9c7f16e47509b5f45..be6969865f7373cdeb396df44506ef537206fbd8 100644
---- a/gas/write.c
-+++ b/gas/write.c
+--- gas/write.c
++++ gas/write.c
 @@ -2310,13 +2310,13 @@ static relax_addressT
  relax_align (register relax_addressT address,	/* Address now.  */
  	     register int alignment	/* Alignment (binary).  */)
@@ -91,8 +91,8 @@ index 8a9746c927a3e8b7007cdec9c7f16e47509b5f45..be6969865f7373cdeb396df44506ef53
      new_address += (1 << alignment);
 diff --git a/include/opcode/ppc.h b/include/opcode/ppc.h
 index e57b118b02e5a2faba62f5dbd524f03827f719c0..40a1262ecd17944de229f6b192f8c6e078f70728 100644
---- a/include/opcode/ppc.h
-+++ b/include/opcode/ppc.h
+--- include/opcode/ppc.h
++++ include/opcode/ppc.h
 @@ -267,13 +267,13 @@ struct powerpc_operand
  extern const struct powerpc_operand powerpc_operands[];
  extern const unsigned int num_powerpc_operands;

@@ -14,8 +14,8 @@ can be removed now.
 
 diff --git a/binutils/objcopy.c b/binutils/objcopy.c
 index 88bd071eefa8b5426eaadfd6431e9de5d4a4591b..4beee77179b85479d5b43507d9eb2a6e0caf384e 100644
---- a/binutils/objcopy.c
-+++ b/binutils/objcopy.c
+--- binutils/objcopy.c
++++ binutils/objcopy.c
 @@ -101,12 +101,15 @@ enum strip_action
      STRIP_ALL			/* Strip all symbols.  */
    };
