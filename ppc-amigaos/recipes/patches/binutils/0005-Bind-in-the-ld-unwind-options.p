@@ -1,7 +1,7 @@
 From ce074fe73deeb899bf1cd863092c174034f56e67 Mon Sep 17 00:00:00 2001
 From: Sebastian Bauer <mail@sebastianbauer.info>
 Date: Thu, 22 Oct 2015 09:48:26 +0200
-Subject: [PATCH 5/7] Bind in the ld unwind options.
+Subject: [PATCH 5/8] Bind in the ld unwind options.
 
 ---
  ld/emulparams/amigaos.sh | 4 +++-
@@ -9,8 +9,8 @@ Subject: [PATCH 5/7] Bind in the ld unwind options.
 
 diff --git a/ld/emulparams/amigaos.sh b/ld/emulparams/amigaos.sh
 index 605b81e76bcbbd2322561d7d9502190dc7c00674..2661d4ddcd1c5ecab9adea84af7f7d0ba054aa95 100644
---- ld/emulparams/amigaos.sh
-+++ ld/emulparams/amigaos.sh
+--- a/ld/emulparams/amigaos.sh
++++ b/ld/emulparams/amigaos.sh
 @@ -1,7 +1,9 @@
 -#. ${srcdir}/emulparams/elf32ppccommon.sh
 +. ${srcdir}/emulparams/elf32ppccommon.sh
@@ -23,5 +23,5 @@ index 605b81e76bcbbd2322561d7d9502190dc7c00674..2661d4ddcd1c5ecab9adea84af7f7d0b
  COMMONPAGESIZE="CONSTANT (COMMONPAGESIZE)"
  ALIGNMENT=16
 -- 
-2.1.4
+2.11.0
 

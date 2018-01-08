@@ -1,7 +1,7 @@
 From be1c62376ea16552979036768972be85ca66c9ed Mon Sep 17 00:00:00 2001
 From: Sebastian Bauer <mail@sebastianbauer.info>
 Date: Tue, 17 Mar 2015 19:30:24 +0100
-Subject: [PATCH 3/7] Disabled some stuff such that 68k vtarget builds again.
+Subject: [PATCH 3/8] Disabled some stuff such that 68k vtarget builds again.
 
 This doesn't imply that it is working.
 ---
@@ -10,8 +10,8 @@ This doesn't imply that it is working.
 
 diff --git a/gas/config/tc-m68k.c b/gas/config/tc-m68k.c
 index 8b5f6c60f2141ee91d6e9d1d639815abdf4e5042..9070a862b9c1266e84a8cea8da697f333227fa98 100644
---- gas/config/tc-m68k.c
-+++ gas/config/tc-m68k.c
+--- a/gas/config/tc-m68k.c
++++ b/gas/config/tc-m68k.c
 @@ -5158,22 +5158,22 @@ md_convert_frag_1 (fragS *fragP)
      case TAB (BRANCHBWPL, LONG):
        /* Here we are converting an unconditional branch into a pair of
@@ -106,5 +106,5 @@ index 8b5f6c60f2141ee91d6e9d1d639815abdf4e5042..9070a862b9c1266e84a8cea8da697f33
      }
    while (*input_line_pointer++ == ',');
 -- 
-2.1.4
+2.11.0
 

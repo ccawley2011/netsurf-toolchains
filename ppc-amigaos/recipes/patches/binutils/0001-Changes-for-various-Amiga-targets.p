@@ -1,7 +1,7 @@
 From 1678a95339b8893195b307a953a0053ceeca0133 Mon Sep 17 00:00:00 2001
 From: Sebastian Bauer <mail@sebastianbauer.info>
 Date: Sat, 14 Feb 2015 14:54:44 +0100
-Subject: [PATCH 1/7] Changes for various Amiga targets.
+Subject: [PATCH 1/8] Changes for various Amiga targets.
 
 ---
  bfd/ChangeLog-9697                                |   64 +
@@ -156,8 +156,8 @@ Subject: [PATCH 1/7] Changes for various Amiga targets.
 
 diff --git a/bfd/ChangeLog-9697 b/bfd/ChangeLog-9697
 index e9a5c1d60a313aaf09d1a8add619022cfdf575fa..1c2bb3f3c91d32e8b95f8b0cf16b98c58cde454b 100644
---- bfd/ChangeLog-9697
-+++ bfd/ChangeLog-9697
+--- a/bfd/ChangeLog-9697
++++ b/bfd/ChangeLog-9697
 @@ -46,12 +46,19 @@ Mon Dec 22 13:20:57 1997  Ian Lance Taylor  <ian@cygnus.com>
  
  Mon Dec 22 13:04:33 1997  Joel Sherrill  <joel@oarcorp.com>
@@ -341,8 +341,8 @@ index e9a5c1d60a313aaf09d1a8add619022cfdf575fa..1c2bb3f3c91d32e8b95f8b0cf16b98c5
  	(h8300_symbol_address_p): New function.
 diff --git a/bfd/ChangeLog-9899 b/bfd/ChangeLog-9899
 index 6d7f5cd616db22097b8238d8686f60484c9e6ee6..6e25901995a73646a13037d32c14563df20f74b3 100644
---- bfd/ChangeLog-9899
-+++ bfd/ChangeLog-9899
+--- a/bfd/ChangeLog-9899
++++ b/bfd/ChangeLog-9899
 @@ -5570,12 +5570,17 @@ Wed Jan 21 21:16:06 1998  Manfred Hollstein  <manfred@s-direktnet.de>
  	(GET_SCNDHR_NLNNO): Likewise.
  
@@ -363,8 +363,8 @@ index 6d7f5cd616db22097b8238d8686f60484c9e6ee6..6e25901995a73646a13037d32c14563d
  
 diff --git a/bfd/Makefile.am b/bfd/Makefile.am
 index 9ab2aa947a0a96ba5a469652c579a4d181793646..c224a3cecc392df96a6bc20c8dc73eb81c677269 100644
---- bfd/Makefile.am
-+++ bfd/Makefile.am
+--- a/bfd/Makefile.am
++++ b/bfd/Makefile.am
 @@ -232,13 +232,16 @@ ALL_MACHINES_CFILES = \
  	cpu-z80.c \
  	cpu-z8k.c
@@ -485,8 +485,8 @@ index 9ab2aa947a0a96ba5a469652c579a4d181793646..c224a3cecc392df96a6bc20c8dc73eb8
 -@am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $< $(NO_WERROR)
 diff --git a/bfd/Makefile.in b/bfd/Makefile.in
 index 99902757111d8011447cde1dda030e5a9c817ff2..bcdf435a15eb144bca66d8bfe04122a45e647446 100644
---- bfd/Makefile.in
-+++ bfd/Makefile.in
+--- a/bfd/Makefile.in
++++ b/bfd/Makefile.in
 @@ -532,13 +532,16 @@ ALL_MACHINES_CFILES = \
  	cpu-z8k.c
  
@@ -658,7 +658,7 @@ diff --git a/bfd/amigaos.c b/bfd/amigaos.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..9d715d64d458e6599c19ed65fbb61c253d2ab208
 --- /dev/null
-+++ bfd/amigaos.c
++++ b/bfd/amigaos.c
 @@ -0,0 +1,3189 @@
 +/* BFD back-end for Commodore-Amiga AmigaOS binaries.
 +   Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998
@@ -3853,7 +3853,7 @@ diff --git a/bfd/amigaoslink.c b/bfd/amigaoslink.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..9067a0a06b933c67bfd3542b299d1adb281182c3
 --- /dev/null
-+++ bfd/amigaoslink.c
++++ b/bfd/amigaoslink.c
 @@ -0,0 +1,1032 @@
 +/* BFD back-end for Commodore-Amiga AmigaOS binaries. Linker routines.
 +   Copyright (C) 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998
@@ -4891,7 +4891,7 @@ diff --git a/bfd/aout-amiga.c b/bfd/aout-amiga.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..ced7584521b89943b1636d2b4c9b884242cd81c6
 --- /dev/null
-+++ bfd/aout-amiga.c
++++ b/bfd/aout-amiga.c
 @@ -0,0 +1,152 @@
 +/* BFD back-end for Amiga style m68k a.out binaries.
 +   Copyright (C) 1990, 1991, 1992, 1993, 1994 Free Software Foundation, Inc.
@@ -5047,8 +5047,8 @@ index 0000000000000000000000000000000000000000..ced7584521b89943b1636d2b4c9b8842
 +}
 diff --git a/bfd/aoutx.h b/bfd/aoutx.h
 index 1e0ad38f95bcf990a9ffd4cfb89eae3f6496740c..2641f975fd575d0a651540dc886eeee68cf4b173 100644
---- bfd/aoutx.h
-+++ bfd/aoutx.h
+--- a/bfd/aoutx.h
++++ b/bfd/aoutx.h
 @@ -127,12 +127,16 @@ DESCRIPTION
  #include "libaout.h"
  #include "libbfd.h"
@@ -5135,8 +5135,8 @@ index 1e0ad38f95bcf990a9ffd4cfb89eae3f6496740c..2641f975fd575d0a651540dc886eeee6
        r_extern = 0;
 diff --git a/bfd/bfd-in2.h b/bfd/bfd-in2.h
 index e496083d6ebb0842cfe0a7777dc76cdbd18c7134..8a4d566298f86c56c4a2d21895a39e0d7c5002d7 100644
---- bfd/bfd-in2.h
-+++ bfd/bfd-in2.h
+--- a/bfd/bfd-in2.h
++++ b/bfd/bfd-in2.h
 @@ -3128,12 +3128,16 @@ instruction.  */
    BFD_RELOC_PPC_EMB_RELSEC16,
    BFD_RELOC_PPC_EMB_RELST_LO,
@@ -5203,8 +5203,8 @@ index e496083d6ebb0842cfe0a7777dc76cdbd18c7134..8a4d566298f86c56c4a2d21895a39e0d
    bfd_target_ieee_flavour,
 diff --git a/bfd/bfd.c b/bfd/bfd.c
 index eed18960855bdc51be8b57ddba27975afb6b02ef..3487694a541417ec20453ca9116bbb86c383f979 100644
---- bfd/bfd.c
-+++ bfd/bfd.c
+--- a/bfd/bfd.c
++++ b/bfd/bfd.c
 @@ -261,12 +261,13 @@ CODE_FRAGMENT
  .      struct mach_o_data_struct *mach_o_data;
  .      struct mach_o_fat_data_struct *mach_o_fat_data;
@@ -5221,8 +5221,8 @@ index eed18960855bdc51be8b57ddba27975afb6b02ef..3487694a541417ec20453ca9116bbb86
  .  void *usrdata;
 diff --git a/bfd/bfdio.c b/bfd/bfdio.c
 index be05581aeb4026addd3f4caf2b185ae73d893a24..a15208b16635c7174592b6ccf26685c4b1d05bc8 100644
---- bfd/bfdio.c
-+++ bfd/bfdio.c
+--- a/bfd/bfdio.c
++++ b/bfd/bfdio.c
 @@ -325,12 +325,37 @@ bfd_seek (bfd *abfd, file_ptr position, int direction)
  
    if (abfd->iovec)
@@ -5263,8 +5263,8 @@ index be05581aeb4026addd3f4caf2b185ae73d893a24..a15208b16635c7174592b6ccf26685c4
        bfd_tell (abfd);
 diff --git a/bfd/config.bfd b/bfd/config.bfd
 index 6025f2641b47915c79a7d643963e9d9080e0ed5c..fcbbce847bc65a44ee68deedd93b2943aac9f77f 100644
---- bfd/config.bfd
-+++ bfd/config.bfd
+--- a/bfd/config.bfd
++++ b/bfd/config.bfd
 @@ -78,15 +78,17 @@ c30*)		 targ_archs=bfd_tic30_arch ;;
  c4x*)		 targ_archs=bfd_tic4x_arch ;;
  c54x*)		 targ_archs=bfd_tic54x_arch ;;
@@ -5362,8 +5362,8 @@ index 6025f2641b47915c79a7d643963e9d9080e0ed5c..fcbbce847bc65a44ee68deedd93b2943
      ;;
 diff --git a/bfd/configure b/bfd/configure
 index e965796ef43d9346cd917bf20243707633fc632e..018a5913f1d96081342c66a64f0167b11cdb1add 100755
---- bfd/configure
-+++ bfd/configure
+--- a/bfd/configure
++++ b/bfd/configure
 @@ -15172,13 +15172,15 @@ do
      case "$vec" in
      # This list is alphabetized to make it easy to compare
@@ -5424,8 +5424,8 @@ index e965796ef43d9346cd917bf20243707633fc632e..018a5913f1d96081342c66a64f0167b1
  				tb="$tb elfn32-mips.lo elfxx-mips.lo elf-vxworks.lo elf32.lo $elf ecofflink.lo"; target_size=64 ;;
 diff --git a/bfd/configure.host b/bfd/configure.host
 index 7c63de58397426d08501dd7a0fd527cb59a9809c..afa7c909a787d9121d01e4e99d8047cf7f11f0b7 100644
---- bfd/configure.host
-+++ bfd/configure.host
+--- a/bfd/configure.host
++++ b/bfd/configure.host
 @@ -53,12 +53,13 @@ mips64*-*-linux*)	host64=true;;
  mips64*-*-freebsd* | mips64*-*-kfreebsd*-gnu) host64=true;;
  mips*-*-sysv4*)		;;
@@ -5442,8 +5442,8 @@ index 7c63de58397426d08501dd7a0fd527cb59a9809c..afa7c909a787d9121d01e4e99d8047cf
  *-*-solaris2.11)	HDEFINES=-DCP_ACP=1 ;;
 diff --git a/bfd/configure.in b/bfd/configure.in
 index 4b4cb617ef74f5fb33e4de13856d685f5ffba025..5d882b3701b6e0d93f97be655123a2bb2728d63a 100644
---- bfd/configure.in
-+++ bfd/configure.in
+--- a/bfd/configure.in
++++ b/bfd/configure.in
 @@ -664,13 +664,15 @@ do
      case "$vec" in
      # This list is alphabetized to make it easy to compare
@@ -5504,8 +5504,8 @@ index 4b4cb617ef74f5fb33e4de13856d685f5ffba025..5d882b3701b6e0d93f97be655123a2bb
  				tb="$tb elfn32-mips.lo elfxx-mips.lo elf-vxworks.lo elf32.lo $elf ecofflink.lo"; target_size=64 ;;
 diff --git a/bfd/doc/Makefile.am b/bfd/doc/Makefile.am
 index 7476ee5bab710b6b418072124b473cf0d340b247..1ddc9e3d2153b55f6f26645e5fc584074bb369fd 100644
---- bfd/doc/Makefile.am
-+++ bfd/doc/Makefile.am
+--- a/bfd/doc/Makefile.am
++++ b/bfd/doc/Makefile.am
 @@ -1,11 +1,11 @@
  ## Process this file with automake to generate Makefile.in
  
@@ -5560,8 +5560,8 @@ index 7476ee5bab710b6b418072124b473cf0d340b247..1ddc9e3d2153b55f6f26645e5fc58407
  	$(srcdir)/../bfdwin.c		\
 diff --git a/bfd/doc/Makefile.in b/bfd/doc/Makefile.in
 index 7ba351d742bf53f9e5f51ad7ef74150295519f1a..67db3caf9886839b8d8f52a2a1878de878bb2f6a 100644
---- bfd/doc/Makefile.in
-+++ bfd/doc/Makefile.in
+--- a/bfd/doc/Makefile.in
++++ b/bfd/doc/Makefile.in
 @@ -268,13 +268,13 @@ target_vendor = @target_vendor@
  tdefaults = @tdefaults@
  top_build_prefix = @top_build_prefix@
@@ -5618,8 +5618,8 @@ index 7ba351d742bf53f9e5f51ad7ef74150295519f1a..67db3caf9886839b8d8f52a2a1878de8
  	    */header.sed) break ;; \
 diff --git a/bfd/doc/bfd.texinfo b/bfd/doc/bfd.texinfo
 index 45ffa73240ea22a74debe916fcd7e068a947a7dc..7b9774b71a3cb9b3c154c8c75a41de29a6813146 100644
---- bfd/doc/bfd.texinfo
-+++ bfd/doc/bfd.texinfo
+--- a/bfd/doc/bfd.texinfo
++++ b/bfd/doc/bfd.texinfo
 @@ -286,12 +286,13 @@ structures.
  @chapter BFD back ends
  @menu
@@ -5663,7 +5663,7 @@ diff --git a/bfd/elf32-amiga.c b/bfd/elf32-amiga.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..cf6c6cb9efdd15c786932adedd2476ec3a4bc08d
 --- /dev/null
-+++ bfd/elf32-amiga.c
++++ b/bfd/elf32-amiga.c
 @@ -0,0 +1,3844 @@
 +/* PowerPC-specific support for 32-bit ELF
 +   Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002
@@ -9509,11 +9509,790 @@ index 0000000000000000000000000000000000000000..cf6c6cb9efdd15c786932adedd2476ec
 +#define elf_backend_reloc_type_class		ppc_elf_reloc_type_class
 +
 +#include "elf32-target.h"
+diff --git a/bfd/elf32-ppc.c b/bfd/elf32-amigaos.c
+similarity index 97%
+copy from bfd/elf32-ppc.c
+copy to bfd/elf32-amigaos.c
+index 6454a8350da35adf6ed1e2209d9e4774ab7c50e3..9bf9535888f2345d60a8f802680ae03f41f67a5f 100644
+--- a/bfd/elf32-ppc.c
++++ b/bfd/elf32-amigaos.c
+@@ -31,32 +31,50 @@
+ #include <stdarg.h>
+ #include "bfd.h"
+ #include "bfdlink.h"
+ #include "libbfd.h"
+ #include "elf-bfd.h"
+ #include "elf/ppc.h"
++#include "elf/amigaos.h"
+ #include "elf32-ppc.h"
+ #include "elf-vxworks.h"
+ #include "dwarf2.h"
+ 
++#undef DEBUG
++
+ typedef enum split16_format_type
+ {
+   split16a_type = 0,
+   split16d_type
+ }
+ split16_format_type;
+ 
+ /* RELA relocations are used here.  */
++#define USE_RELA
++#define USE_REL 0
+ 
+ static bfd_reloc_status_type ppc_elf_addr16_ha_reloc
+   (bfd *, arelent *, asymbol *, void *, asection *, bfd *, char **);
+ static bfd_reloc_status_type ppc_elf_unhandled_reloc
+   (bfd *, arelent *, asymbol *, void *, asection *, bfd *, char **);
+ static void ppc_elf_vle_split16
+   (bfd *, bfd_byte *, bfd_vma, bfd_vma, split16_format_type);
+ 
++int ppc_elf_amigaos_select_plt_layout (bfd *, struct bfd_link_info *,
++    enum ppc_elf_plt_type, int);
++
++bfd_boolean ppc_elf_amigaos_section_processing (bfd *abfd, Elf_Internal_Shdr *shdr);
++bfd_boolean ppc_elf_amigaos_modify_segment_map (bfd *abfd,
++                            struct bfd_link_info *info ATTRIBUTE_UNUSED);
++asection *ppc_elf_amigaos_tls_setup (bfd *obfd, struct bfd_link_info *info,
++                   int no_tls_get_addr_opt);
++bfd_boolean ppc_elf_amigaos_tls_optimize (bfd *obfd ATTRIBUTE_UNUSED,
++                      struct bfd_link_info *info);
++unsigned int _bfd_elf_amigaos_ppc_at_tls_transform (unsigned int insn, unsigned int reg);
++unsigned int _bfd_elf_amigaos_ppc_at_tprel_transform (unsigned int insn, unsigned int reg);
++
+ /* Branch prediction bit for branch taken relocs.  */
+ #define BRANCH_PREDICT_BIT 0x200000
+ /* Mask to set RA in memory instructions.  */
+ #define RA_REGISTER_MASK 0x001f0000
+ /* Value to shift register by to insert RA.  */
+ #define RA_REGISTER_SHIFT 16
+@@ -1381,12 +1399,74 @@ static reloc_howto_type ppc_elf_howto_raw[] = {
+   /* Relocation not handled: R_PPC_EMB_RELSEC16 */
+   /* Relocation not handled: R_PPC_EMB_RELST_LO */
+   /* Relocation not handled: R_PPC_EMB_RELST_HI */
+   /* Relocation not handled: R_PPC_EMB_RELST_HA */
+   /* Relocation not handled: R_PPC_EMB_BIT_FLD */
+ 
++
++	  /* A standard 32 bit base relative relocation.  */
++	  HOWTO (R_PPC_AMIGAOS_BREL,	/* type */
++		 0,			/* rightshift */
++		 2,			/* size (0 = byte, 1 = short, 2 = long) */
++		 32,			/* bitsize */
++		 FALSE,			/* pc_relative */
++		 0,			/* bitpos */
++		 complain_overflow_bitfield, /* complain_on_overflow */
++		 bfd_elf_generic_reloc,	/* special_function */
++		 "R_PPC_AMIGAOS_BREL",	/* name */
++		 FALSE,			/* partial_inplace */
++		 0,			/* src_mask */
++		 0xffffffff,		/* dst_mask */
++		 FALSE),		/* pcrel_offset */
++
++	 /* A 16 bit base relative relocation without overflow.  */
++	  HOWTO (R_PPC_AMIGAOS_BREL_LO,	/* type */
++		 0,			/* rightshift */
++		 1,			/* size (0 = byte, 1 = short, 2 = long) */
++		 16,			/* bitsize */
++		 FALSE,			/* pc_relative */
++		 0,			/* bitpos */
++		 complain_overflow_dont,/* complain_on_overflow */
++		 bfd_elf_generic_reloc,	/* special_function */
++		 "R_PPC_AMIGAOS_BREL_LO",/* name */
++		 FALSE,			/* partial_inplace */
++		 0,			/* src_mask */
++		 0xffff,		/* dst_mask */
++		 FALSE),		/* pcrel_offset */
++
++	  /* The high order 16 bits of a base relative address.  */
++	  HOWTO (R_PPC_AMIGAOS_BREL_HI,	/* type */
++		 16,			/* rightshift */
++		 1,			/* size (0 = byte, 1 = short, 2 = long) */
++		 16,			/* bitsize */
++		 FALSE,			/* pc_relative */
++		 0,			/* bitpos */
++		 complain_overflow_dont, /* complain_on_overflow */
++		 bfd_elf_generic_reloc,	/* special_function */
++		 "R_PPC_AMIGAOS_BREL_HI",/* name */
++		 FALSE,			/* partial_inplace */
++		 0,			/* src_mask */
++		 0xffff,		/* dst_mask */
++		 FALSE),		/* pcrel_offset */
++
++	  /* The high order 16 bits of a base relative address, plus 1 if the contents
++	     of the low 16 bits, treated as a signed number, is negative.  */
++	  HOWTO (R_PPC_AMIGAOS_BREL_HA,	/* type */
++		 16,			/* rightshift */
++		 1,			/* size (0 = byte, 1 = short, 2 = long) */
++		 16,			/* bitsize */
++		 FALSE,			/* pc_relative */
++		 0,			/* bitpos */
++		 complain_overflow_dont, /* complain_on_overflow */
++		 ppc_elf_addr16_ha_reloc, /* special_function */
++		 "R_PPC_AMIGAOS_BREL_HA",/* name */
++		 FALSE,			/* partial_inplace */
++		 0,			/* src_mask */
++		 0xffff,		/* dst_mask */
++		 FALSE),		/* pcrel_offset */
++
+   /* PC relative relocation against either _SDA_BASE_ or _SDA2_BASE_, filling
+      in the 16 bit signed offset from the appropriate base, and filling in the
+      register field with the appropriate register (0, 2, or 13).  */
+   HOWTO (R_PPC_EMB_RELSDA,	/* type */
+ 	 0,			/* rightshift */
+ 	 1,			/* size (0 = byte, 1 = short, 2 = long) */
+@@ -1935,12 +2015,16 @@ ppc_elf_reloc_type_lookup (bfd *abfd ATTRIBUTE_UNUSED,
+       r = R_PPC_VLE_SDAREL_HA16D;
+       break;
+     case BFD_RELOC_16_PCREL:		r = R_PPC_REL16;		break;
+     case BFD_RELOC_LO16_PCREL:		r = R_PPC_REL16_LO;		break;
+     case BFD_RELOC_HI16_PCREL:		r = R_PPC_REL16_HI;		break;
+     case BFD_RELOC_HI16_S_PCREL:	r = R_PPC_REL16_HA;		break;
++    case BFD_RELOC_PPC_AMIGAOS_BREL:	r = R_PPC_AMIGAOS_BREL;		break;
++    case BFD_RELOC_PPC_AMIGAOS_BREL_LO:	r = R_PPC_AMIGAOS_BREL_LO;	break;
++    case BFD_RELOC_PPC_AMIGAOS_BREL_HI:	r = R_PPC_AMIGAOS_BREL_HI;	break;
++    case BFD_RELOC_PPC_AMIGAOS_BREL_HA:	r = R_PPC_AMIGAOS_BREL_HA;	break;
+     case BFD_RELOC_VTABLE_INHERIT:	r = R_PPC_GNU_VTINHERIT;	break;
+     case BFD_RELOC_VTABLE_ENTRY:	r = R_PPC_GNU_VTENTRY;		break;
+     }
+ 
+   return ppc_elf_howto_table[r];
+ };
+@@ -2268,13 +2352,13 @@ ppc_elf_lookup_section_flags (char *flag_name)
+   return 0;
+ }
+ 
+ /* Add the VLE flag if required.  */
+ 
+ bfd_boolean
+-ppc_elf_section_processing (bfd *abfd, Elf_Internal_Shdr *shdr)
++ppc_elf_amigaos_section_processing (bfd *abfd, Elf_Internal_Shdr *shdr)
+ {
+   if (bfd_get_mach (abfd) == bfd_mach_ppc_vle
+       && (shdr->sh_flags & SHF_EXECINSTR) != 0)
+     shdr->sh_flags |= SHF_PPC_VLE;
+ 
+   return TRUE;
+@@ -2285,12 +2369,15 @@ ppc_elf_section_processing (bfd *abfd, Elf_Internal_Shdr *shdr)
+ 
+ static bfd_vma
+ ppc_elf_plt_sym_val (bfd_vma i ATTRIBUTE_UNUSED,
+ 		     const asection *plt ATTRIBUTE_UNUSED,
+ 		     const arelent *rel)
+ {
++#ifdef DEBUG
++  fprintf (stderr, "ppc_elf_plt_sym_cal (0x%08x)\n", (unsigned int)rel->address);
++#endif
+   return rel->address;
+ }
+ 
+ /* Handle a PowerPC specific section when reading an object file.  This
+    is called when bfd_section_from_shdr finds a section with an unknown
+    type.  */
+@@ -2337,13 +2424,14 @@ ppc_elf_fake_sections (bfd *abfd ATTRIBUTE_UNUSED,
+ 
+ static int
+ ppc_elf_additional_program_headers (bfd *abfd,
+ 				    struct bfd_link_info *info ATTRIBUTE_UNUSED)
+ {
+   asection *s;
+-  int ret = 0;
++//  int ret = 0;
++  int ret = 1;
+ 
+   s = bfd_get_section_by_name (abfd, ".sbss2");
+   if (s != NULL && (s->flags & SEC_ALLOC) != 0)
+     ++ret;
+ 
+   s = bfd_get_section_by_name (abfd, ".PPC.EMB.sbss0");
+@@ -2353,13 +2441,13 @@ ppc_elf_additional_program_headers (bfd *abfd,
+   return ret;
+ }
+ 
+ /* Modify the segment map for VLE executables.  */ 
+ 
+ bfd_boolean
+-ppc_elf_modify_segment_map (bfd *abfd,
++ppc_elf_amigaos_modify_segment_map (bfd *abfd,
+ 			    struct bfd_link_info *info ATTRIBUTE_UNUSED)
+ {
+   struct elf_segment_map *m, *n;
+   bfd_size_type amt;
+   unsigned int j, k;
+   bfd_boolean sect0_vle, sectj_vle;
+@@ -2546,13 +2634,13 @@ apuinfo_list_finish (void)
+ #define APUINFO_LABEL		"APUinfo"
+ 
+ /* Scan the input BFDs and create a linked list of
+    the APUinfo values that will need to be emitted.  */
+ 
+ static void
+-ppc_elf_begin_write_processing (bfd *abfd, struct bfd_link_info *link_info)
++ppc_elf_amigaos_begin_write_processing (bfd *abfd, struct bfd_link_info *link_info)
+ {
+   bfd *ibfd;
+   asection *asec;
+   char *buffer = NULL;
+   bfd_size_type largest_input_size = 0;
+   unsigned i;
+@@ -2646,24 +2734,24 @@ ppc_elf_begin_write_processing (bfd *abfd, struct bfd_link_info *link_info)
+ }
+ 
+ /* Prevent the output section from accumulating the input sections'
+    contents.  We have already stored this in our linked list structure.  */
+ 
+ static bfd_boolean
+-ppc_elf_write_section (bfd *abfd ATTRIBUTE_UNUSED,
++ppc_elf_amigaos_write_section (bfd *abfd ATTRIBUTE_UNUSED,
+ 		       struct bfd_link_info *link_info ATTRIBUTE_UNUSED,
+ 		       asection *asec,
+ 		       bfd_byte *contents ATTRIBUTE_UNUSED)
+ {
+   return apuinfo_set && strcmp (asec->name, APUINFO_SECTION_NAME) == 0;
+ }
+ 
+ /* Finally we can generate the output section.  */
+ 
+ static void
+-ppc_elf_final_write_processing (bfd *abfd, bfd_boolean linker ATTRIBUTE_UNUSED)
++ppc_elf_amigaos_final_write_processing (bfd *abfd, bfd_boolean linker ATTRIBUTE_UNUSED)
+ {
+   bfd_byte *buffer;
+   asection *asec;
+   unsigned i;
+   unsigned num_entries;
+   bfd_size_type length;
+@@ -3232,13 +3320,13 @@ ppc_elf_create_got (bfd *abfd, struct bfd_link_info *info)
+ 	abort ();
+     }
+   else
+     {
+       /* The powerpc .got has a blrl instruction in it.  Mark it
+ 	 executable.  */
+-      flags = (SEC_ALLOC | SEC_LOAD | SEC_CODE | SEC_HAS_CONTENTS
++      flags = (SEC_ALLOC | SEC_LOAD | /*SEC_CODE |*/ SEC_HAS_CONTENTS
+ 	       | SEC_IN_MEMORY | SEC_LINKER_CREATED);
+       if (!bfd_set_section_flags (abfd, s, flags))
+ 	return FALSE;
+     }
+ 
+   htab->relgot = bfd_get_linker_section (abfd, ".rela.got");
+@@ -3340,13 +3428,13 @@ ppc_elf_create_dynamic_sections (bfd *abfd, struct bfd_link_info *info)
+ 
+   htab->relplt = bfd_get_linker_section (abfd, ".rela.plt");
+   htab->plt = s = bfd_get_linker_section (abfd, ".plt");
+   if (s == NULL)
+     abort ();
+ 
+-  flags = SEC_ALLOC | SEC_CODE | SEC_LINKER_CREATED;
++  flags = SEC_ALLOC | SEC_CODE | SEC_LINKER_CREATED | SEC_READONLY;
+   if (htab->plt_type == PLT_VXWORKS)
+     /* The VxWorks PLT is a loaded section with contents.  */
+     flags |= SEC_HAS_CONTENTS | SEC_LOAD | SEC_READONLY;
+   return bfd_set_section_flags (abfd, s, flags);
+ }
+ 
+@@ -3410,13 +3498,13 @@ ppc_elf_copy_indirect_symbol (struct bfd_link_info *info,
+       eind->dyn_relocs = NULL;
+     }
+ 
+   /* If we were called to copy over info for a weak sym, that's all.
+      You might think dyn_relocs need not be copied over;  After all,
+      both syms will be dynamic or both non-dynamic so we're just
+-     moving reloc accounting around.  However, ELIMINATE_COPY_RELOCS 
++     moving reloc accounting around.  However, ELIMINATE_COPY_RELOCS
+      code in ppc_elf_adjust_dynamic_symbol needs to check for
+      dyn_relocs in read-only sections, and it does so on what is the
+      DIR sym here.  */
+   if (eind->elf.root.type != bfd_link_hash_indirect)
+     return;
+ 
+@@ -4186,12 +4274,19 @@ ppc_elf_check_relocs (bfd *abfd,
+ 	case R_PPC_EMB_RELST_LO:
+ 	case R_PPC_EMB_RELST_HI:
+ 	case R_PPC_EMB_RELST_HA:
+ 	case R_PPC_EMB_BIT_FLD:
+ 	  break;
+ 
++	  /* These don't work with a GOT */
++	case R_PPC_AMIGAOS_BREL:
++	case R_PPC_AMIGAOS_BREL_HI:
++	case R_PPC_AMIGAOS_BREL_LO:
++	case R_PPC_AMIGAOS_BREL_HA:
++	  break;
++
+ 	  /* This refers only to functions defined in the shared library.  */
+ 	case R_PPC_LOCAL24PC:
+ 	  if (h != NULL && h == htab->elf.hgot && htab->plt_type == PLT_UNSET)
+ 	    {
+ 	      htab->plt_type = PLT_OLD;
+ 	      htab->old_bfd = abfd;
+@@ -4679,13 +4774,13 @@ ppc_elf_vle_split16 (bfd *output_bfd, bfd_byte *contents,
+ }
+ 
+ 
+ /* Choose which PLT scheme to use, and set .plt flags appropriately.
+    Returns -1 on error, 0 for old PLT, 1 for new PLT.  */
+ int
+-ppc_elf_select_plt_layout (bfd *output_bfd ATTRIBUTE_UNUSED,
++ppc_elf_amigaos_select_plt_layout (bfd *output_bfd ATTRIBUTE_UNUSED,
+ 			   struct bfd_link_info *info,
+ 			   enum ppc_elf_plt_type plt_style,
+ 			   int emit_stub_syms)
+ {
+   struct ppc_elf_link_hash_table *htab;
+   flagword flags;
+@@ -4976,13 +5071,13 @@ ppc_elf_gc_sweep_hook (bfd *abfd,
+ }
+ 
+ /* Set plt output section type, htab->tls_get_addr, and call the
+    generic ELF tls_setup function.  */
+ 
+ asection *
+-ppc_elf_tls_setup (bfd *obfd,
++ppc_elf_amigaos_tls_setup (bfd *obfd,
+ 		   struct bfd_link_info *info,
+ 		   int no_tls_get_addr_opt)
+ {
+   struct ppc_elf_link_hash_table *htab;
+ 
+   htab = ppc_elf_hash_table (info);
+@@ -5075,13 +5170,13 @@ branch_reloc_hash_match (const bfd *ibfd,
+ }
+ 
+ /* Run through all the TLS relocs looking for optimization
+    opportunities.  */
+ 
+ bfd_boolean
+-ppc_elf_tls_optimize (bfd *obfd ATTRIBUTE_UNUSED,
++ppc_elf_amigaos_tls_optimize (bfd *obfd ATTRIBUTE_UNUSED,
+ 		      struct bfd_link_info *info)
+ {
+   bfd *ibfd;
+   asection *sec;
+   struct ppc_elf_link_hash_table *htab;
+   int pass;
+@@ -6008,12 +6103,16 @@ ppc_elf_size_dynamic_sections (bfd *output_bfd ATTRIBUTE_UNUSED,
+   fprintf (stderr, "ppc_elf_size_dynamic_sections called\n");
+ #endif
+ 
+   htab = ppc_elf_hash_table (info);
+   BFD_ASSERT (htab->elf.dynobj != NULL);
+ 
++#ifdef DEBUG
++  fprintf (stderr, "ppc_elf_size_dynamic_sections: dynamic_sections_created = %d\n", elf_hash_table (info)->dynamic_sections_created);
++#endif
++
+   if (elf_hash_table (info)->dynamic_sections_created)
+     {
+       /* Set the contents of the .interp section to the interpreter.  */
+       if (info->executable)
+ 	{
+ 	  s = bfd_get_linker_section (htab->elf.dynobj, ".interp");
+@@ -6037,12 +6136,16 @@ ppc_elf_size_dynamic_sections (bfd *output_bfd ATTRIBUTE_UNUSED,
+       struct plt_entry **local_plt;
+       struct plt_entry **end_local_plt;
+       char *lgot_masks;
+       bfd_size_type locsymcount;
+       Elf_Internal_Shdr *symtab_hdr;
+ 
++#ifdef DEBUG
++  fprintf (stderr, "ppc_elf_size_dynamic_sections: is_ppc_elf() = %d (flavour = %d)\n", is_ppc_elf (ibfd), bfd_get_flavour (ibfd));
++#endif
++
+       if (!is_ppc_elf (ibfd))
+ 	continue;
+ 
+       for (s = ibfd->sections; s != NULL; s = s->next)
+ 	{
+ 	  struct elf_dyn_relocs *p;
+@@ -6400,12 +6503,16 @@ ppc_elf_size_dynamic_sections (bfd *output_bfd ATTRIBUTE_UNUSED,
+ 	  if (!add_dynamic_entry (DT_TEXTREL, 0))
+ 	    return FALSE;
+ 	}
+       if (htab->is_vxworks
+ 	  && !elf_vxworks_add_dynamic_entries (output_bfd, info))
+ 	return FALSE;
++
++      /* Flag it as a version 2 dynamic binary */
++      if (!add_dynamic_entry(DT_AMIGAOS_DYNVERSION, 2))
++        return FALSE;
+    }
+ #undef add_dynamic_entry
+ 
+   if (htab->glink_eh_frame != NULL
+       && htab->glink_eh_frame->contents != NULL)
+     {
+@@ -7172,13 +7279,13 @@ is_static_defined (struct elf_link_hash_entry *h)
+ 
+ /* If INSN is an opcode that may be used with an @tls operand, return
+    the transformed insn for TLS optimisation, otherwise return 0.  If
+    REG is non-zero only match an insn with RB or RA equal to REG.  */
+ 
+ unsigned int
+-_bfd_elf_ppc_at_tls_transform (unsigned int insn, unsigned int reg)
++_bfd_elf_amigaos_ppc_at_tls_transform (unsigned int insn, unsigned int reg)
+ {
+   unsigned int rtra;
+ 
+   if ((insn & (0x3f << 26)) != 31 << 26)
+     return 0;
+ 
+@@ -7212,13 +7319,13 @@ _bfd_elf_ppc_at_tls_transform (unsigned int insn, unsigned int reg)
+ 
+ /* If INSN is an opcode that may be used with an @tprel operand, return
+    the transformed insn for an undefined weak symbol, ie. with the
+    thread pointer REG operand removed.  Otherwise return 0.  */
+ 
+ unsigned int
+-_bfd_elf_ppc_at_tprel_transform (unsigned int insn, unsigned int reg)
++_bfd_elf_amigaos_ppc_at_tprel_transform (unsigned int insn, unsigned int reg)
+ {
+   if ((insn & (0x1f << 16)) == reg << 16
+       && ((insn & (0x3f << 26)) == 14u << 26 /* addi */
+ 	  || (insn & (0x3f << 26)) == 15u << 26 /* addis */
+ 	  || (insn & (0x3f << 26)) == 32u << 26 /* lwz */
+ 	  || (insn & (0x3f << 26)) == 34u << 26 /* lbz */
+@@ -8076,13 +8183,13 @@ ppc_elf_relocate_section (bfd *output_bfd,
+ 	      /* Make this relocation against an undefined weak symbol
+ 		 resolve to zero.  This is really just a tweak, since
+ 		 code using weak externs ought to check that they are
+ 		 defined before using them.  */
+ 	      bfd_byte *p = contents + rel->r_offset - d_offset;
+ 	      unsigned int insn = bfd_get_32 (output_bfd, p);
+-	      insn = _bfd_elf_ppc_at_tprel_transform (insn, 2);
++	      insn = _bfd_elf_amigaos_ppc_at_tprel_transform (insn, 2);
+ 	      if (insn != 0)
+ 		bfd_put_32 (output_bfd, insn, p);
+ 	      break;
+ 	    }
+ 	  addend -= htab->elf.tls_sec->vma + TP_OFFSET;
+ 	  /* The TPREL16 relocs shouldn't really be used in shared
+@@ -8502,13 +8609,47 @@ ppc_elf_relocate_section (bfd *output_bfd,
+ 		   sym_name,
+ 		   howto->name,
+ 		   name);
+ 	      }
+ 	  }
+ 	  break;
++#if 0
++	case R_PPC_AMIGAOS_BREL:
++	case R_PPC_AMIGAOS_BREL_HI:
++	case R_PPC_AMIGAOS_BREL_LO:
++	case R_PPC_AMIGAOS_BREL_HA:
++	  {
++	    if (data_section == NULL)
++	      data_section = bfd_get_section_by_name (output_bfd, ".data");
++
++	    if (sec)
++	      {
++		const char *name = bfd_get_section_name (abfd, sec->output_section);
++		if (strcmp (name, ".sdata") != 0
++		    && strcmp (name, ".sbss") != 0
++		    && strcmp (name, ".data") != 0
++		    && strcmp (name, ".bss") != 0
++		    && strncmp (name, ".ctors", 6) != 0
++		    && strncmp (name, ".dtors", 6) != 0)
++		  {
++		    (*_bfd_error_handler) (_("%s: The target (%s) of a %s relocation is in the wrong output section (%s)"),
++					   input_bfd,
++					   sym_name,
++					   howto->name,
++					   name);
++		  }
++	      }
++
++	    addend = addend - data_section->vma;
++
++	    if (r_type == R_PPC_AMIGAOS_BREL_HA)
++	      addend += ((relocation + addend) & 0x8000) << 1;
+ 
++	    }
++	    break;
++#endif
+ 	case R_PPC_VLE_LO16A:
+ 	  relocation = (relocation + addend) & 0xffff;
+ 	  ppc_elf_vle_split16 (output_bfd, contents, rel->r_offset,
+                                relocation, split16a_type);
+ 	  continue;
+ 
+@@ -8899,12 +9040,15 @@ ppc_elf_relocate_section (bfd *output_bfd,
+ 				    input_section,
+ 				    contents,
+ 				    rel->r_offset,
+ 				    relocation,
+ 				    addend);
+ 
++#ifdef DEBUG
++      fprintf (stderr, "%p %p %p\n", (void *)rel->r_offset, (void *)relocation, (void *)addend);
++#endif
+       if (r != bfd_reloc_ok)
+ 	{
+ 	  if (r == bfd_reloc_overflow)
+ 	    {
+ 	      if (warned)
+ 		continue;
+@@ -9124,18 +9268,24 @@ ppc_elf_finish_dynamic_symbol (bfd *output_bfd,
+ 		    || h->dynindx == -1)
+ 		  splt = htab->iplt;
+ 
+ 		rela.r_offset = (splt->output_section->vma
+ 				 + splt->output_offset
+ 				 + ent->plt.offset);
++#ifdef DEBUG
++  fprintf (stderr, "   r_offset = %p ", (void *)rela.r_offset);
++#endif
+ 		if (htab->plt_type == PLT_OLD
+ 		    || !htab->elf.dynamic_sections_created
+ 		    || h->dynindx == -1)
+ 		  {
+ 		    /* We don't need to fill in the .plt.  The ppc dynamic
+ 		       linker will fill it in.  */
++#ifdef DEBUG
++  fprintf (stderr, "     not filling in .plt ");
++#endif
+ 		  }
+ 		else
+ 		  {
+ 		    bfd_vma val = (htab->glink_pltresolve + ent->plt.offset
+ 				   + htab->glink->output_section->vma
+ 				   + htab->glink->output_offset);
+@@ -9166,24 +9316,34 @@ ppc_elf_finish_dynamic_symbol (bfd *output_bfd,
+ 			* sizeof (Elf32_External_Rela)));
+ 	    else
+ 	      loc = (htab->relplt->contents
+ 		     + reloc_index * sizeof (Elf32_External_Rela));
+ 	    bfd_elf32_swap_reloca_out (output_bfd, &rela, loc);
+ 
++#ifdef DEBUG
++	    fprintf (stderr, "   r_offset = %p r_addednd = %p, r_info = 0x%08x, h->def_regular = %d", (void *)rela.r_offset, (void *)rela.r_addend, (unsigned int)rela.r_info, (int)h->def_regular);
++#endif
+ 	    if (!h->def_regular)
+ 	      {
+ 		/* Mark the symbol as undefined, rather than as
+ 		   defined in the .plt section.  Leave the value if
+ 		   there were any relocations where pointer equality
+ 		   matters (this is a clue for the dynamic linker, to
+ 		   make function pointer comparisons work between an
+ 		   application and shared library), otherwise set it
+ 		   to zero.  */
+ 		sym->st_shndx = SHN_UNDEF;
+ 		if (!h->pointer_equality_needed)
+-		  sym->st_value = 0;
++		  {
++		    /* THF: This is peculiar. The compiler generates a R_PPC_REL24 for externally referenced
++		     * symbols impoted from libc.so. Relocation in elf.library requires the symbol to have it's .plt
++		     * stub value, but the linker specifically clears the value to 0, resulting in run-time
++		     * errors when the binary tries to call libc functions.
++		     */
++		    // sym->st_value = 0;
++                  }
+ 		else if (!h->ref_regular_nonweak)
+ 		  {
+ 		    /* This breaks function pointer comparisons, but
+ 		       that is better than breaking tests for a NULL
+ 		       function pointer.  */
+ 		    sym->st_value = 0;
+@@ -9275,12 +9435,15 @@ ppc_elf_finish_dynamic_symbol (bfd *output_bfd,
+       rela.r_addend = 0;
+       loc = s->contents + s->reloc_count++ * sizeof (Elf32_External_Rela);
+       bfd_elf32_swap_reloca_out (output_bfd, &rela, loc);
+     }
+ 
+ #ifdef DEBUG
++      fprintf (stderr, " SYM_VAL(%p) ", (void *)SYM_VAL(h));
++#endif
++#ifdef DEBUG
+   fprintf (stderr, "\n");
+ #endif
+ 
+   return TRUE;
+ }
+ 
+@@ -9735,16 +9898,14 @@ ppc_elf_finish_dynamic_sections (bfd *output_bfd,
+ 	return FALSE;
+     }
+ 
+   return ret;
+ }
+ 
+-#define TARGET_LITTLE_SYM	bfd_elf32_powerpcle_vec
+-#define TARGET_LITTLE_NAME	"elf32-powerpcle"
+-#define TARGET_BIG_SYM		bfd_elf32_powerpc_vec
+-#define TARGET_BIG_NAME		"elf32-powerpc"
++#define TARGET_BIG_SYM		bfd_elf32_amigaos_vec
++#define TARGET_BIG_NAME		"elf32-amigaos"
+ #define ELF_ARCH		bfd_arch_powerpc
+ #define ELF_TARGET_ID		PPC32_ELF_DATA
+ #define ELF_MACHINE_CODE	EM_PPC
+ #ifdef __QNXTARGET__
+ #define ELF_MAXPAGESIZE		0x1000
+ #else
+@@ -9789,153 +9950,23 @@ ppc_elf_finish_dynamic_sections (bfd *output_bfd,
+ #define elf_backend_size_dynamic_sections	ppc_elf_size_dynamic_sections
+ #define elf_backend_hash_symbol			ppc_elf_hash_symbol
+ #define elf_backend_finish_dynamic_symbol	ppc_elf_finish_dynamic_symbol
+ #define elf_backend_finish_dynamic_sections	ppc_elf_finish_dynamic_sections
+ #define elf_backend_fake_sections		ppc_elf_fake_sections
+ #define elf_backend_additional_program_headers	ppc_elf_additional_program_headers
+-#define elf_backend_modify_segment_map     	ppc_elf_modify_segment_map
++#define elf_backend_modify_segment_map     	ppc_elf_amigaos_modify_segment_map
+ #define elf_backend_grok_prstatus		ppc_elf_grok_prstatus
+ #define elf_backend_grok_psinfo			ppc_elf_grok_psinfo
+ #define elf_backend_write_core_note		ppc_elf_write_core_note
+ #define elf_backend_reloc_type_class		ppc_elf_reloc_type_class
+-#define elf_backend_begin_write_processing	ppc_elf_begin_write_processing
+-#define elf_backend_final_write_processing	ppc_elf_final_write_processing
+-#define elf_backend_write_section		ppc_elf_write_section
++#define elf_backend_begin_write_processing	ppc_elf_amigaos_begin_write_processing
++#define elf_backend_final_write_processing	ppc_elf_amigaos_final_write_processing
++#define elf_backend_write_section		ppc_elf_amigaos_write_section
+ #define elf_backend_get_sec_type_attr		ppc_elf_get_sec_type_attr
+ #define elf_backend_plt_sym_val			ppc_elf_plt_sym_val
+ #define elf_backend_action_discarded		ppc_elf_action_discarded
+ #define elf_backend_init_index_section		_bfd_elf_init_1_index_section
+ #define elf_backend_post_process_headers	_bfd_elf_set_osabi
+ #define elf_backend_lookup_section_flags_hook	ppc_elf_lookup_section_flags
+-#define elf_backend_section_processing		ppc_elf_section_processing
+-
+-#include "elf32-target.h"
+-
+-/* FreeBSD Target */
+-
+-#undef  TARGET_LITTLE_SYM
+-#undef  TARGET_LITTLE_NAME
+-
+-#undef  TARGET_BIG_SYM
+-#define TARGET_BIG_SYM  bfd_elf32_powerpc_freebsd_vec
+-#undef  TARGET_BIG_NAME
+-#define TARGET_BIG_NAME "elf32-powerpc-freebsd"
+-
+-#undef  ELF_OSABI
+-#define ELF_OSABI	ELFOSABI_FREEBSD
+-
+-#undef  elf32_bed
+-#define elf32_bed	elf32_powerpc_fbsd_bed
+-
+-#include "elf32-target.h"
+-
+-/* VxWorks Target */
+-
+-#undef TARGET_LITTLE_SYM
+-#undef TARGET_LITTLE_NAME
+-
+-#undef TARGET_BIG_SYM
+-#define TARGET_BIG_SYM		bfd_elf32_powerpc_vxworks_vec
+-#undef TARGET_BIG_NAME
+-#define TARGET_BIG_NAME		"elf32-powerpc-vxworks"
+-
+-#undef  ELF_OSABI
+-
+-/* VxWorks uses the elf default section flags for .plt.  */
+-static const struct bfd_elf_special_section *
+-ppc_elf_vxworks_get_sec_type_attr (bfd *abfd ATTRIBUTE_UNUSED, asection *sec)
+-{
+-  if (sec->name == NULL)
+-    return NULL;
+-
+-  if (strcmp (sec->name, ".plt") == 0)
+-    return _bfd_elf_get_sec_type_attr (abfd, sec);
+-
+-  return ppc_elf_get_sec_type_attr (abfd, sec);
+-}
+-
+-/* Like ppc_elf_link_hash_table_create, but overrides
+-   appropriately for VxWorks.  */
+-static struct bfd_link_hash_table *
+-ppc_elf_vxworks_link_hash_table_create (bfd *abfd)
+-{
+-  struct bfd_link_hash_table *ret;
+-
+-  ret = ppc_elf_link_hash_table_create (abfd);
+-  if (ret)
+-    {
+-      struct ppc_elf_link_hash_table *htab
+-        = (struct ppc_elf_link_hash_table *)ret;
+-      htab->is_vxworks = 1;
+-      htab->plt_type = PLT_VXWORKS;
+-      htab->plt_entry_size = VXWORKS_PLT_ENTRY_SIZE;
+-      htab->plt_slot_size = VXWORKS_PLT_ENTRY_SIZE;
+-      htab->plt_initial_entry_size = VXWORKS_PLT_INITIAL_ENTRY_SIZE;
+-    }
+-  return ret;
+-}
+-
+-/* Tweak magic VxWorks symbols as they are loaded.  */
+-static bfd_boolean
+-ppc_elf_vxworks_add_symbol_hook (bfd *abfd,
+-				 struct bfd_link_info *info,
+-				 Elf_Internal_Sym *sym,
+-				 const char **namep ATTRIBUTE_UNUSED,
+-				 flagword *flagsp ATTRIBUTE_UNUSED,
+-				 asection **secp,
+-				 bfd_vma *valp)
+-{
+-  if (!elf_vxworks_add_symbol_hook(abfd, info, sym,namep, flagsp, secp,
+-				   valp))
+-    return FALSE;
+-
+-  return ppc_elf_add_symbol_hook(abfd, info, sym,namep, flagsp, secp, valp);
+-}
+-
+-static void
+-ppc_elf_vxworks_final_write_processing (bfd *abfd, bfd_boolean linker)
+-{
+-  ppc_elf_final_write_processing(abfd, linker);
+-  elf_vxworks_final_write_processing(abfd, linker);
+-}
+-
+-/* On VxWorks, we emit relocations against _PROCEDURE_LINKAGE_TABLE_, so
+-   define it.  */
+-#undef elf_backend_want_plt_sym
+-#define elf_backend_want_plt_sym		1
+-#undef elf_backend_want_got_plt
+-#define elf_backend_want_got_plt		1
+-#undef elf_backend_got_symbol_offset
+-#define elf_backend_got_symbol_offset		0
+-#undef elf_backend_plt_not_loaded
+-#define elf_backend_plt_not_loaded		0
+-#undef elf_backend_plt_readonly
+-#define elf_backend_plt_readonly		1
+-#undef elf_backend_got_header_size
+-#define elf_backend_got_header_size		12
+-
+-#undef bfd_elf32_get_synthetic_symtab
+-
+-#undef bfd_elf32_bfd_link_hash_table_create
+-#define bfd_elf32_bfd_link_hash_table_create \
+-  ppc_elf_vxworks_link_hash_table_create
+-#undef elf_backend_add_symbol_hook
+-#define elf_backend_add_symbol_hook \
+-  ppc_elf_vxworks_add_symbol_hook
+-#undef elf_backend_link_output_symbol_hook
+-#define elf_backend_link_output_symbol_hook \
+-  elf_vxworks_link_output_symbol_hook
+-#undef elf_backend_final_write_processing
+-#define elf_backend_final_write_processing \
+-  ppc_elf_vxworks_final_write_processing
+-#undef elf_backend_get_sec_type_attr
+-#define elf_backend_get_sec_type_attr \
+-  ppc_elf_vxworks_get_sec_type_attr
+-#undef elf_backend_emit_relocs
+-#define elf_backend_emit_relocs \
+-  elf_vxworks_emit_relocs
+-
+-#undef elf32_bed
+-#define elf32_bed				ppc_elf_vxworks_bed
+-#undef elf_backend_post_process_headers
++#define elf_backend_section_processing		ppc_elf_amigaos_section_processing
+ 
+ #include "elf32-target.h"
 diff --git a/bfd/elf32-i386-amithlon.c b/bfd/elf32-i386-amithlon.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..4e029a5e90187a96013ed97e078fba920d95db28
 --- /dev/null
-+++ bfd/elf32-i386-amithlon.c
++++ b/bfd/elf32-i386-amithlon.c
 @@ -0,0 +1,198 @@
 +/* Intel IA-32 specific support for 32-bit big endian ELF on Amithlon.
 +   Copyright 2002 Free Software Foundation, Inc.
@@ -9715,8 +10494,8 @@ index 0000000000000000000000000000000000000000..4e029a5e90187a96013ed97e078fba92
 +#include "elf32-i386.c"
 diff --git a/bfd/elf32-i386.c b/bfd/elf32-i386.c
 index 0a6b22ec19ec9daee29e49c64c5d3ba2299e99c1..46396c83d45bab97de1470ee44ffa21f9d03e4b4 100644
---- bfd/elf32-i386.c
-+++ bfd/elf32-i386.c
+--- a/bfd/elf32-i386.c
++++ b/bfd/elf32-i386.c
 @@ -29,12 +29,16 @@
  #include "elf-vxworks.h"
  #include "bfd_stdint.h"
@@ -9824,7 +10603,7 @@ diff --git a/bfd/elf32-morphos.c b/bfd/elf32-morphos.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..accc2d426bede6c9441313115fcd5ab5f99630f9
 --- /dev/null
-+++ bfd/elf32-morphos.c
++++ b/bfd/elf32-morphos.c
 @@ -0,0 +1,7137 @@
 +/* PowerPC-specific support for 32-bit ELF
 +   Copyright 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002
@@ -16965,8 +17744,8 @@ index 0000000000000000000000000000000000000000..accc2d426bede6c9441313115fcd5ab5
 +#include "elf32-target.h"
 diff --git a/bfd/elf32-ppc.c b/bfd/elf32-ppc.c
 index 6454a8350da35adf6ed1e2209d9e4774ab7c50e3..5c92c53da7b3dec8f85a0a0b930190635f89dcfb 100644
---- bfd/elf32-ppc.c
-+++ bfd/elf32-ppc.c
+--- a/bfd/elf32-ppc.c
++++ b/bfd/elf32-ppc.c
 @@ -4412,12 +4412,16 @@ ppc_elf_check_relocs (bfd *abfd,
  	      p->count += 1;
  	      if (!must_be_dyn_reloc (info, r_type))
@@ -16988,7 +17767,7 @@ diff --git a/bfd/hosts/amigaos.h b/bfd/hosts/amigaos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..dc62d7f837f333ae8d2c5b47d01144cb0d3625f2
 --- /dev/null
-+++ bfd/hosts/amigaos.h
++++ b/bfd/hosts/amigaos.h
 @@ -0,0 +1,5 @@
 +/* Host configuration for AmigaOS */
 +#ifndef hosts_amigaos_h
@@ -16999,7 +17778,7 @@ diff --git a/bfd/hosts/morphos.h b/bfd/hosts/morphos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..d3c60ea9f5767ad0bfa22ba2c8c1e5ed9d94d481
 --- /dev/null
-+++ bfd/hosts/morphos.h
++++ b/bfd/hosts/morphos.h
 @@ -0,0 +1,5 @@
 +/* Host configuration for MorphOS */
 +#ifndef hosts_morphos_h
@@ -17010,7 +17789,7 @@ diff --git a/bfd/libamiga.h b/bfd/libamiga.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..351f0fa16a45680982f5b5807c8ba756defe1764
 --- /dev/null
-+++ bfd/libamiga.h
++++ b/bfd/libamiga.h
 @@ -0,0 +1,187 @@
 +/* BFD back-end for Commodore-Amiga AmigaOS binaries. Data structures.
 +   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998
@@ -17201,8 +17980,8 @@ index 0000000000000000000000000000000000000000..351f0fa16a45680982f5b5807c8ba756
 +#endif /* MEMF_ANY */
 diff --git a/bfd/libbfd.h b/bfd/libbfd.h
 index 6c48d641f606b9ed6158b4567021769bacfbd54a..3cb9b36fe2379a5d7f118472e106c151d6153aea 100644
---- bfd/libbfd.h
-+++ bfd/libbfd.h
+--- a/bfd/libbfd.h
++++ b/bfd/libbfd.h
 @@ -1345,12 +1345,16 @@ static const char *const bfd_reloc_code_real_names[] = { "@@uninitialized@@",
    "BFD_RELOC_PPC_EMB_RELSEC16",
    "BFD_RELOC_PPC_EMB_RELST_LO",
@@ -17239,8 +18018,8 @@ index 6c48d641f606b9ed6158b4567021769bacfbd54a..3cb9b36fe2379a5d7f118472e106c151
    "BFD_RELOC_ARM_PCREL_CALL",
 diff --git a/bfd/linker.c b/bfd/linker.c
 index d3ef9a43a5bca8096221870248daf58007c6ef78..4f0aa188f5017ea68023530f6ae9eaa6b98b5b11 100644
---- bfd/linker.c
-+++ bfd/linker.c
+--- a/bfd/linker.c
++++ b/bfd/linker.c
 @@ -430,13 +430,14 @@ static bfd_boolean generic_link_add_symbol_list
    (bfd *, struct bfd_link_info *, bfd_size_type count, asymbol **,
     bfd_boolean);
@@ -17334,8 +18113,8 @@ index d3ef9a43a5bca8096221870248daf58007c6ef78..4f0aa188f5017ea68023530f6ae9eaa6
  {
 diff --git a/bfd/reloc.c b/bfd/reloc.c
 index 47d052d1345847a7178f4c7ebe4f529396ae0a4f..6c3bb68f2da65b201b6288b8709fd60d9b0d5b2c 100644
---- bfd/reloc.c
-+++ bfd/reloc.c
+--- a/bfd/reloc.c
++++ b/bfd/reloc.c
 @@ -2803,12 +2803,20 @@ ENUMX
    BFD_RELOC_PPC_EMB_RELST_HA
  ENUMX
@@ -17383,8 +18162,8 @@ index 47d052d1345847a7178f4c7ebe4f529396ae0a4f..6c3bb68f2da65b201b6288b8709fd60d
    BFD_RELOC_CTOR
 diff --git a/bfd/targets.c b/bfd/targets.c
 index fa206d24bef3a22255f6be42221647db3142eb06..9df24504bab564048f724fbbb641ca13c5805602 100644
---- bfd/targets.c
-+++ bfd/targets.c
+--- a/bfd/targets.c
++++ b/bfd/targets.c
 @@ -144,12 +144,13 @@ DESCRIPTION
  	the entry points which call them. Too bad we can't have one
  	macro to define them both!
@@ -17515,8 +18294,8 @@ index fa206d24bef3a22255f6be42221647db3142eb06..9df24504bab564048f724fbbb641ca13
  	&bfd_elf32_ntradbigmips_vec,
 diff --git a/binutils/objcopy.c b/binutils/objcopy.c
 index 020d54d6fbe27a5c90600e1d034a93e8fade0ff6..88bd071eefa8b5426eaadfd6431e9de5d4a4591b 100644
---- binutils/objcopy.c
-+++ binutils/objcopy.c
+--- a/binutils/objcopy.c
++++ b/binutils/objcopy.c
 @@ -1101,12 +1101,17 @@ filter_symbols (bfd *abfd, bfd *obfd, asymbol **osyms,
        bfd_boolean undefined;
        bfd_boolean rem_leading_char;
@@ -17659,8 +18438,8 @@ index 020d54d6fbe27a5c90600e1d034a93e8fade0ff6..88bd071eefa8b5426eaadfd6431e9de5
  
 diff --git a/binutils/readelf.c b/binutils/readelf.c
 index d9ec436af6fbea0bbc3dfa8e9cd40fcf9be140cf..f52d7168af3bc6559bd2483ff1fc126da385b38d 100644
---- binutils/readelf.c
-+++ binutils/readelf.c
+--- a/binutils/readelf.c
++++ b/binutils/readelf.c
 @@ -150,12 +150,13 @@
  #include "elf/vax.h"
  #include "elf/x86-64.h"
@@ -17707,8 +18486,8 @@ index d9ec436af6fbea0bbc3dfa8e9cd40fcf9be140cf..f52d7168af3bc6559bd2483ff1fc126d
  	      break;
 diff --git a/binutils/rename.c b/binutils/rename.c
 index 5923a3f4ce2b2b5b0da96ff8225bf3c7750563bc..354b6fd1eab7f632995fed27698c76826ee8e753 100644
---- binutils/rename.c
-+++ binutils/rename.c
+--- a/binutils/rename.c
++++ b/binutils/rename.c
 @@ -27,13 +27,13 @@
  #else /* ! HAVE_GOOD_UTIME_H */
  #ifdef HAVE_UTIMES
@@ -17741,8 +18520,8 @@ index 5923a3f4ce2b2b5b0da96ff8225bf3c7750563bc..354b6fd1eab7f632995fed27698c7682
  
 diff --git a/config.sub b/config.sub
 index 59bb593f109c8d795df4cbb96b015222eed91c07..88ccfd90050ad0d8d341c091b9920f62fc5996f8 100755
---- config.sub
-+++ config.sub
+--- a/config.sub
++++ b/config.sub
 @@ -353,13 +353,13 @@ case $basic_machine in
  		basic_machine=armel-unknown
  		;;
@@ -17797,7 +18576,7 @@ diff --git a/config/mh-amigaos b/config/mh-amigaos
 new file mode 100644
 index 0000000000000000000000000000000000000000..4889ea41c6889e2e15c06c8f355c30b5eb2aa5f4
 --- /dev/null
-+++ config/mh-amigaos
++++ b/config/mh-amigaos
 @@ -0,0 +1,13 @@
 +# Host makefile fragment for Commodore Amiga running AmigaOS.
 +
@@ -17816,7 +18595,7 @@ diff --git a/config/mh-morphos b/config/mh-morphos
 new file mode 100644
 index 0000000000000000000000000000000000000000..c00202aec0389eaa067ea48818a7d8fa4fd5fc6b
 --- /dev/null
-+++ config/mh-morphos
++++ b/config/mh-morphos
 @@ -0,0 +1,13 @@
 +# Host makefile fragment for Commodore Amiga running AmigaOS.
 +
@@ -17833,8 +18612,8 @@ index 0000000000000000000000000000000000000000..c00202aec0389eaa067ea48818a7d8fa
 +HARDLINK = cp
 diff --git a/configure b/configure
 index 6079e6c07511e12bb51ae5197e7110d79c36b098..9667d72a79baf032fa22e054b88fb03e64673b63 100755
---- configure
-+++ configure
+--- a/configure
++++ b/configure
 @@ -3630,12 +3630,15 @@ case "${noconfigdirs}" in
  esac
  
@@ -17869,8 +18648,8 @@ index 6079e6c07511e12bb51ae5197e7110d79c36b098..9667d72a79baf032fa22e054b88fb03e
      ;;
 diff --git a/configure.ac b/configure.ac
 index 5efb4a32f114f23b90f838a5108f5016dc01bf43..fea7239acf315d982587796d8b93de4c894a14d8 100644
---- configure.ac
-+++ configure.ac
+--- a/configure.ac
++++ b/configure.ac
 @@ -1056,12 +1056,15 @@ case "${noconfigdirs}" in
  esac
  
@@ -17905,8 +18684,8 @@ index 5efb4a32f114f23b90f838a5108f5016dc01bf43..fea7239acf315d982587796d8b93de4c
      ;;
 diff --git a/gas/ChangeLog-9697 b/gas/ChangeLog-9697
 index f39e99554e87446d7eb8f0869701984c5df2137d..08dbfbc1d36608ec8e553593d445431cb1792cc5 100644
---- gas/ChangeLog-9697
-+++ gas/ChangeLog-9697
+--- a/gas/ChangeLog-9697
++++ b/gas/ChangeLog-9697
 @@ -874,12 +874,18 @@ Tue Aug 26 12:23:25 1997  Ian Lance Taylor  <ian@cygnus.com>
  	Gabriel Paubert <paubert@iram.es>.
  
@@ -17947,8 +18726,8 @@ index f39e99554e87446d7eb8f0869701984c5df2137d..08dbfbc1d36608ec8e553593d445431c
  Fri Nov  8 13:55:03 1996  Martin M. Hunt  <hunt@pizza.cygnus.com>
 diff --git a/gas/ChangeLog-9899 b/gas/ChangeLog-9899
 index ae38e5dd9223cf4e26355263197ea9f2cd0296c0..76861df24938b7ec7a3051da5cf20c44465b145e 100644
---- gas/ChangeLog-9899
-+++ gas/ChangeLog-9899
+--- a/gas/ChangeLog-9899
++++ b/gas/ChangeLog-9899
 @@ -3574,12 +3574,16 @@ Wed Jun  3 14:10:36 1998  Ian Lance Taylor  <ian@cygnus.com>
  
  Wed Jun  3 09:16:00 1998  Catherine Moore  <clm@cygnus.com>
@@ -17968,8 +18747,8 @@ index ae38e5dd9223cf4e26355263197ea9f2cd0296c0..76861df24938b7ec7a3051da5cf20c44
  Tue Jun  2 15:36:13 1998  Ian Lance Taylor  <ian@cygnus.com>
 diff --git a/gas/Makefile.am b/gas/Makefile.am
 index 256e2322fd80f84d8fa8fab735c85446dff4f506..851de3dc36be1138ad52026f7ace0ebd49da94b6 100644
---- gas/Makefile.am
-+++ gas/Makefile.am
+--- a/gas/Makefile.am
++++ b/gas/Makefile.am
 @@ -245,23 +245,25 @@ TARGET_CPU_HFILES = \
  	config/tc-z8k.h \
  	config/xtensa-relax.h
@@ -18027,8 +18806,8 @@ index 256e2322fd80f84d8fa8fab735c85446dff4f506..851de3dc36be1138ad52026f7ace0ebd
  BASEDIR = $(srcdir)/..
 diff --git a/gas/Makefile.in b/gas/Makefile.in
 index 94812d96db9cb13bdbdd0243a6b9a021e95e0a0b..c04f7d53feacb96ac3a82109375c3c94bcb15d56 100644
---- gas/Makefile.in
-+++ gas/Makefile.in
+--- a/gas/Makefile.in
++++ b/gas/Makefile.in
 @@ -513,23 +513,25 @@ TARGET_CPU_HFILES = \
  	config/tc-z8k.h \
  	config/xtensa-relax.h
@@ -18127,8 +18906,8 @@ index 94812d96db9cb13bdbdd0243a6b9a021e95e0a0b..c04f7d53feacb96ac3a82109375c3c94
  	  mkdir testsuite; \
 diff --git a/gas/as.c b/gas/as.c
 index fa4141f92bc887cfd403ec3eb93a7a20f26b642a..7b35f0e3f23662e09e8ce56c525239cf68b5dd3a 100644
---- gas/as.c
-+++ gas/as.c
+--- a/gas/as.c
++++ b/gas/as.c
 @@ -105,12 +105,17 @@ int keep_it = 0;
  segT reg_section;
  segT expr_section;
@@ -18181,8 +18960,8 @@ index fa4141f92bc887cfd403ec3eb93a7a20f26b642a..7b35f0e3f23662e09e8ce56c525239cf
    expr_section = subseg_new ("*GAS `expr' section*", 0);
 diff --git a/gas/config/m68k-parse.h b/gas/config/m68k-parse.h
 index 4f91385f9222dc52c8cc9f490860729c2183e445..08e766c5523b90ac3cd2d685b239c0a7ed4d8230 100644
---- gas/config/m68k-parse.h
-+++ gas/config/m68k-parse.h
+--- a/gas/config/m68k-parse.h
++++ b/gas/config/m68k-parse.h
 @@ -293,12 +293,15 @@ struct m68k_exp
    /* The type of pic relocation if any.  */
    enum pic_relocation pic_reloc;
@@ -18201,8 +18980,8 @@ index 4f91385f9222dc52c8cc9f490860729c2183e445..08e766c5523b90ac3cd2d685b239c0a7
  {
 diff --git a/gas/config/m68k-parse.y b/gas/config/m68k-parse.y
 index 2c58266fb8e6bd8d57515fe5200daaf9a1e450a2..742cbf2eeaaa15766a4d44de76a9d58d56993367 100644
---- gas/config/m68k-parse.y
-+++ gas/config/m68k-parse.y
+--- a/gas/config/m68k-parse.y
++++ b/gas/config/m68k-parse.y
 @@ -972,31 +972,35 @@ yylex ()
        else if (parens == 0
  	       && (*s == ',' || *s == ']'))
@@ -18246,7 +19025,7 @@ diff --git a/gas/config/obj-amigahunk.c b/gas/config/obj-amigahunk.c
 new file mode 100644
 index 0000000000000000000000000000000000000000..8755475ecfdfd5aafbf876ed1f87c9d343b560e9
 --- /dev/null
-+++ gas/config/obj-amigahunk.c
++++ b/gas/config/obj-amigahunk.c
 @@ -0,0 +1,212 @@
 +/* AmigaOS object file format
 +   Copyright (C) 1992, 1993, 1994, 1995 Free Software Foundation, Inc.
@@ -18464,7 +19243,7 @@ diff --git a/gas/config/obj-amigahunk.h b/gas/config/obj-amigahunk.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..0b7d80eeb291878dc871ce0591b2223bf6cb1de2
 --- /dev/null
-+++ gas/config/obj-amigahunk.h
++++ b/gas/config/obj-amigahunk.h
 @@ -0,0 +1,54 @@
 +/* obj-amigahunk.h, AmigaOS object file format for gas, the assembler.
 +   Copyright (C) 1992, 1993, 1994, 1995 Free Software Foundation, Inc.
@@ -18522,8 +19301,8 @@ index 0000000000000000000000000000000000000000..0b7d80eeb291878dc871ce0591b2223b
 +#define AOUT_STABS
 diff --git a/gas/config/obj-elf.c b/gas/config/obj-elf.c
 index d7c766513ccc4111f51904a7e01904b7ebe96a03..bb8d9d1ebee6b76deee86848202fd06d5b1a4dfa 100644
---- gas/config/obj-elf.c
-+++ gas/config/obj-elf.c
+--- a/gas/config/obj-elf.c
++++ b/gas/config/obj-elf.c
 @@ -1390,13 +1390,13 @@ obj_elf_vtable_inherit (int ignore ATTRIBUTE_UNUSED)
    if (bad)
      return NULL;
@@ -18556,8 +19335,8 @@ index d7c766513ccc4111f51904a7e01904b7ebe96a03..bb8d9d1ebee6b76deee86848202fd06d
  #ifdef NEED_ECOFF_DEBUG
 diff --git a/gas/config/tc-i386.h b/gas/config/tc-i386.h
 index de132d69d7ac3f854ea517a15267e8c75365714d..14b67f0506eacf6d3dbb11dbd08689fa69354678 100644
---- gas/config/tc-i386.h
-+++ gas/config/tc-i386.h
+--- a/gas/config/tc-i386.h
++++ b/gas/config/tc-i386.h
 @@ -24,13 +24,20 @@
  #define TC_I386 1
  
@@ -18628,8 +19407,8 @@ index de132d69d7ac3f854ea517a15267e8c75365714d..14b67f0506eacf6d3dbb11dbd08689fa
    PROCESSOR_I486,
 diff --git a/gas/config/tc-m68k.c b/gas/config/tc-m68k.c
 index 21accf605b22ebc5af491e173faeef93888b6667..8b5f6c60f2141ee91d6e9d1d639815abdf4e5042 100644
---- gas/config/tc-m68k.c
-+++ gas/config/tc-m68k.c
+--- a/gas/config/tc-m68k.c
++++ b/gas/config/tc-m68k.c
 @@ -35,12 +35,22 @@
  #endif
  
@@ -19589,8 +20368,8 @@ index 21accf605b22ebc5af491e173faeef93888b6667..8b5f6c60f2141ee91d6e9d1d639815ab
  m68k_elf_final_processing (void)
 diff --git a/gas/config/tc-m68k.h b/gas/config/tc-m68k.h
 index bcf4607ebebe16d575166d666a536fb1fbdfeaee..144b7c7d783bab80bd84fa0e57cfce9f349a528f 100644
---- gas/config/tc-m68k.h
-+++ gas/config/tc-m68k.h
+--- a/gas/config/tc-m68k.h
++++ b/gas/config/tc-m68k.h
 @@ -30,20 +30,27 @@ struct fix;
  #ifdef TE_SUN3
  #define TARGET_FORMAT "a.out-sunos-big"
@@ -19655,8 +20434,8 @@ index bcf4607ebebe16d575166d666a536fb1fbdfeaee..144b7c7d783bab80bd84fa0e57cfce9f
        if (aim == 0 && this_type->rlx_forward == 127)			  \
 diff --git a/gas/config/tc-ppc.c b/gas/config/tc-ppc.c
 index 208d76d847128c833f73713eff2b78deb610a764..11949323d80802138ec23fb8174727c0a7c4fd45 100644
---- gas/config/tc-ppc.c
-+++ gas/config/tc-ppc.c
+--- a/gas/config/tc-ppc.c
++++ b/gas/config/tc-ppc.c
 @@ -1421,22 +1421,28 @@ ppc_target_format (void)
  #  else
    return (ppc_obj64 ? "aixcoff64-rs6000" : "aixcoff-rs6000");
@@ -19794,8 +20573,8 @@ index 208d76d847128c833f73713eff2b78deb610a764..11949323d80802138ec23fb8174727c0
  	  size = 2;
 diff --git a/gas/config/tc-sh.c b/gas/config/tc-sh.c
 index 4db1a0913602aaf18d1390cc315f6db0fbdef649..ba0ed8e89e44a9ab8411662047e6f85b4f28d5d9 100644
---- gas/config/tc-sh.c
-+++ gas/config/tc-sh.c
+--- a/gas/config/tc-sh.c
++++ b/gas/config/tc-sh.c
 @@ -800,13 +800,13 @@ sh_cons_fix_new (fragS *frag, int off, int size, expressionS *exp)
      {
      error:
@@ -19993,7 +20772,7 @@ diff --git a/gas/config/te-amiga.h b/gas/config/te-amiga.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..a7b93727031092cdeb4bf66e3813663d66d79c3b
 --- /dev/null
-+++ gas/config/te-amiga.h
++++ b/gas/config/te-amiga.h
 @@ -0,0 +1,24 @@
 +/*
 + * te-amiga.h -- Amiga target environment declarations.
@@ -20023,7 +20802,7 @@ diff --git a/gas/config/te-amigaos.h b/gas/config/te-amigaos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..8bd15a3d19b3f383e6756d6e307bd10dc4dcfb6f
 --- /dev/null
-+++ gas/config/te-amigaos.h
++++ b/gas/config/te-amigaos.h
 @@ -0,0 +1,14 @@
 +/*
 + * te-amigaos.h -- Amiga target environment declarations.
@@ -20044,8 +20823,8 @@ similarity index 65%
 copy from gas/config/te-nbsd.h
 copy to gas/config/te-amithlon.h
 index ce291014824771b2081438766002c479eeb60d9b..2fbd88551330d46e5cd585d142d67e6b7efe1624 100644
---- gas/config/te-nbsd.h
-+++ gas/config/te-amithlon.h
+--- a/gas/config/te-nbsd.h
++++ b/gas/config/te-amithlon.h
 @@ -1,24 +1,26 @@
 -/* te-nbsd.h -- NetBSD target environment declarations.
 -   Copyright 1987, 1990, 1991, 1992, 1994, 1998, 2000, 2005, 2007
@@ -20084,7 +20863,7 @@ diff --git a/gas/config/te-morphos.h b/gas/config/te-morphos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..43b0826fa79d9e9c97485cc6dd7d919771defbf9
 --- /dev/null
-+++ gas/config/te-morphos.h
++++ b/gas/config/te-morphos.h
 @@ -0,0 +1,14 @@
 +/*
 + * te-amiga.h -- Amiga target environment declarations.
@@ -20102,8 +20881,8 @@ index 0000000000000000000000000000000000000000..43b0826fa79d9e9c97485cc6dd7d9197
 +#endif
 diff --git a/gas/configure b/gas/configure
 index 2e674491f392b756186c52f7b0d28de8a20398c5..6eabef030df837c80ab009e12ad99a3086df5e43 100755
---- gas/configure
-+++ gas/configure
+--- a/gas/configure
++++ b/gas/configure
 @@ -12500,12 +12500,19 @@ _ACEOF
  
  cat >>confdefs.h <<_ACEOF
@@ -20152,8 +20931,8 @@ index 2e674491f392b756186c52f7b0d28de8a20398c5..6eabef030df837c80ab009e12ad99a30
  $as_echo_n "checking for $ac_word... " >&6; }
 diff --git a/gas/configure.in b/gas/configure.in
 index 14f6edfe5deb041e968454931c451e1da226e0d1..183d98e8a4ac56e2e8a7a87f7b824f302bbb04f4 100644
---- gas/configure.in
-+++ gas/configure.in
+--- a/gas/configure.in
++++ b/gas/configure.in
 @@ -598,12 +598,19 @@ if test `set . $emfiles ; shift ; echo $#` -gt 0 ; then
  fi
  AC_SUBST(extra_objects)
@@ -20200,8 +20979,8 @@ index 14f6edfe5deb041e968454931c451e1da226e0d1..183d98e8a4ac56e2e8a7a87f7b824f30
  AM_PO_SUBDIRS
 diff --git a/gas/configure.tgt b/gas/configure.tgt
 index 9e44de000145c39abfd3ea325656a4d4bc066198..61f24acdb98484f43ac0c08d3cacfd38b1c1fb8b 100644
---- gas/configure.tgt
-+++ gas/configure.tgt
+--- a/gas/configure.tgt
++++ b/gas/configure.tgt
 @@ -40,13 +40,14 @@ case ${cpu} in
    cr16*)		cpu_type=cr16 endian=little ;;
    crisv32)		cpu_type=cris arch=crisv32 ;;
@@ -20264,8 +21043,8 @@ index 9e44de000145c39abfd3ea325656a4d4bc066198..61f24acdb98484f43ac0c08d3cacfd38
    ppc-*-beos*)				fmt=coff ;;
 diff --git a/gas/read.c b/gas/read.c
 index 21c42b27342fb8e2c687417bcdacc4c16e3905b7..9de62b9c512025212d52a19833ffe28004944dd1 100644
---- gas/read.c
-+++ gas/read.c
+--- a/gas/read.c
++++ b/gas/read.c
 @@ -43,12 +43,16 @@
  #include "wchar.h"
  
@@ -20354,8 +21133,8 @@ index 21c42b27342fb8e2c687417bcdacc4c16e3905b7..9de62b9c512025212d52a19833ffe280
  
 diff --git a/gas/read.h b/gas/read.h
 index 4e5d1bbd2dc7b0724a2fc047db01f97aec8a4bac..59e787e754a14e11195607d382f81992423584cb 100644
---- gas/read.h
-+++ gas/read.h
+--- a/gas/read.h
++++ b/gas/read.h
 @@ -130,12 +130,16 @@ extern void do_repeat (int,const char *,const char *);
  extern void do_repeat_with_expander (int, const char *, const char *, const char *);
  extern void end_repeat (int);
@@ -20375,8 +21154,8 @@ index 4e5d1bbd2dc7b0724a2fc047db01f97aec8a4bac..59e787e754a14e11195607d382f81992
  extern symbolS *s_comm_internal (int, symbolS *(*) (int, symbolS *, addressT));
 diff --git a/gas/write.c b/gas/write.c
 index 56ebb6c565bea35df43565b53206156270a41b66..8a9746c927a3e8b7007cdec9c7f16e47509b5f45 100644
---- gas/write.c
-+++ gas/write.c
+--- a/gas/write.c
++++ b/gas/write.c
 @@ -149,13 +149,14 @@ fix_new_internal (fragS *frag,		/* Which frag?  */
  		  int size,		/* 1, 2, or 4 usually.  */
  		  symbolS *add_symbol,	/* X_add_symbol.  */
@@ -20530,8 +21309,8 @@ index 56ebb6c565bea35df43565b53206156270a41b66..8a9746c927a3e8b7007cdec9c7f16e47
  
 diff --git a/gas/write.h b/gas/write.h
 index 8303f1be98b6548e4e30a326f042f78e07aed7f5..5f3598655b2665fa86d7b5291643f563536e2f31 100644
---- gas/write.h
-+++ gas/write.h
+--- a/gas/write.h
++++ b/gas/write.h
 @@ -172,16 +172,16 @@ extern void write_object_file (void);
  extern long relax_frag (segT, fragS *, long);
  extern int relax_segment (struct frag *, segT, int);
@@ -20553,8 +21332,8 @@ index 8303f1be98b6548e4e30a326f042f78e07aed7f5..5f3598655b2665fa86d7b5291643f563
  #endif /* __write_h__ */
 diff --git a/gprof/Makefile.am b/gprof/Makefile.am
 index edd100ac924458a1e69da65cab55ddb6a3b61555..286d29546ecdfa6cfafbfc7f7fb83a0fdeadfb83 100644
---- gprof/Makefile.am
-+++ gprof/Makefile.am
+--- a/gprof/Makefile.am
++++ b/gprof/Makefile.am
 @@ -36,13 +36,13 @@ noinst_HEADERS = \
  	corefile.h gmon.h gmon_io.h gmon_out.h gprof.h hertz.h hist.h \
  	search_list.h source.h sym_ids.h symtab.h utils.h
@@ -20572,8 +21351,8 @@ index edd100ac924458a1e69da65cab55ddb6a3b61555..286d29546ecdfa6cfafbfc7f7fb83a0f
  # This empty rule is a hack against gmake patched by Apple.
 diff --git a/gprof/Makefile.in b/gprof/Makefile.in
 index a9d7073c799863dc3b39124f83dbcba73bf8bf85..4d487c22a56406d567643a6bd53310e501fa99aa 100644
---- gprof/Makefile.in
-+++ gprof/Makefile.in
+--- a/gprof/Makefile.in
++++ b/gprof/Makefile.in
 @@ -1013,13 +1013,13 @@ uninstall-man: uninstall-man1
  	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
  	uninstall uninstall-am uninstall-binPROGRAMS uninstall-dvi-am \
@@ -20591,8 +21370,8 @@ index a9d7073c799863dc3b39124f83dbcba73bf8bf85..4d487c22a56406d567643a6bd53310e5
  	awk -f $(srcdir)/gen-c-prog.awk > ./$*.c \
 diff --git a/gprof/configure b/gprof/configure
 index 6ffdbe30cef942eb7e28f26674b03c8ff5907711..665d5009457e7e17d7acc0c8bfb81301cd546b32 100755
---- gprof/configure
-+++ gprof/configure
+--- a/gprof/configure
++++ b/gprof/configure
 @@ -11850,12 +11850,25 @@ $as_echo "found xgettext program is not GNU xgettext; ignore it" >&6; }
    fi
  
@@ -20621,8 +21400,8 @@ index 6ffdbe30cef942eb7e28f26674b03c8ff5907711..665d5009457e7e17d7acc0c8bfb81301
    enableval=$enable_maintainer_mode; USE_MAINTAINER_MODE=$enableval
 diff --git a/gprof/configure.in b/gprof/configure.in
 index 631e3e467314f3740c737f1534537c7532a00d08..7b4586b0aeee56169f321af15214054feec0c349 100644
---- gprof/configure.in
-+++ gprof/configure.in
+--- a/gprof/configure.in
++++ b/gprof/configure.in
 @@ -28,12 +28,23 @@ LT_INIT
  AC_CHECK_FUNCS(setmode)
  
@@ -20649,8 +21428,8 @@ index 631e3e467314f3740c737f1534537c7532a00d08..7b4586b0aeee56169f321af15214054f
  
 diff --git a/gprof/gconfig.in b/gprof/gconfig.in
 index 25679910ee73fb2ae8f1c3f7b1cb2951166da71f..4ad8775fd559a1c06b6f572b4af24ca46f7f7f3e 100644
---- gprof/gconfig.in
-+++ gprof/gconfig.in
+--- a/gprof/gconfig.in
++++ b/gprof/gconfig.in
 @@ -1,12 +1,8 @@
  /* gconfig.in.  Generated from configure.in by autoheader.  */
  
@@ -20668,7 +21447,7 @@ diff --git a/include/elf/amigaos.h b/include/elf/amigaos.h
 new file mode 100644
 index 0000000000000000000000000000000000000000..2cbcd490a300f0248aecf2ca6d50865181a3c1f0
 --- /dev/null
-+++ include/elf/amigaos.h
++++ b/include/elf/amigaos.h
 @@ -0,0 +1,27 @@
 +/* AmigaOS ELF support for BFD.
 +   Copyright 2001 Free Software Foundation, Inc.
@@ -20699,15 +21478,21 @@ index 0000000000000000000000000000000000000000..2cbcd490a300f0248aecf2ca6d508651
 +#endif /* _ELF_AMIGAOS_H */
 diff --git a/include/elf/ppc.h b/include/elf/ppc.h
 index f80a1e8a3e9c5852902beaafbb6a2a9e36d815c3..9893a88d96a77d730d91ef2bfe89a18d75029dd1 100644
---- include/elf/ppc.h
-+++ include/elf/ppc.h
-@@ -128,12 +128,18 @@ START_RELOC_NUMBERS (elf_ppc_reloc_type)
+--- a/include/elf/ppc.h
++++ b/include/elf/ppc.h
+@@ -128,12 +128,24 @@ START_RELOC_NUMBERS (elf_ppc_reloc_type)
    RELOC_NUMBER (R_PPC_EMB_RELST_LO,	112)
    RELOC_NUMBER (R_PPC_EMB_RELST_HI,	113)
    RELOC_NUMBER (R_PPC_EMB_RELST_HA,	114)
    RELOC_NUMBER (R_PPC_EMB_BIT_FLD,	115)
    RELOC_NUMBER (R_PPC_EMB_RELSDA,	116)
  
++/* Special MorphOS relocs. */
++  RELOC_NUMBER (R_PPC_MORPHOS_DREL,	200)
++  RELOC_NUMBER (R_PPC_MORPHOS_DREL_LO,	201)
++  RELOC_NUMBER (R_PPC_MORPHOS_DREL_HI,	202)
++  RELOC_NUMBER (R_PPC_MORPHOS_DREL_HA,	203)
++
 +/* AmigaOS4 relocs */
 +  RELOC_NUMBER (R_PPC_AMIGAOS_BREL,	210)
 +  RELOC_NUMBER (R_PPC_AMIGAOS_BREL_LO,	211)
@@ -20722,8 +21507,8 @@ index f80a1e8a3e9c5852902beaafbb6a2a9e36d815c3..9893a88d96a77d730d91ef2bfe89a18d
    RELOC_NUMBER (R_PPC_VLE_LO16D,	220)
 diff --git a/include/libiberty.h b/include/libiberty.h
 index cacde800ea3dda438ea8292ab4b9354a63ad048b..595ecf48242a2067dd71c4dda07a57994bdb4981 100644
---- include/libiberty.h
-+++ include/libiberty.h
+--- a/include/libiberty.h
++++ b/include/libiberty.h
 @@ -103,13 +103,13 @@ extern int countargv (char**);
  /* HAVE_DECL_* is a three-state macro: undefined, 0 or 1.  If it is
     undefined, we haven't run the autoconf check so provide the
@@ -20741,8 +21526,8 @@ index cacde800ea3dda438ea8292ab4b9354a63ad048b..595ecf48242a2067dd71c4dda07a5799
  #define basename basename_cannot_be_used_without_a_prototype
 diff --git a/ld/ChangeLog-9197 b/ld/ChangeLog-9197
 index 9307f333e3b156758598c19ff0873c21fc1dad29..0f0e189765f0438cd3bbd7a04f36c8e006cef91c 100644
---- ld/ChangeLog-9197
-+++ ld/ChangeLog-9197
+--- a/ld/ChangeLog-9197
++++ b/ld/ChangeLog-9197
 @@ -144,12 +144,17 @@ Wed Oct 22 11:29:25 1997  Ian Lance Taylor  <ian@cygnus.com>
  Fri Oct 17 00:00:13 1997  Richard Henderson  <rth@cygnus.com>
  
@@ -20799,8 +21584,8 @@ index 9307f333e3b156758598c19ff0873c21fc1dad29..0f0e189765f0438cd3bbd7a04f36c8e0
  
 diff --git a/ld/ChangeLog-9899 b/ld/ChangeLog-9899
 index 866e4a0cfbb8a086ae01716e4a806e3386914cab..de288123cb7b80422bfc2973640bbdd16c6af900 100644
---- ld/ChangeLog-9899
-+++ ld/ChangeLog-9899
+--- a/ld/ChangeLog-9899
++++ b/ld/ChangeLog-9899
 @@ -1881,12 +1881,17 @@ Wed Mar 18 09:42:24 1998  Nick Clifton  <nickc@cygnus.com>
  	* configure.tgt (targ_extra_emuls): Add thumb-pe target.
  
@@ -20821,8 +21606,8 @@ index 866e4a0cfbb8a086ae01716e4a806e3386914cab..de288123cb7b80422bfc2973640bbdd1
  Thu Feb 26 17:09:53 1998  Michael Meissner  <meissner@cygnus.com>
 diff --git a/ld/Makefile.am b/ld/Makefile.am
 index e343ab06531054392ae09d67ecb2dc3022053c07..cbaa4c736f8e87f05a60d8580174e207069872fd 100644
---- ld/Makefile.am
-+++ ld/Makefile.am
+--- a/ld/Makefile.am
++++ b/ld/Makefile.am
 @@ -128,12 +128,16 @@ LIBIBERTY = ../libiberty/libiberty.a
  
  ALL_EMULATION_SOURCES = \
@@ -20941,8 +21726,8 @@ index e343ab06531054392ae09d67ecb2dc3022053c07..cbaa4c736f8e87f05a60d8580174e207
  	${GENSCRIPTS} ppcmacos "$(tdir_ppcmacos)"
 diff --git a/ld/Makefile.in b/ld/Makefile.in
 index 7da93b46501b8f8aa076134b903e1cdf34025941..43947832717c60ff3a89a8fcea838f5151afd56e 100644
---- ld/Makefile.in
-+++ ld/Makefile.in
+--- a/ld/Makefile.in
++++ b/ld/Makefile.in
 @@ -435,12 +435,16 @@ BFDLIB = ../bfd/libbfd.la
  LIBIBERTY = ../libiberty/libiberty.a
  ALL_EMULATION_SOURCES = \
@@ -21108,8 +21893,8 @@ index 7da93b46501b8f8aa076134b903e1cdf34025941..43947832717c60ff3a89a8fcea838f51
  	${GENSCRIPTS} ppcmacos "$(tdir_ppcmacos)"
 diff --git a/ld/configure.host b/ld/configure.host
 index f47b961176fa37c2786aa9ff322b21b06081cdfd..c7e1e700c24e48e783d07023b678dbd59bee0b11 100644
---- ld/configure.host
-+++ ld/configure.host
+--- a/ld/configure.host
++++ b/ld/configure.host
 @@ -170,12 +170,16 @@ mips*-sgi-irix4* | mips*-sgi-irix5*)
  
  mips*-sgi-irix6*)
@@ -21129,8 +21914,8 @@ index f47b961176fa37c2786aa9ff322b21b06081cdfd..c7e1e700c24e48e783d07023b678dbd5
    ;;
 diff --git a/ld/configure.tgt b/ld/configure.tgt
 index 72bc5bca48d7c93f838de826a0685c13ef1db3c2..ddba96d6da87eb2f033eae77509639b6a630ec2a 100644
---- ld/configure.tgt
-+++ ld/configure.tgt
+--- a/ld/configure.tgt
++++ b/ld/configure.tgt
 @@ -298,12 +298,13 @@ x86_64-*-pe | x86_64-*-pep) targ_emul=i386pep ;
  			targ_extra_ofiles="deffilep.o pep-dll.o pe-dll.o" ;;
  x86_64-*-mingw*)	targ_emul=i386pep ;
@@ -21195,7 +21980,7 @@ diff --git a/ld/emulparams/amiga.sh b/ld/emulparams/amiga.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..c2915d47d7964c6406eae9079ce90d695ecdbfda
 --- /dev/null
-+++ ld/emulparams/amiga.sh
++++ b/ld/emulparams/amiga.sh
 @@ -0,0 +1,6 @@
 +SCRIPT_NAME=amiga
 +OUTPUT_FORMAT="amiga"
@@ -21207,7 +21992,7 @@ diff --git a/ld/emulparams/amiga_bss.sh b/ld/emulparams/amiga_bss.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..5405d737448875ea39e5d9c4edfd59ee32c8a7b4
 --- /dev/null
-+++ ld/emulparams/amiga_bss.sh
++++ b/ld/emulparams/amiga_bss.sh
 @@ -0,0 +1,6 @@
 +SCRIPT_NAME=amiga_bss
 +OUTPUT_FORMAT="amiga"
@@ -21219,7 +22004,7 @@ diff --git a/ld/emulparams/amigaos.sh b/ld/emulparams/amigaos.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..605b81e76bcbbd2322561d7d9502190dc7c00674
 --- /dev/null
-+++ ld/emulparams/amigaos.sh
++++ b/ld/emulparams/amigaos.sh
 @@ -0,0 +1,26 @@
 +#. ${srcdir}/emulparams/elf32ppccommon.sh
 +TEMPLATE_NAME=amigaos
@@ -21251,7 +22036,7 @@ diff --git a/ld/emulparams/amithlon.sh b/ld/emulparams/amithlon.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..14b1c776396e2424af51c9b409e2d05f2881a84d
 --- /dev/null
-+++ ld/emulparams/amithlon.sh
++++ b/ld/emulparams/amithlon.sh
 @@ -0,0 +1,11 @@
 +SCRIPT_NAME=amithlon
 +OUTPUT_FORMAT="elf32-i386be-amithlon"
@@ -21268,7 +22053,7 @@ diff --git a/ld/emulparams/morphos.sh b/ld/emulparams/morphos.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..45908c662f9b6085877dd39621e813da45a9f5f7
 --- /dev/null
-+++ ld/emulparams/morphos.sh
++++ b/ld/emulparams/morphos.sh
 @@ -0,0 +1,6 @@
 +TEMPLATE_NAME=morphos
 +SCRIPT_NAME=morphos
@@ -21280,7 +22065,7 @@ diff --git a/ld/emulparams/morphos_baserel.sh b/ld/emulparams/morphos_baserel.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..46c483484813395904772673d1ae1eed0bc9109f
 --- /dev/null
-+++ ld/emulparams/morphos_baserel.sh
++++ b/ld/emulparams/morphos_baserel.sh
 @@ -0,0 +1,6 @@
 +TEMPLATE_NAME=morphos
 +SCRIPT_NAME=morphos_baserel
@@ -21292,7 +22077,7 @@ diff --git a/ld/emulparams/ppcamiga.sh b/ld/emulparams/ppcamiga.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..3f266cf5265f13748eeb78f67dd93227ade92de5
 --- /dev/null
-+++ ld/emulparams/ppcamiga.sh
++++ b/ld/emulparams/ppcamiga.sh
 @@ -0,0 +1,8 @@
 +SCRIPT_NAME=amiga
 +OUTPUT_FORMAT="amiga"
@@ -21306,7 +22091,7 @@ diff --git a/ld/emulparams/ppcamiga_bss.sh b/ld/emulparams/ppcamiga_bss.sh
 new file mode 100644
 index 0000000000000000000000000000000000000000..8d1720fb17c876d55b75f0885eb9f6eb0c7e9f1e
 --- /dev/null
-+++ ld/emulparams/ppcamiga_bss.sh
++++ b/ld/emulparams/ppcamiga_bss.sh
 @@ -0,0 +1,8 @@
 +SCRIPT_NAME=amiga_bss
 +OUTPUT_FORMAT="amiga"
@@ -21320,7 +22105,7 @@ diff --git a/ld/emultempl/amiga.em b/ld/emultempl/amiga.em
 new file mode 100644
 index 0000000000000000000000000000000000000000..c6abc5c644d3d93609d66972752e6cd3d474d70e
 --- /dev/null
-+++ ld/emultempl/amiga.em
++++ b/ld/emultempl/amiga.em
 @@ -0,0 +1,288 @@
 +# This shell script emits a C file. -*- C -*-
 +# It does some substitutions.
@@ -21618,7 +22403,7 @@ diff --git a/ld/emultempl/amithlon.em b/ld/emultempl/amithlon.em
 new file mode 100644
 index 0000000000000000000000000000000000000000..5e453a72f8c01e621d110d505b83d1abbcd19831
 --- /dev/null
-+++ ld/emultempl/amithlon.em
++++ b/ld/emultempl/amithlon.em
 @@ -0,0 +1,1698 @@
 +# This shell script emits a C file. -*- C -*-
 +# It does some substitutions.
@@ -23322,7 +24107,7 @@ diff --git a/ld/emultempl/morphos.em b/ld/emultempl/morphos.em
 new file mode 100644
 index 0000000000000000000000000000000000000000..cd3b9a790fb286187d8fa3e11af9382f1603d16b
 --- /dev/null
-+++ ld/emultempl/morphos.em
++++ b/ld/emultempl/morphos.em
 @@ -0,0 +1,1104 @@
 +# This shell script emits a C file. -*- C -*-
 +# It does some substitutions.
@@ -24430,8 +25215,8 @@ index 0000000000000000000000000000000000000000..cd3b9a790fb286187d8fa3e11af9382f
 +EOF
 diff --git a/ld/emultempl/ppc32elf.em b/ld/emultempl/ppc32elf.em
 index 6843770ca9431d7a4b698bfda7060082b215c41f..801d1d6424bc1f61bb0e7171de9f9b5178bc8100 100644
---- ld/emultempl/ppc32elf.em
-+++ ld/emultempl/ppc32elf.em
+--- a/ld/emultempl/ppc32elf.em
++++ b/ld/emultempl/ppc32elf.em
 @@ -26,12 +26,15 @@
  fragment <<EOF
  
@@ -24487,8 +25272,8 @@ index 6843770ca9431d7a4b698bfda7060082b215c41f..801d1d6424bc1f61bb0e7171de9f9b51
    { "secure-plt", no_argument, NULL, OPTION_NEW_PLT },
 diff --git a/ld/ldctor.c b/ld/ldctor.c
 index b29c1e0cbb13463f58989042722775698365cf9a..18d5f9370c7a0e9b009c74fdff48a4c45659245f 100644
---- ld/ldctor.c
-+++ ld/ldctor.c
+--- a/ld/ldctor.c
++++ b/ld/ldctor.c
 @@ -256,14 +256,18 @@ ldctor_build_sets (void)
        reloc_howto_type *howto;
        int reloc_size, size;
@@ -24542,8 +25327,8 @@ index b29c1e0cbb13463f58989042722775698365cf9a..18d5f9370c7a0e9b009c74fdff48a4c4
  
 diff --git a/ld/ldfile.c b/ld/ldfile.c
 index e9091e9fa9ab0cb1182a102de48096ac13215a39..034eb2a7e452623f8c2571f4d6186b981c10c11d 100644
---- ld/ldfile.c
-+++ ld/ldfile.c
+--- a/ld/ldfile.c
++++ b/ld/ldfile.c
 @@ -63,12 +63,46 @@ typedef struct search_arch
  } search_arch_type;
  
@@ -24660,8 +25445,8 @@ index e9091e9fa9ab0cb1182a102de48096ac13215a39..034eb2a7e452623f8c2571f4d6186b98
     continue processing other input files in case there
 diff --git a/ld/ldfile.h b/ld/ldfile.h
 index 945609250afc6fede2985dbdd59bf035cb835843..530fb0f3b78f7ce54421b074bea4fcd5ae28022d 100644
---- ld/ldfile.h
-+++ ld/ldfile.h
+--- a/ld/ldfile.h
++++ b/ld/ldfile.h
 @@ -56,7 +56,12 @@ extern bfd_boolean ldfile_try_open_bfd
  extern void ldfile_set_output_arch
    (const char *, enum bfd_architecture);
@@ -24677,8 +25462,8 @@ index 945609250afc6fede2985dbdd59bf035cb835843..530fb0f3b78f7ce54421b074bea4fcd5
  #endif
 diff --git a/ld/ldlang.c b/ld/ldlang.c
 index 459f277a3ea5baa2f38e7b95db0ac9ef67d648b8..d199cda1fd9bd4d8bfa12fe72a44501861ffe1ff 100644
---- ld/ldlang.c
-+++ ld/ldlang.c
+--- a/ld/ldlang.c
++++ b/ld/ldlang.c
 @@ -3389,12 +3389,19 @@ typedef struct bfd_sym_chain ldlang_undef_chain_list_type;
  
  #define ldlang_undef_chain_list_head entry_symbol.next
@@ -24701,8 +25486,8 @@ index 459f277a3ea5baa2f38e7b95db0ac9ef67d648b8..d199cda1fd9bd4d8bfa12fe72a445018
    ldlang_undef_chain_list_head = new_undef;
 diff --git a/ld/ldlang.h b/ld/ldlang.h
 index d5ea8d20e34c9c4697d0aa14b4af09d2df8f0d20..f6f061dfe6e92cdb3a5097baf644773cc402ad3f 100644
---- ld/ldlang.h
-+++ ld/ldlang.h
+--- a/ld/ldlang.h
++++ b/ld/ldlang.h
 @@ -302,12 +302,14 @@ typedef struct lang_input_statement_struct
    /* Point to the next file, but skips archive contents.  */
    union lang_statement_union *next_real_file;
@@ -24720,8 +25505,8 @@ index d5ea8d20e34c9c4697d0aa14b4af09d2df8f0d20..f6f061dfe6e92cdb3a5097baf644773c
    asection *section;
 diff --git a/ld/ldlex.c b/ld/ldlex.c
 index 50bb3b1e14133555e524ad059d7b578cfaac6b24..eb7e21a7741a0fc82b72f2c7e3d88d1888998db8 100644
---- ld/ldlex.c
-+++ ld/ldlex.c
+--- a/ld/ldlex.c
++++ b/ld/ldlex.c
 @@ -1,17 +1,17 @@
  
 -#line 3 "ldlex.c"
@@ -25236,8 +26021,8 @@ index 50bb3b1e14133555e524ad059d7b578cfaac6b24..eb7e21a7741a0fc82b72f2c7e3d88d18
     saving the current input info on the include stack.  */
 diff --git a/ld/ldmain.c b/ld/ldmain.c
 index 73353309c3595a2e53e160cbf2bcfd215a92aab2..8b7513d8e83264c0cb236781cdb753181612fb14 100644
---- ld/ldmain.c
-+++ ld/ldmain.c
+--- a/ld/ldmain.c
++++ b/ld/ldmain.c
 @@ -408,16 +408,23 @@ main (int argc, char **argv)
      }
  
@@ -25266,7 +26051,7 @@ diff --git a/ld/scripttempl/amiga.sc b/ld/scripttempl/amiga.sc
 new file mode 100644
 index 0000000000000000000000000000000000000000..f5c9d694742ecabb3a2a9c6b85e8f2aaf23e78f1
 --- /dev/null
-+++ ld/scripttempl/amiga.sc
++++ b/ld/scripttempl/amiga.sc
 @@ -0,0 +1,49 @@
 +cat <<EOF
 +OUTPUT_FORMAT("${OUTPUT_FORMAT}")
@@ -25321,7 +26106,7 @@ diff --git a/ld/scripttempl/amiga_bss.sc b/ld/scripttempl/amiga_bss.sc
 new file mode 100644
 index 0000000000000000000000000000000000000000..668ce7c0dee923dd0d4643a379bf24f4b352cef0
 --- /dev/null
-+++ ld/scripttempl/amiga_bss.sc
++++ b/ld/scripttempl/amiga_bss.sc
 @@ -0,0 +1,41 @@
 +cat <<EOF
 +OUTPUT_FORMAT("${OUTPUT_FORMAT}")
@@ -25369,8 +26154,8 @@ similarity index 88%
 copy from ld/scripttempl/elf64hppa.sc
 copy to ld/scripttempl/amigaos.sc
 index 18090e6b9b73969ba6c33ccb272d88fc125be19d..865c9ba63ca1746c6bc6b66153557a10da677e58 100644
---- ld/scripttempl/elf64hppa.sc
-+++ ld/scripttempl/amigaos.sc
+--- a/ld/scripttempl/elf64hppa.sc
++++ b/ld/scripttempl/amigaos.sc
 @@ -33,17 +33,14 @@
  #	OTHER_SDATA_SECTIONS - sections just after .sdata.
  #	OTHER_BSS_SYMBOLS - symbols that appear at the start of the
@@ -25740,8 +26525,8 @@ similarity index 76%
 copy from ld/scripttempl/mep.sc
 copy to ld/scripttempl/amithlon.sc
 index 3fc1352e19184c0319302e809cccf7cc861ec8d7..b8248cd4966e34e95c8b262e515ace1802c6db35 100644
---- ld/scripttempl/mep.sc
-+++ ld/scripttempl/amithlon.sc
+--- a/ld/scripttempl/mep.sc
++++ b/ld/scripttempl/amithlon.sc
 @@ -1,57 +1,45 @@
  #
  # Unusual variables checked by this code:
@@ -26110,11 +26895,465 @@ index 3fc1352e19184c0319302e809cccf7cc861ec8d7..b8248cd4966e34e95c8b262e515ace18
 +  .libnix___LIB_LIST__  ${RELOCATING-0} : { *(.libnix___LIB_LIST__)  }
  }
  EOF
+diff --git a/ld/scripttempl/elfi370.sc b/ld/scripttempl/morphos.sc
+similarity index 88%
+copy from ld/scripttempl/elfi370.sc
+copy to ld/scripttempl/morphos.sc
+index a845b2980105fa8504b5bf8a83aeb6fc086caa6e..469a8f5f2cad237c9317faf5d23db7f2b7a63eee 100644
+--- a/ld/scripttempl/elfi370.sc
++++ b/ld/scripttempl/morphos.sc
+@@ -1,17 +1,14 @@
+ #
+-# This is just a raw copy of elfppc.sc and has not been otherwise modified
+-#
+ # Unusual variables checked by this code:
+-#	NOP - four byte opcode for no-op (defaults to 0)
++#	NOP - two byte opcode for no-op (defaults to 0)
+ #	DATA_ADDR - if end-of-text-plus-one-page isn't right for data start
+ #	OTHER_READONLY_SECTIONS - other than .text .init .rodata ...
+ #		(e.g., .PARISC.milli)
+ #	OTHER_READWRITE_SECTIONS - other than .data .bss .ctors .sdata ...
+ #		(e.g., .PARISC.global)
+-#	ATTRS_SECTIONS - at the end
+ #	OTHER_SECTIONS - at the end
+ #	EXECUTABLE_SYMBOLS - symbols that must be defined for an
+ #		executable (e.g., _DYNAMIC_LINK)
+ #	TEXT_START_SYMBOLS - symbols that appear at the start of the
+ #		.text section.
+ #	DATA_START_SYMBOLS - symbols that appear at the start of the
+@@ -19,37 +16,35 @@
+ #	OTHER_BSS_SYMBOLS - symbols that appear at the start of the
+ #		.bss section besides __bss_start.
+ #
+ # When adding sections, do note that the names of some sections are used
+ # when specifying the start address of the next.
+ #
+-test -z "$ENTRY" && ENTRY=_start
+ test -z "${BIG_OUTPUT_FORMAT}" && BIG_OUTPUT_FORMAT=${OUTPUT_FORMAT}
+ test -z "${LITTLE_OUTPUT_FORMAT}" && LITTLE_OUTPUT_FORMAT=${OUTPUT_FORMAT}
+-test -z "$ATTRS_SECTIONS" && ATTRS_SECTIONS=".gnu.attributes 0 : { KEEP (*(.gnu.attributes)) }"
+ test "$LD_FLAG" = "N" && DATA_ADDR=.
+ SBSS2=".sbss2 ${RELOCATING-0} : { *(.sbss2) }"
+ SDATA2=".sdata2 ${RELOCATING-0} : { *(.sdata2) }"
+ INTERP=".interp ${RELOCATING-0} : { *(.interp) }"
+ PLT=".plt ${RELOCATING-0} : { *(.plt) }"
+ cat <<EOF
+ OUTPUT_FORMAT("${OUTPUT_FORMAT}", "${BIG_OUTPUT_FORMAT}",
+ 	      "${LITTLE_OUTPUT_FORMAT}")
+ OUTPUT_ARCH(${ARCH})
+-${RELOCATING+ENTRY(${ENTRY})}
+ 
+ ${RELOCATING+${LIB_SEARCH_DIRS}}
+ ${RELOCATING+/* Do we need any of these for elf?
+    __DYNAMIC = 0; ${STACKZERO+${STACKZERO}} ${SHLIB_PATH+${SHLIB_PATH}}  */}
+ ${RELOCATING+${EXECUTABLE_SYMBOLS}}
+ ${RELOCATING- /* For some reason, the Solaris linker makes bad executables
+   if gld -r is used and the intermediate file has sections starting
+   at non-zero addresses.  Could be a Solaris ld bug, could be a GNU ld
+   bug.  But for now assigning the zero vmas works.  */}
+ 
+ ${RELOCATING+PROVIDE (__stack = 0);}
++PROVIDE (__machtype = 0x1);
+ SECTIONS
+ {
+   /* Read-only sections, merged into text segment: */
+   ${CREATE_SHLIB-${RELOCATING+. = ${TEXT_START_ADDR} + SIZEOF_HEADERS;}}
+   ${CREATE_SHLIB+${RELOCATING+. = SIZEOF_HEADERS;}}
+   ${CREATE_SHLIB-${INTERP}}
+@@ -77,27 +72,30 @@ SECTIONS
+   .rela.sdata	${RELOCATING-0} : { *(.rela.sdata)	}
+   .rela.sbss	${RELOCATING-0} : { *(.rela.sbss)	}
+   .rela.sdata2	${RELOCATING-0} : { *(.rela.sdata2)	}
+   .rela.sbss2	${RELOCATING-0} : { *(.rela.sbss2)	}
+   .text    ${RELOCATING-0} :
+   {
++    PROVIDE (__text_start = .);
+     ${RELOCATING+${TEXT_START_SYMBOLS}}
+     *(.text)
+     /* .gnu.warning sections are handled specially by elf32.em.  */
+     *(.gnu.warning)
+     *(.gnu.linkonce.t*)
++    PROVIDE (__text_end = .);
+   } =${NOP-0}
++  PROVIDE (__text_size = SIZEOF(.text));
+   .init		${RELOCATING-0} : { *(.init)		} =${NOP-0}
+   .fini		${RELOCATING-0} : { *(.fini)		} =${NOP-0}
+   .rodata	${RELOCATING-0} : { *(.rodata) *(.gnu.linkonce.r*) }
+   .rodata1	${RELOCATING-0} : { *(.rodata1) }
+   ${RELOCATING+_etext = .;}
+   ${RELOCATING+PROVIDE (etext = .);}
+   ${CREATE_SHLIB-${SDATA2}}
+   ${CREATE_SHLIB-${SBSS2}}
+-  ${OTHER_READONLY_SECTIONS}
++  ${RELOCATING+${OTHER_READONLY_SECTIONS}}
+ 
+   /* Adjust the address for the data segment.  We want to adjust up to
+      the same address within the page on the next page up.  It would
+      be more correct to do this:
+        ${RELOCATING+. = ${DATA_ADDR-ALIGN(${MAXPAGESIZE}) + (ALIGN(8) & (${MAXPAGESIZE} - 1))};}
+      The current expression does not correctly handle the case of a
+@@ -111,19 +109,22 @@ SECTIONS
+      that no actual memory is lost; the page which is skipped can not
+      be referenced).  */
+   ${RELOCATING+. = ${DATA_ADDR- ALIGN(8) + ${MAXPAGESIZE}};}
+ 
+   .data  ${RELOCATING-0} :
+   {
++    PROVIDE (__data_start = .);
+     ${RELOCATING+${DATA_START_SYMBOLS}}
+     *(.data)
+     *(.gnu.linkonce.d*)
+     ${CONSTRUCTING+CONSTRUCTORS}
++    PROVIDE (__data_end = .);
+   }
++  PROVIDE (__data_size = SIZEOF(.data));
+   .data1 ${RELOCATING-0} : { *(.data1) }
+-  ${OTHER_READWRITE_SECTIONS}
++  ${RELOCATING+${OTHER_READWRITE_SECTIONS}}
+ 
+   .got1		${RELOCATING-0} : { *(.got1) }
+   .dynamic	${RELOCATING-0} : { *(.dynamic) }
+ 
+   /* Put .ctors and .dtors next to the .got2 section, so that the pointers
+      get relocated with -mrelocatable. Also put in the .fixup pointers.
+@@ -152,32 +153,43 @@ SECTIONS
+   ${CREATE_SHLIB+${SBSS2}}
+ 		${RELOCATING+PROVIDE (_GOT_END_ = .);}
+ 
+   /* We want the small data sections together, so single-instruction offsets
+      can access them all, and initialized data all before uninitialized, so
+      we can shorten the on-disk segment size.  */
+-  .sdata	${RELOCATING-0} : { *(.sdata) }
++  .sdata	${RELOCATING-0} :
++  {
++    PROVIDE (__sdata_start = .);
++    *(.sdata)
++    PROVIDE (__r13_init = 0x8000);
++    PROVIDE (__sdata_end = .);
++  }
++  PROVIDE (__sdata_size = SIZEOF(.sdata));
+   ${RELOCATING+_edata  =  .;}
+   ${RELOCATING+PROVIDE (edata = .);}
+   .sbss    ${RELOCATING-0} :
+   {
+-    ${RELOCATING+PROVIDE (__sbss_start = .);}
++    PROVIDE (__sbss_start = .);
+     *(.sbss)
+     *(.scommon)
+     *(.dynsbss)
+-    ${RELOCATING+PROVIDE (__sbss_end = .);}
++    PROVIDE (__sbss_end = .);
+   }
++  PROVIDE (__sbss_size = SIZEOF(.sbss));
+   ${PLT}
+   .bss     ${RELOCATING-0} :
+   {
+-   ${RELOCATING+${OTHER_BSS_SYMBOLS}}
+-   ${RELOCATING+PROVIDE (__bss_start = .);}
+-   *(.dynbss)
+-   *(.bss)
+-   *(COMMON)
++    PROVIDE (__bss_start = .);
++    ${RELOCATING+${OTHER_BSS_SYMBOLS}}
++    ${RELOCATING+PROVIDE (__bss_start = .);}
++    *(.dynbss)
++    *(.bss)
++    *(COMMON)
++    PROVIDE (__bss_end = .);
+   }
++  PROVIDE (__bss_size = SIZEOF(.bss));
+   ${RELOCATING+_end = . ;}
+   ${RELOCATING+PROVIDE (end = .);}
+ 
+   /* These are needed for ELF backends which have not yet been
+      converted to the new style linker.  */
+   .stab 0 : { *(.stab) }
+@@ -197,13 +209,13 @@ SECTIONS
+ 
+   /* DWARF 1.1 and DWARF 2 */
+   .debug_aranges  0 : { *(.debug_aranges) }
+   .debug_pubnames 0 : { *(.debug_pubnames) }
+ 
+   /* DWARF 2 */
+-  .debug_info     0 : { *(.debug_info) *(.gnu.linkonce.wi.*) }
++  .debug_info     0 : { *(.debug_info) }
+   .debug_abbrev   0 : { *(.debug_abbrev) }
+   .debug_line     0 : { *(.debug_line) }
+   .debug_frame    0 : { *(.debug_frame) }
+   .debug_str      0 : { *(.debug_str) }
+   .debug_loc      0 : { *(.debug_loc) }
+   .debug_macinfo  0 : { *(.debug_macinfo) }
+@@ -211,17 +223,10 @@ SECTIONS
+   /* SGI/MIPS DWARF 2 extensions */
+   .debug_weaknames 0 : { *(.debug_weaknames) }
+   .debug_funcnames 0 : { *(.debug_funcnames) }
+   .debug_typenames 0 : { *(.debug_typenames) }
+   .debug_varnames  0 : { *(.debug_varnames) }
+ 
+-  /* DWARF 3 */
+-  .debug_pubtypes 0 : { *(.debug_pubtypes) }
+-  .debug_ranges   0 : { *(.debug_ranges) }
+-
+-  /* DWARF Extension.  */
+-  .debug_macro    0 : { *(.debug_macro) } 
+-  
+-  ${ATTRS_SECTIONS}
++  /* These must appear regardless of ${RELOCATING}.  */
+   ${OTHER_SECTIONS}
+ }
+ EOF
+diff --git a/ld/scripttempl/elfi370.sc b/ld/scripttempl/morphos_baserel.sc
+similarity index 69%
+copy from ld/scripttempl/elfi370.sc
+copy to ld/scripttempl/morphos_baserel.sc
+index a845b2980105fa8504b5bf8a83aeb6fc086caa6e..4f0f4aba86bddb4e76a9405c0da04df4c0091d9e 100644
+--- a/ld/scripttempl/elfi370.sc
++++ b/ld/scripttempl/morphos_baserel.sc
+@@ -1,17 +1,14 @@
+ #
+-# This is just a raw copy of elfppc.sc and has not been otherwise modified
+-#
+ # Unusual variables checked by this code:
+-#	NOP - four byte opcode for no-op (defaults to 0)
++#	NOP - two byte opcode for no-op (defaults to 0)
+ #	DATA_ADDR - if end-of-text-plus-one-page isn't right for data start
+ #	OTHER_READONLY_SECTIONS - other than .text .init .rodata ...
+ #		(e.g., .PARISC.milli)
+ #	OTHER_READWRITE_SECTIONS - other than .data .bss .ctors .sdata ...
+ #		(e.g., .PARISC.global)
+-#	ATTRS_SECTIONS - at the end
+ #	OTHER_SECTIONS - at the end
+ #	EXECUTABLE_SYMBOLS - symbols that must be defined for an
+ #		executable (e.g., _DYNAMIC_LINK)
+ #	TEXT_START_SYMBOLS - symbols that appear at the start of the
+ #		.text section.
+ #	DATA_START_SYMBOLS - symbols that appear at the start of the
+@@ -19,37 +16,35 @@
+ #	OTHER_BSS_SYMBOLS - symbols that appear at the start of the
+ #		.bss section besides __bss_start.
+ #
+ # When adding sections, do note that the names of some sections are used
+ # when specifying the start address of the next.
+ #
+-test -z "$ENTRY" && ENTRY=_start
+ test -z "${BIG_OUTPUT_FORMAT}" && BIG_OUTPUT_FORMAT=${OUTPUT_FORMAT}
+ test -z "${LITTLE_OUTPUT_FORMAT}" && LITTLE_OUTPUT_FORMAT=${OUTPUT_FORMAT}
+-test -z "$ATTRS_SECTIONS" && ATTRS_SECTIONS=".gnu.attributes 0 : { KEEP (*(.gnu.attributes)) }"
+ test "$LD_FLAG" = "N" && DATA_ADDR=.
+ SBSS2=".sbss2 ${RELOCATING-0} : { *(.sbss2) }"
+ SDATA2=".sdata2 ${RELOCATING-0} : { *(.sdata2) }"
+ INTERP=".interp ${RELOCATING-0} : { *(.interp) }"
+ PLT=".plt ${RELOCATING-0} : { *(.plt) }"
+ cat <<EOF
+ OUTPUT_FORMAT("${OUTPUT_FORMAT}", "${BIG_OUTPUT_FORMAT}",
+ 	      "${LITTLE_OUTPUT_FORMAT}")
+ OUTPUT_ARCH(${ARCH})
+-${RELOCATING+ENTRY(${ENTRY})}
+ 
+ ${RELOCATING+${LIB_SEARCH_DIRS}}
+ ${RELOCATING+/* Do we need any of these for elf?
+    __DYNAMIC = 0; ${STACKZERO+${STACKZERO}} ${SHLIB_PATH+${SHLIB_PATH}}  */}
+ ${RELOCATING+${EXECUTABLE_SYMBOLS}}
+ ${RELOCATING- /* For some reason, the Solaris linker makes bad executables
+   if gld -r is used and the intermediate file has sections starting
+   at non-zero addresses.  Could be a Solaris ld bug, could be a GNU ld
+   bug.  But for now assigning the zero vmas works.  */}
+ 
+ ${RELOCATING+PROVIDE (__stack = 0);}
++PROVIDE (__machtype = 0x1);
+ SECTIONS
+ {
+   /* Read-only sections, merged into text segment: */
+   ${CREATE_SHLIB-${RELOCATING+. = ${TEXT_START_ADDR} + SIZEOF_HEADERS;}}
+   ${CREATE_SHLIB+${RELOCATING+. = SIZEOF_HEADERS;}}
+   ${CREATE_SHLIB-${INTERP}}
+@@ -58,72 +53,53 @@ SECTIONS
+   .dynstr	${RELOCATING-0} : { *(.dynstr)		}
+   .gnu.version ${RELOCATING-0} : { *(.gnu.version)      }
+   .gnu.version_d ${RELOCATING-0} : { *(.gnu.version_d)  }
+   .gnu.version_r ${RELOCATING-0} : { *(.gnu.version_r)  }
+   .rela.text   ${RELOCATING-0} :
+     { *(.rela.text) *(.rela.gnu.linkonce.t*) }
+-  .rela.data   ${RELOCATING-0} :
+-    { *(.rela.data) *(.rela.gnu.linkonce.d*) }
+-  .rela.rodata ${RELOCATING-0} :
+-    { *(.rela.rodata) *(.rela.gnu.linkonce.r*) }
+   .rela.got	${RELOCATING-0} : { *(.rela.got)	}
+   .rela.got1	${RELOCATING-0} : { *(.rela.got1)	}
+   .rela.got2	${RELOCATING-0} : { *(.rela.got2)	}
+   .rela.ctors	${RELOCATING-0} : { *(.rela.ctors)	}
+   .rela.dtors	${RELOCATING-0} : { *(.rela.dtors)	}
+   .rela.init	${RELOCATING-0} : { *(.rela.init)	}
+   .rela.fini	${RELOCATING-0} : { *(.rela.fini)	}
+-  .rela.bss	${RELOCATING-0} : { *(.rela.bss)	}
+   .rela.plt	${RELOCATING-0} : { *(.rela.plt)	}
+-  .rela.sdata	${RELOCATING-0} : { *(.rela.sdata)	}
+-  .rela.sbss	${RELOCATING-0} : { *(.rela.sbss)	}
++  .rela.rodata  ${RELOCATING-0} :
++    { *(.rela.rodata) *(.rela.gnu.linkonce.r*) }
++  .rela.sdata	${RELOCATING-0} :
++  {
++    *(.rela.data)
++    *(.rela.gnu.linkonce.d*)
++    *(.rela.sdata)
++  }
++  .rela.sbss	${RELOCATING-0} :
++  {
++    *(.rela.sbss)
++    *(.rela.bss)
++  }
+   .rela.sdata2	${RELOCATING-0} : { *(.rela.sdata2)	}
+   .rela.sbss2	${RELOCATING-0} : { *(.rela.sbss2)	}
+   .text    ${RELOCATING-0} :
+   {
++    PROVIDE (__text_start = .);
+     ${RELOCATING+${TEXT_START_SYMBOLS}}
+     *(.text)
+     /* .gnu.warning sections are handled specially by elf32.em.  */
+     *(.gnu.warning)
+     *(.gnu.linkonce.t*)
++    PROVIDE (__text_end = .);
+   } =${NOP-0}
++  PROVIDE (__text_size = SIZEOF(.text));
+   .init		${RELOCATING-0} : { *(.init)		} =${NOP-0}
+   .fini		${RELOCATING-0} : { *(.fini)		} =${NOP-0}
+-  .rodata	${RELOCATING-0} : { *(.rodata) *(.gnu.linkonce.r*) }
+-  .rodata1	${RELOCATING-0} : { *(.rodata1) }
+   ${RELOCATING+_etext = .;}
+   ${RELOCATING+PROVIDE (etext = .);}
+   ${CREATE_SHLIB-${SDATA2}}
+   ${CREATE_SHLIB-${SBSS2}}
+-  ${OTHER_READONLY_SECTIONS}
+-
+-  /* Adjust the address for the data segment.  We want to adjust up to
+-     the same address within the page on the next page up.  It would
+-     be more correct to do this:
+-       ${RELOCATING+. = ${DATA_ADDR-ALIGN(${MAXPAGESIZE}) + (ALIGN(8) & (${MAXPAGESIZE} - 1))};}
+-     The current expression does not correctly handle the case of a
+-     text segment ending precisely at the end of a page; it causes the
+-     data segment to skip a page.  The above expression does not have
+-     this problem, but it will currently (2/95) cause BFD to allocate
+-     a single segment, combining both text and data, for this case.
+-     This will prevent the text segment from being shared among
+-     multiple executions of the program; I think that is more
+-     important than losing a page of the virtual address space (note
+-     that no actual memory is lost; the page which is skipped can not
+-     be referenced).  */
+-  ${RELOCATING+. = ${DATA_ADDR- ALIGN(8) + ${MAXPAGESIZE}};}
+-
+-  .data  ${RELOCATING-0} :
+-  {
+-    ${RELOCATING+${DATA_START_SYMBOLS}}
+-    *(.data)
+-    *(.gnu.linkonce.d*)
+-    ${CONSTRUCTING+CONSTRUCTORS}
+-  }
+-  .data1 ${RELOCATING-0} : { *(.data1) }
+-  ${OTHER_READWRITE_SECTIONS}
++  ${RELOCATING+${OTHER_READONLY_SECTIONS}}
+ 
+   .got1		${RELOCATING-0} : { *(.got1) }
+   .dynamic	${RELOCATING-0} : { *(.dynamic) }
+ 
+   /* Put .ctors and .dtors next to the .got2 section, so that the pointers
+      get relocated with -mrelocatable. Also put in the .fixup pointers.
+@@ -148,38 +124,41 @@ SECTIONS
+ 		${RELOCATING+PROVIDE (_GOT_START_ = .);}
+   .got		${RELOCATING-0} : { *(.got) }
+   .got.plt	${RELOCATING-0} : { *(.got.plt) }
+   ${CREATE_SHLIB+${SDATA2}}
+   ${CREATE_SHLIB+${SBSS2}}
+ 		${RELOCATING+PROVIDE (_GOT_END_ = .);}
+-
+-  /* We want the small data sections together, so single-instruction offsets
++  .rodata	${RELOCATING-0} : { *(.rodata) }
++ /* We want the small data sections together, so single-instruction offsets
+      can access them all, and initialized data all before uninitialized, so
+      we can shorten the on-disk segment size.  */
+-  .sdata	${RELOCATING-0} : { *(.sdata) }
++  .sdata	${RELOCATING-0} : 
++  { 
++    /*PROVIDE (__sdata_start = .);*/
++    __sdata_start = .;
++    *(.data)
++    *(.data1)
++    __small_start = .;	
++    *(.sdata) 
++    PROVIDE (__r13_init = /*__small_start*/ __sdata_start + 0x8000);
++    PROVIDE (__sdata_end = .);
++  }
++  PROVIDE (__sdata_size = SIZEOF(.sdata));
+   ${RELOCATING+_edata  =  .;}
+   ${RELOCATING+PROVIDE (edata = .);}
+   .sbss    ${RELOCATING-0} :
+   {
+-    ${RELOCATING+PROVIDE (__sbss_start = .);}
++    PROVIDE (__sbss_start = .);
+     *(.sbss)
+     *(.scommon)
+     *(.dynsbss)
+-    ${RELOCATING+PROVIDE (__sbss_end = .);}
+-  }
+-  ${PLT}
+-  .bss     ${RELOCATING-0} :
+-  {
+-   ${RELOCATING+${OTHER_BSS_SYMBOLS}}
+-   ${RELOCATING+PROVIDE (__bss_start = .);}
+-   *(.dynbss)
+-   *(.bss)
+-   *(COMMON)
++    *(.bss)
++    *(COMMON)
++    PROVIDE (__sbss_end = .);
+   }
+-  ${RELOCATING+_end = . ;}
+-  ${RELOCATING+PROVIDE (end = .);}
++  PROVIDE (__sbss_size = SIZEOF(.sbss));
+ 
+   /* These are needed for ELF backends which have not yet been
+      converted to the new style linker.  */
+   .stab 0 : { *(.stab) }
+   .stabstr 0 : { *(.stabstr) }
+ 
+@@ -197,13 +176,13 @@ SECTIONS
+ 
+   /* DWARF 1.1 and DWARF 2 */
+   .debug_aranges  0 : { *(.debug_aranges) }
+   .debug_pubnames 0 : { *(.debug_pubnames) }
+ 
+   /* DWARF 2 */
+-  .debug_info     0 : { *(.debug_info) *(.gnu.linkonce.wi.*) }
++  .debug_info     0 : { *(.debug_info) }
+   .debug_abbrev   0 : { *(.debug_abbrev) }
+   .debug_line     0 : { *(.debug_line) }
+   .debug_frame    0 : { *(.debug_frame) }
+   .debug_str      0 : { *(.debug_str) }
+   .debug_loc      0 : { *(.debug_loc) }
+   .debug_macinfo  0 : { *(.debug_macinfo) }
+@@ -211,17 +190,10 @@ SECTIONS
+   /* SGI/MIPS DWARF 2 extensions */
+   .debug_weaknames 0 : { *(.debug_weaknames) }
+   .debug_funcnames 0 : { *(.debug_funcnames) }
+   .debug_typenames 0 : { *(.debug_typenames) }
+   .debug_varnames  0 : { *(.debug_varnames) }
+ 
+-  /* DWARF 3 */
+-  .debug_pubtypes 0 : { *(.debug_pubtypes) }
+-  .debug_ranges   0 : { *(.debug_ranges) }
+-
+-  /* DWARF Extension.  */
+-  .debug_macro    0 : { *(.debug_macro) } 
+-  
+-  ${ATTRS_SECTIONS}
++  /* These must appear regardless of ${RELOCATING}.  */
+   ${OTHER_SECTIONS}
+ }
+ EOF
 diff --git a/libiberty/config/mh-amigaos b/libiberty/config/mh-amigaos
 new file mode 100644
 index 0000000000000000000000000000000000000000..495fa7e35897000efe600c9f1dd844b086731fcd
 --- /dev/null
-+++ libiberty/config/mh-amigaos
++++ b/libiberty/config/mh-amigaos
 @@ -0,0 +1,12 @@
 +# Host makefile fragment for Commodore Amiga running AmigaOS.
 +
@@ -26132,7 +27371,7 @@ diff --git a/libiberty/config/mh-morphos b/libiberty/config/mh-morphos
 new file mode 100644
 index 0000000000000000000000000000000000000000..064647ab3397b088317905a47cce0171e25a4bae
 --- /dev/null
-+++ libiberty/config/mh-morphos
++++ b/libiberty/config/mh-morphos
 @@ -0,0 +1,12 @@
 +# Host makefile fragment for Commodore Amiga running AmigaOS.
 +
@@ -26148,8 +27387,8 @@ index 0000000000000000000000000000000000000000..064647ab3397b088317905a47cce0171
 +HDEFINES =
 diff --git a/libiberty/lrealpath.c b/libiberty/lrealpath.c
 index b27c8de990e974c7294dfc4024ef44fbd3844a52..e94add4802d830aa3e04c9a784a8d081938ae0d5 100644
---- libiberty/lrealpath.c
-+++ libiberty/lrealpath.c
+--- a/libiberty/lrealpath.c
++++ b/libiberty/lrealpath.c
 @@ -69,12 +69,18 @@ extern char *canonicalize_file_name (const char *);
  # if defined (_WIN32)
  #  define WIN32_LEAN_AND_MEAN
@@ -26171,8 +27410,8 @@ index b27c8de990e974c7294dfc4024ef44fbd3844a52..e94add4802d830aa3e04c9a784a8d081
       the most common case.  Note that, if there isn't a compile time
 diff --git a/opcodes/m68k-dis.c b/opcodes/m68k-dis.c
 index bc2dd491592e56fb664cdf96fc32491c08e1e075..bc40541b7c5aecc30a7a74fd61f29225acd21fcd 100644
---- opcodes/m68k-dis.c
-+++ opcodes/m68k-dis.c
+--- a/opcodes/m68k-dis.c
++++ b/opcodes/m68k-dis.c
 @@ -36,13 +36,13 @@ const char * const fpcr_names[] =
    "%fpiar/%fpcr", "%fpsr/%fpcr", "%fpiar/%fpsr/%fpcr"
  };
@@ -26189,5 +27428,5 @@ index bc2dd491592e56fb664cdf96fc32491c08e1e075..bc40541b7c5aecc30a7a74fd61f29225
     Seperate from reg_names since 'spu', 'fpl' look weird.  */
  static char *const reg_half_names[] =
 -- 
-2.1.4
+2.11.0
 

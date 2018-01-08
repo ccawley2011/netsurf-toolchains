@@ -1,7 +1,7 @@
 From 5e5e0a5505d8e5fc67697f3ab397fa5a39e085cc Mon Sep 17 00:00:00 2001
 From: Sebastian Bauer <mail@sebastianbauer.info>
 Date: Sat, 12 Sep 2015 11:29:01 +0200
-Subject: [PATCH 4/7] Print symbol name when an unexpected type was
+Subject: [PATCH 4/8] Print symbol name when an unexpected type was
  encountered.
 
 ---
@@ -10,8 +10,8 @@ Subject: [PATCH 4/7] Print symbol name when an unexpected type was
 
 diff --git a/bfd/elflink.c b/bfd/elflink.c
 index bcd3add478ab13addffee21b54919afd5cdcd7d6..f10801b99e366ad956faf039401cfcbf0c42aaa1 100644
---- bfd/elflink.c
-+++ bfd/elflink.c
+--- a/bfd/elflink.c
++++ b/bfd/elflink.c
 @@ -8801,12 +8801,13 @@ elf_link_output_extsym (struct bfd_hash_entry *bh, void *data)
  
    switch (h->root.type)
@@ -27,5 +27,5 @@ index bcd3add478ab13addffee21b54919afd5cdcd7d6..f10801b99e366ad956faf039401cfcbf
      case bfd_link_hash_undefweak:
        input_sec = bfd_und_section_ptr;
 -- 
-2.1.4
+2.11.0
 
