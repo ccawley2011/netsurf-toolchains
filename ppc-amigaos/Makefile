@@ -124,6 +124,10 @@ $(BUILDSTEPS)/ndk.d: $(SOURCESDIR)/$(UPSTREAM_NDK_TARBALL) $(SOURCESDIR)/$(UPSTR
 
 $(BUILDSTEPS)/srcdir-step3.d: $(BUILDSTEPS)/srcdir-step2.d
 	for p in `ls $(RECIPES)/patches/gcc/*.p` ; do patch -d $(GCC_SRCDIR) -p0 <$$p ; done
+	touch $(GCC_SRCDIR)/lto-plugin/aclocal.m4 $(GCC_SRCDIR)/lto-plugin/Makefile.in
+	touch $(GCC_SRCDIR)/zlib/aclocal.m4 $(GCC_SRCDIR)/zlib/Makefile.in
+	touch $(GCC_SRCDIR)/libbacktrace/aclocal.m4 $(GCC_SRCDIR)/libbacktrace/Makefile.in
+	touch $(GCC_SRCDIR)/libcc1/aclocal.m4 $(GCC_SRCDIR)/libcc1/Makefile.in
 	touch $@
 
 $(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL)
