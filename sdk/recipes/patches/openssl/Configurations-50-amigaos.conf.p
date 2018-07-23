@@ -20,7 +20,7 @@
 +    "m68k-unknown-amigaos" => {
 +        inherit_from     => [ "BASE_unix" ],
 +        cc               => "m68k-unknown-amigaos-gcc",
-+        cflags           => picker(default => "-DB_ENDIAN -DTERMIOS -DNO_SYS_UN_H -DNO_SYS_PARAM_H -DNO_SYSLOG -m68020 -std=c99",
++        cflags           => picker(default => "-DB_ENDIAN -DTERMIOS -DNO_SYS_UN_H -DNO_SYS_PARAM_H -DNO_SYSLOG -m68020 -std=gnu99",
 +                                   debug   => "-O0 -g",
 +                                   release => "-O3 -fomit-frame-pointer",
 +				   threads("-D_REENTRANT")),
