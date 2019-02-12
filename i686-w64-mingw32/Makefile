@@ -12,7 +12,7 @@ UPSTREAM_BINUTILS_URI := http://ftpmirror.gnu.org/binutils/$(UPSTREAM_BINUTILS_T
 
 UPSTREAM_GMP_VERSION := 5.0.5
 UPSTREAM_GMP_TARBALL := gmp-$(UPSTREAM_GMP_VERSION).tar.bz2
-UPSTREAM_GMP_URI := http://ftp.gnu.org/gnu/gmp/$(UPSTREAM_GMP_TARBALL)
+UPSTREAM_GMP_URI := https://gmplib.org/download/gmp-$(UPSTREAM_GMP_VERSION)/$(UPSTREAM_GMP_TARBALL)
 
 # Would use 3.0.0, but that dislikes in-tree gmp sources
 UPSTREAM_MPFR_VERSION := 2.4.2
@@ -21,7 +21,7 @@ UPSTREAM_MPFR_URI := http://www.mpfr.org/mpfr-$(UPSTREAM_MPFR_VERSION)/$(UPSTREA
 
 UPSTREAM_MPC_VERSION := 0.8.2
 UPSTREAM_MPC_TARBALL := mpc-$(UPSTREAM_MPC_VERSION).tar.gz
-UPSTREAM_MPC_URI := http://www.multiprecision.org/mpc/download/$(UPSTREAM_MPC_TARBALL)
+UPSTREAM_MPC_URI := http://www.multiprecision.org/downloads/$(UPSTREAM_MPC_TARBALL)
 
 UPSTREAM_MINGW_VERSION := 3.3.0
 UPSTREAM_MINGW_TARBALL := mingw-w64-v$(UPSTREAM_MINGW_VERSION).tar.bz2
