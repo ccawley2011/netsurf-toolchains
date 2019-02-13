@@ -4,23 +4,23 @@ UPSTREAM_GCCSDK_TARBALL := gcc4$(UPSTREAM_GCCSDK_VERSION).tar.gz
 UPSTREAM_GCCSDK_URI := svn://svn.riscos.info/gccsdk/tags/$(UPSTREAM_GCCSDK_VERSION)
 
 # OSLib 7.00
-UPSTREAM_OSLIB_VERSION := oslib-700
-UPSTREAM_OSLIB_TARBALL := oslib
-UPSTREAM_OSLIB_URI := https://svn.code.sf.net/p/ro-oslib/code/tags/$(UPSTREAM_OSLIB_VERSION)/!OSLib
+UPSTREAM_OSLIB_VERSION := 700
+UPSTREAM_OSLIB_TARBALL := oslib$(UPSTREAM_OSLIB_VERSION).tar.gz
+UPSTREAM_OSLIB_URI := https://svn.code.sf.net/p/ro-oslib/code/tags/oslib-$(UPSTREAM_OSLIB_VERSION)/!OSLib
 
 # Known tested version of trunk for CCRes
 UPSTREAM_CCRES_VERSION := 96
-UPSTREAM_CCRES_TARBALL := ccres
+UPSTREAM_CCRES_TARBALL := ccres$(UPSTREAM_CCRES_VERSION).tar.gz
 UPSTREAM_CCRES_URI := svn://svn.riscos.info/ccres/trunk@$(UPSTREAM_CCRES_VERSION)
 
 # Makerun
-UPSTREAM_MAKERUN_VERSION := unused
-UPSTREAM_MAKERUN_TARBALL := makerun
+UPSTREAM_MAKERUN_VERSION := abdbd16
+UPSTREAM_MAKERUN_TARBALL := makerun$(UPSTREAM_MAKERUN_VERSION).tar.gz
 UPSTREAM_MAKERUN_URI := git://git.netsurf-browser.org/makerun.git
 
 # Squeeze
-UPSTREAM_SQUEEZE_VERSION := unused
-UPSTREAM_SQUEEZE_TARBALL := squeeze
+UPSTREAM_SQUEEZE_VERSION := f26ccd6
+UPSTREAM_SQUEEZE_TARBALL := squeeze$(UPSTREAM_SQUEEZE_VERSION).tar.gz
 UPSTREAM_SQUEEZE_URI := git://git.netsurf-browser.org/squeeze.git
 
 # Infozip
@@ -76,7 +76,7 @@ $(BUILDSTEPS)/infozip.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_INFOZIP_TA
 ###
 
 $(BUILDSTEPS)/makerun.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_MAKERUN_TARBALL)
-	cp -r $(SOURCESDIR)/$(UPSTREAM_MAKERUN_TARBALL) $(BUILDDIR)/makerun
+	tar -C $(BUILDDIR) -xaf $(SOURCESDIR)/$(UPSTREAM_MAKERUN_TARBALL)
 	cd $(BUILDDIR)/makerun && GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
 	touch $@
 
@@ -85,7 +85,7 @@ $(BUILDSTEPS)/makerun.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_MAKERUN_TA
 ###
 
 $(BUILDSTEPS)/squeeze.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_SQUEEZE_TARBALL)
-	cp -r $(SOURCESDIR)/$(UPSTREAM_SQUEEZE_TARBALL) $(BUILDDIR)/squeeze
+	tar -C $(BUILDDIR) -xaf $(SOURCESDIR)/$(UPSTREAM_SQUEEZE_TARBALL)
 	cd $(BUILDDIR)/squeeze && GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
 	touch $@
 
@@ -94,7 +94,7 @@ $(BUILDSTEPS)/squeeze.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_SQUEEZE_TA
 ###
 
 $(BUILDSTEPS)/ccres.d: $(BUILDSTEPS)/oslib.d $(SOURCESDIR)/$(UPSTREAM_CCRES_TARBALL)
-	cp -r $(SOURCESDIR)/$(UPSTREAM_CCRES_TARBALL) $(BUILDDIR)/ccres
+	tar -C $(BUILDDIR) -xaf $(SOURCESDIR)/$(UPSTREAM_CCRES_TARBALL)
 	cd $(BUILDDIR)/ccres && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make
 	cd $(BUILDDIR)/ccres && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
 	touch $@
@@ -104,7 +104,7 @@ $(BUILDSTEPS)/ccres.d: $(BUILDSTEPS)/oslib.d $(SOURCESDIR)/$(UPSTREAM_CCRES_TARB
 ###
 
 $(BUILDSTEPS)/oslib.d: $(BUILDSTEPS)/gcc.d $(SOURCESDIR)/$(UPSTREAM_OSLIB_TARBALL)
-	cp -r $(SOURCESDIR)/$(UPSTREAM_OSLIB_TARBALL) $(BUILDDIR)/oslib
+	tar -C $(BUILDDIR) -xaf $(SOURCESDIR)/$(UPSTREAM_OSLIB_TARBALL)
 	for p in `ls $(RECIPES)/patches/oslib/*.p` ; do patch -d $(BUILDDIR)/oslib -p0 <$$p ; done
 	cd $(BUILDDIR)/oslib && GCCSDK_INSTALL_ENV=$(PREFIX)/env GCCSDK_INSTALL_CROSSBIN=$(PREFIX)/cross/bin make install
 	touch $@
@@ -138,19 +138,25 @@ $(SOURCESDIR)/$(UPSTREAM_GCCSDK_TARBALL):
 	tar -C $(SOURCESDIR) -caf $@ gcc4
 
 $(SOURCESDIR)/$(UPSTREAM_OSLIB_TARBALL):
-	svn co $(UPSTREAM_OSLIB_URI) $@
+	svn co $(UPSTREAM_OSLIB_URI) $(SOURCESDIR)/oslib
+	tar -C $(SOURCESDIR) -caf $@ oslib
 
 $(SOURCESDIR)/$(UPSTREAM_CCRES_TARBALL):
-	svn co $(UPSTREAM_CCRES_URI) $@
+	svn co $(UPSTREAM_CCRES_URI) $(SOURCESDIR)/ccres
+	tar -C $(SOURCESDIR) -caf $@ ccres
 
 $(SOURCESDIR)/$(UPSTREAM_MAKERUN_TARBALL):
-	git clone $(UPSTREAM_MAKERUN_URI) $@
+	$(RM) -rf $(SOURCESDIR)/makerun
+	git clone $(UPSTREAM_MAKERUN_URI) $(SOURCESDIR)/makerun
+	tar -C $(SOURCESDIR) -caf $@ makerun
 
 $(SOURCESDIR)/$(UPSTREAM_SQUEEZE_TARBALL):
-	git clone $(UPSTREAM_SQUEEZE_URI) $@
+	$(RM) -rf $(SOURCESDIR)/squeeze
+	git clone $(UPSTREAM_SQUEEZE_URI) $(SOURCESDIR)/squeeze
+	tar -C $(SOURCESDIR) -caf $@ squeeze
 
-$(SOURCEDIR)/$(UPSTREAM_INFOZIP_TARBALL):
-        $(FETCHSRC) arm-unknown-riscos $(subst $(SOURCEDIR)/,,$@) $(UPSTREAM_INFOZIP_URI) $@
+$(SOURCESDIR)/$(UPSTREAM_INFOZIP_TARBALL):
+	$(FETCHSRC) arm-unknown-riscos $(subst $(SOURCESDIR)/,,$@) $(UPSTREAM_INFOZIP_URI) $@
 
 ###
 # Rule to create buildsteps dir

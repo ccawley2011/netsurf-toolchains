@@ -19,8 +19,14 @@ RISC OS
 It is important that the output prefix (/opt/netsurf by default) is writable 
  or use sudo to do the make
 
-	$ cd arm-unknown-riscos
-	$ make
-	$ cd ../sdk
-	$ GCCSDK_INSTALL_CROSSBIN=/opt/netsurf/arm-unknown-riscos/cross/bin GCCSDK_INSTALL_ENV=/opt/netsurf/arm-unknown-riscos/env make
+	$ make -C arm-unknown-riscos
+	$ GCCSDK_INSTALL_CROSSBIN=/opt/netsurf/arm-unknown-riscos/cross/bin GCCSDK_INSTALL_ENV=/opt/netsurf/arm-unknown-riscos/env make -C sdk
 
+
+Windows
+-------
+
+The mingw cross build toolchain is made by
+
+	$ make -C i686-w64-mingw32
+	$ GCCSDK_INSTALL_CROSSBIN=/opt/netsurf/i686-w64-mingw32/cross/bin GCCSDK_INSTALL_ENV=/opt/netsurf/i686-w64-mingw32/env make -C sdk
