@@ -96,17 +96,25 @@ $(BUILDSTEPS)/stage2.d: $(BUILDSTEPS)/clib2.d
 # Rules to build and install Clib2
 ###
 
-$(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL)
-	tar xaf $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL)
-	mv clib2-$(UPSTREAM_CLIB2_VERSION)/library $(BUILDDIR)/clib2
-	for p in `ls $(RECIPES)/patches/clib2/*.p` ; do patch -d $(BUILDDIR)/clib2 -p0 <$$p ; done
-	for dir in `find $(RECIPES)/files/clib2/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do mkdir -p $(BUILDDIR)/clib2$$dir ; done
-	for file in `find $(RECIPES)/files/clib2/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do cp -p $(RECIPES)/files/clib2$$file $(BUILDDIR)/clib2$$file ; done
+$(BUILDSTEPS)/clib2.d: $(BUILDSTEPS)/bootstrap-compiler.d $(BUILDSTEPS)/ndk.d $(BUILDSTEPS)/clib2-src.d
 	cd $(BUILDDIR)/clib2 && PATH="$(PREFIX)/bin:$(PATH)" make -f GNUmakefile.68k
 	cp -r $(BUILDDIR)/clib2/include $(PREFIX)/$(TARGET_NAME)
 	cp -r $(BUILDDIR)/clib2/lib $(PREFIX)/$(TARGET_NAME)
 	ln -sf $(PREFIX)/$(TARGET_NAME)/lib/ncrt0.o $(PREFIX)/$(TARGET_NAME)/lib/crt0.o
 	touch $@
+
+
+$(BUILDSTEPS)/clib2-src.d: $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL)
+	$(RM) -rf $(SOURCESDIR)/clib2-$(UPSTREAM_CLIB2_VERSION)
+	$(RM) -rf $(BUILDDIR)/clib2
+	cd $(SOURCESDIR) && tar xaf $(SOURCESDIR)/$(UPSTREAM_CLIB2_TARBALL)
+	mv $(SOURCESDIR)/clib2-$(UPSTREAM_CLIB2_VERSION)/library $(BUILDDIR)/clib2
+	$(RM) -rf $(SOURCESDIR)/clib2-$(UPSTREAM_CLIB2_VERSION)
+	for p in `ls $(RECIPES)/patches/clib2/*.p` ; do patch -d $(BUILDDIR)/clib2 -p0 <$$p || exit $0 ; done
+	for dir in `find $(RECIPES)/files/clib2/ -type d | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do mkdir -p $(BUILDDIR)/clib2$$dir ; done
+	for file in `find $(RECIPES)/files/clib2/ -type f | grep -v '\.svn' | sed 's#$(RECIPES)/files/clib2##'` ; do cp -p $(RECIPES)/files/clib2$$file $(BUILDDIR)/clib2$$file ; done
+	touch $@
+
 
 ###
 # Rules to install the NDK

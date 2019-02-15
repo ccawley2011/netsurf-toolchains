@@ -336,22 +336,25 @@ $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
 
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
-	mkdir -p $(BUILDDIR)/openssl
-	cd $(BUILDDIR)/openssl && tar xaf $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz
-	for p in `ls $(RECIPES)/patches/openssl/*.p` ; do $(PATCH) -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
-ifneq ($(realpath $(RECIPES)/patches/openssl/$(TARGET)),)
-	for p in `ls $(RECIPES)/patches/openssl/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p ; done
-endif
-ifneq ($(realpath $(RECIPES)/files/openssl/$(TARGET)),)
-	cp -r $(RECIPES)/files/openssl/$(TARGET)/* $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL)
-endif
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-threads $(EXTRAARGS_OPENSSL)
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) make install
 	touch $@
 
+# prepare the openssl source tree
 $(BUILDSTEPS)/openssl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz
+	$(RM) -rf $(BUILDDIR)/openssl
+	mkdir -p $(BUILDDIR)/openssl
+	cd $(BUILDDIR)/openssl && tar xaf $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz
+	for p in `ls $(RECIPES)/patches/openssl/*.p` ; do $(PATCH) -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p || exit $0 ; done
+ifneq ($(realpath $(RECIPES)/patches/openssl/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/openssl/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) -p0 <$$p || exit $0 ; done
+endif
+ifneq ($(realpath $(RECIPES)/files/openssl/$(TARGET)),)
+	cp -r $(RECIPES)/files/openssl/$(TARGET)/* $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL)
+endif
 	touch $@
 
+# get the openssl source tar
 $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://www.openssl.org/source/$(subst $(SOURCEDIR)/,,$@)" $@
 
