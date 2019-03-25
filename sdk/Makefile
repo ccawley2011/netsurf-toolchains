@@ -125,7 +125,7 @@ ifeq ($(TARGET),i686-w64-mingw32)
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS) libjpeg.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, roadshow.d libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS) libjpeg.d)
   EXTRAARGS_LIBCARES := --disable-shared --without-random
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver --with-ssl --with-zlib
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
@@ -301,6 +301,20 @@ $(BUILDSTEPS)/freetype-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/freetype-$(
 
 $(SOURCEDIR)/freetype-$(VERSION_FREETYPE).tar.bz2:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://download.savannah.gnu.org/releases/freetype/freetype-$(VERSION_FREETYPE).tar.bz2" $@
+
+# amiga roadshow sdk
+$(BUILDSTEPS)/roadshow.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/roadshow-src.d
+	mkdir -p $(BUILDDIR)/Roadshow-SDK
+	lha xw=$(BUILDDIR)/Roadshow-SDK $(SOURCEDIR)/Roadshow-SDK-NS.lha
+	mkdir -p $(GCCSDK_INSTALL_ENV)/netinclude
+	cp -r $(BUILDDIR)/Roadshow-SDK/SDK/netinclude/* $(GCCSDK_INSTALL_ENV)/netinclude/
+	touch $@
+
+$(BUILDSTEPS)/roadshow-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/Roadshow-SDK-NS.lha
+	touch $@
+
+$(SOURCEDIR)/Roadshow-SDK-NS.lha:
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://github.com/chris-y/curl/releases/download/curl-7_64_0-amissl/Roadshow-SDK-NS.lha" $@
 
 # regex
 $(BUILDSTEPS)/libtre.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libtre-src.d
