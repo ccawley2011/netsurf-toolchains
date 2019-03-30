@@ -1,11 +1,20 @@
---- lib/amigaos.c.old	2012-10-19 21:37:45.000000000 +0100
-+++ lib/amigaos.c	2012-10-19 21:38:09.000000000 +0100
-@@ -22,7 +22,7 @@
+--- lib/amigaos.c	2019-03-25 08:42:50.000000000 +0000
++++ lib/amigaos.c	2019-03-30 12:49:06.680985341 +0000
+@@ -24,7 +24,7 @@
  
- #include "curl_setup.h"
+ #ifdef __AMIGA__
+ #  include "amigaos.h"
+-#  if defined(HAVE_PROTO_BSDSOCKET_H) && !defined(USE_AMISSL)
++#  if 0
+ #    include <amitcp/socketbasetags.h>
+ #  endif
+ #  ifdef __libnix__
+@@ -37,7 +37,7 @@
+ #include "memdebug.h"
  
--#if defined(__AMIGA__) && !defined(__ixemul__)
-+#if defined(__AMIGA__) && !(defined(__ixemul__) || defined(__amigaos4__))
- 
- #include <amitcp/socketbasetags.h>
+ #ifdef __AMIGA__
+-#if defined(HAVE_PROTO_BSDSOCKET_H) && !defined(USE_AMISSL)
++#if 0
+ struct Library *SocketBase = NULL;
+ extern int errno, h_errno;
  
