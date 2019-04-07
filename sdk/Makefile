@@ -350,8 +350,10 @@ $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
 
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
+ifneq ($(TARGET),m68k-unknown-amigaos)
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-threads $(EXTRAARGS_OPENSSL)
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) make install
+endif
 	touch $@
 
 # prepare the openssl source tree
