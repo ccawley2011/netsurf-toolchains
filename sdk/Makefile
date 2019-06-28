@@ -23,23 +23,36 @@ ifeq ($(GCCSDK_INSTALL_CROSSBIN),)
 endif
 
 # Upstream package versions
+# https://zlib.net/
 VERSION_ZLIB := 1.2.11
+# https://www.gnu.org/software/libiconv/
 VERSION_LIBICONV := 1.15
+# https://laurikari.net/tre/
 VERSION_LIBTRE := 0.8.0
-VERSION_OPENSSL := 1.1.0j
-VERSION_LIBPNG := 1.6.36
+# https://www.openssl.org/
+VERSION_OPENSSL := 1.1.0k
+# http://www.libpng.org/pub/png/libpng.html
+VERSION_LIBPNG := 1.6.37
+# http://libjpeg.sourceforge.net/
 VERSION_LIBJPEG := 8d
+# https://libjpeg-turbo.org/
+# libjpeg turbo have dropped autotools support VERSION_LIBJPEG_TURBO := 2.0.2
 VERSION_LIBJPEG_TURBO := 1.5.3
+# https://c-ares.haxx.se/
 VERSION_LIBCARES := 1.15.0
-VERSION_LIBCURL := 7.64.1
+# https://curl.haxx.se/
+VERSION_LIBCURL := 7.65.1
 VERSION_LIBGNURX := 2.5.1
+# http://mission-base.com/peter/source/
 VERSION_LIBPBL := 1_04
 VERSION_LIBCF := CVS-20130415
-VERSION_LIBEXPAT := 2.2.1
+# https://github.com/libexpat/libexpat
+VERSION_LIBEXPAT := 2.2.7
 VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 VERSION_HERMES := 1.3.3
-VERSION_FREETYPE := 2.7.1
+# https://www.freetype.org/
+VERSION_FREETYPE := 2.9.1
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -132,6 +145,7 @@ ifeq ($(TARGET),m68k-unknown-amigaos)
   LIBJPEG_ENV := LDFLAGS="-lm"
   LIBJPEG_TURBO_ENV := LDFLAGS="-lm"
   LIBCURL_ENV := CFLAGS="-I$(GCCSDK_INSTALL_ENV)/netinclude -D__NO_NET_API" LIBS="-lm"
+  LIBEXPAT_ENV := LDFLAGS="-lm"
 endif
 
 ifeq ($(SDK_ITEMS),)
@@ -472,8 +486,8 @@ $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
 $(BUILDSTEPS)/libexpat.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libexpat-src.d
 	mkdir -p $(BUILDDIR)/libexpat
 	cd $(BUILDDIR)/libexpat && tar xaf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2
-	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) make install
+	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) $(LIBEXPAT_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
+	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) $(LIBEXPAT_ENV) make install
 	touch $@
 
 $(BUILDSTEPS)/libexpat-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2
