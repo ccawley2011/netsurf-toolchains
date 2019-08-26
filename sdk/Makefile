@@ -38,6 +38,8 @@ VERSION_LIBJPEG := 8d
 # https://libjpeg-turbo.org/
 # libjpeg turbo have dropped autotools support VERSION_LIBJPEG_TURBO := 2.0.2
 VERSION_LIBJPEG_TURBO := 1.5.3
+# https://developers.google.com/speed/webp/
+VERSION_LIBWEBP := 1.0.3
 # https://c-ares.haxx.se/
 VERSION_LIBCARES := 1.15.0
 # https://curl.haxx.se/
@@ -100,7 +102,7 @@ LIBJPEG_TURBO_BUILDDIR:=$(BUILDDIR)/libjpegturbo
 
 # Target Specific setup
 ifeq ($(TARGET),arm-unknown-riscos)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) libjpeg-turbo.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) libjpeg-turbo.d libwebp.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --with-random="/dev/urandom" $(LIBCURL_DISABLES)
   EXTRAARGS_OPENSSL := no-asm
@@ -130,7 +132,7 @@ ifeq ($(TARGET),ppc-amigaos)
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
-  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libgnurx.d $(COMMON_SDK_ITEMS) libjpeg.d)
+  SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libgnurx.d $(COMMON_SDK_ITEMS) libjpeg.d libwebp.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap --without-random
   LIBCURL_ENV := CFLAGS="-DCARES_STATICLIB" LIBS="-lgdi32 -lcrypt32"
@@ -442,6 +444,25 @@ $(BUILDSTEPS)/libjpeg-turbo-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libjpe
 
 $(SOURCEDIR)/libjpeg-turbo-src-$(VERSION_LIBJPEG_TURBO).tar.gz:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://sourceforge.net/projects/libjpeg-turbo/files/$(VERSION_LIBJPEG_TURBO)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO).tar.gz/download" $@
+
+
+# libwebp
+$(BUILDSTEPS)/libwebp.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libwebp-src.d
+	mkdir -p $(BUILDDIR)/libwebp
+	cd $(BUILDDIR)/libwebp && tar xaf $(SOURCEDIR)/libwebp-$(VERSION_LIBWEBP).tar.gz
+	for p in `ls $(RECIPES)/patches/libwebp/*.p` ; do $(PATCH) -d $(BUILDDIR)/libwebp/libwebp-$(VERSION_LIBWEBP) -p0 <$$p ; done
+ifneq ($(realpath $(RECIPES)/patches/libwebp/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libwebp/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/libwebp/libwebp-$(VERSION_LIBWEBP) -p0 <$$p ; done
+endif
+	cd $(BUILDDIR)/libwebp/libwebp-$(VERSION_LIBWEBP) && $(env) $(LIBWEBP_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared $(EXTRAARGS_LIBWEBP)
+	cd $(BUILDDIR)/libwebp/libwebp-$(VERSION_LIBWEBP) && $(env) make install
+	touch $@
+
+$(BUILDSTEPS)/libwebp-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libwebp-$(VERSION_LIBWEBP).tar.gz
+	touch $@
+
+$(SOURCEDIR)/libwebp-$(VERSION_LIBWEBP).tar.gz:
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-$(VERSION_LIBWEBP).tar.gz" $@
 
 
 # libcares
