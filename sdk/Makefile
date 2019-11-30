@@ -313,6 +313,9 @@ $(BUILDSTEPS)/freetype-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/freetype-$(
 	$(RM) -rf $(BUILDDIR)/freetype
 	mkdir -p $(BUILDDIR)/freetype
 	cd $(BUILDDIR)/freetype && tar xaf $(SOURCEDIR)/freetype-$(VERSION_FREETYPE).tar.gz
+ifneq ($(realpath $(RECIPES)/files/freetype/$(TARGET)),)
+	cp -r $(RECIPES)/files/freetype/$(TARGET)/* $(BUILDDIR)/freetype/freetype-$(VERSION_FREETYPE)/
+endif
 	touch $@
 
 $(SOURCEDIR)/freetype-$(VERSION_FREETYPE).tar.gz:
