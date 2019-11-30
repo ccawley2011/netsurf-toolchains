@@ -11,6 +11,8 @@ Pre-requisites for Debian systems
 
         $ apt-get install automake-1.15
 
+ Depending on your platform you may also need libfl-dev
+
  On multiarch-aware systems:
 
 	$ dpkg --add-architecture i386
