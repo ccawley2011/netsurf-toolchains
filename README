@@ -7,6 +7,10 @@ Pre-requisites for Debian systems
 	$ apt-get install libtool texinfo help2man subversion cvs git
 	$ apt-get install lhasa unzip autoconf2.64 automake1.11
 
+ If you've not got automake 1.15 by default, you'll need:
+
+        $ apt-get install automake-1.15
+
  On multiarch-aware systems:
 
 	$ dpkg --add-architecture i386

@@ -30,7 +30,7 @@ VERSION_LIBICONV := 1.15
 # https://laurikari.net/tre/
 VERSION_LIBTRE := 0.8.0
 # https://www.openssl.org/
-VERSION_OPENSSL := 1.1.0k
+VERSION_OPENSSL := 1.1.0l
 # http://www.libpng.org/pub/png/libpng.html
 VERSION_LIBPNG := 1.6.37
 # http://libjpeg.sourceforge.net/
@@ -43,18 +43,18 @@ VERSION_LIBWEBP := 1.0.3
 # https://c-ares.haxx.se/
 VERSION_LIBCARES := 1.15.0
 # https://curl.haxx.se/
-VERSION_LIBCURL := 7.65.1
+VERSION_LIBCURL := 7.67.0
 VERSION_LIBGNURX := 2.5.1
 # http://mission-base.com/peter/source/
 VERSION_LIBPBL := 1_04
 VERSION_LIBCF := CVS-20130415
 # https://github.com/libexpat/libexpat
-VERSION_LIBEXPAT := 2.2.7
+VERSION_LIBEXPAT := 2.2.9
 VERSION_LDG := 2.32
 VERSION_WINDOM := 2.0.1
 VERSION_HERMES := 1.3.3
 # https://www.freetype.org/
-VERSION_FREETYPE := 2.9.1
+VERSION_FREETYPE := 2.10.1
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
