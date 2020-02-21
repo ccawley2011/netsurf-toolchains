@@ -26,7 +26,7 @@ endif
 # https://zlib.net/
 VERSION_ZLIB := 1.2.11
 # https://www.gnu.org/software/libiconv/
-VERSION_LIBICONV := 1.15
+VERSION_LIBICONV := 1.16
 # https://laurikari.net/tre/
 VERSION_LIBTRE := 0.8.0
 # https://www.openssl.org/
