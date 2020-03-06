@@ -128,7 +128,7 @@ endif
 ifeq ($(TARGET),ppc-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS) libjpeg-turbo.d)
   EXTRAARGS_LIBCARES := --disable-shared
-  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --enable-threaded-resolver LIBS=-lpthread
+  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --enable-threaded-resolver --disable-ipv6 LIBS=-lpthread
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
@@ -142,7 +142,7 @@ endif
 ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, roadshow.d libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS) libjpeg.d)
   EXTRAARGS_LIBCARES := --disable-shared --without-random
-  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver --with-amissl --with-zlib --disable-rt
+  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver --with-amissl --with-zlib --disable-rt --disable-ipv6
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
   LIBJPEG_ENV := LDFLAGS="-lm"
   LIBJPEG_TURBO_ENV := LDFLAGS="-lm"
