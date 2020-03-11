@@ -208,6 +208,7 @@ $(BUILDSTEPS)/bison.d: $(BUILDSTEPS)/srcdir-bison.d
 $(BUILDSTEPS)/srcdir-bison.d: $(BUILDSTEPS)/$(UPSTREAM_BISON_TARBALL).d
 	tar axf $(SOURCESDIR)/$(UPSTREAM_BISON_TARBALL)
 	mv bison-$(UPSTREAM_BISON_VERSION) $(BISON_SRCDIR)
+	for p in `ls $(RECIPES)/patches/bison/*.p` ; do patch -d $(BISON_SRCDIR) -p0 <$$p ; done
 	touch $@
 
 $(BUILDSTEPS)/$(UPSTREAM_BISON_TARBALL).d: $(BUILDSTEPS)/buildsteps.d $(SOURCESDIR)/$(UPSTREAM_BISON_TARBALL)
