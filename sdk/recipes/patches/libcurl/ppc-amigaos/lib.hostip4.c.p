@@ -1,6 +1,6 @@
---- lib/hostip4.c	2017-03-26 23:41:52.304617207 +0100
-+++ lib/hostip4.c	2017-03-26 23:41:11.000000000 +0100
-@@ -119,6 +119,10 @@ Curl_addrinfo *Curl_getaddrinfo(struct c
+--- lib/hostip4.c	2020-01-05 09:50:51.000000000 +0000
++++ lib/hostip4.c	2020-05-07 16:02:59.313823259 +0100
+@@ -120,6 +120,10 @@ Curl_addrinfo *Curl_getaddrinfo(struct c
   * implying that only threadsafe code and function calls may be used.
   *
   */
@@ -11,7 +11,7 @@
  Curl_addrinfo *Curl_ipv4_resolve_r(const char *hostname,
                                     int port)
  {
-@@ -129,6 +133,9 @@ Curl_addrinfo *Curl_ipv4_resolve_r(const
+@@ -130,6 +134,9 @@ Curl_addrinfo *Curl_ipv4_resolve_r(const
    struct hostent *h = NULL;
    struct in_addr in;
    struct hostent *buf = NULL;
@@ -19,9 +19,9 @@
 +  struct SocketIFace *ISocket = NULL;
 +#endif
  
-   if(Curl_inet_pton(AF_INET, hostname, &in) > 0)
-     /* This is a dotted IP address 123.123.123.123-style */
-@@ -291,7 +298,20 @@ Curl_addrinfo *Curl_ipv4_resolve_r(const
+ #ifdef ENABLE_IPV6
+   {
+@@ -302,7 +309,20 @@ Curl_addrinfo *Curl_ipv4_resolve_r(const
       * gethostbyname() is the preferred one.
       */
    else {
@@ -42,7 +42,7 @@
  #endif /* HAVE_GETADDRINFO_THREADSAFE || HAVE_GETHOSTBYNAME_R */
    }
  
-@@ -301,7 +321,14 @@ Curl_addrinfo *Curl_ipv4_resolve_r(const
+@@ -312,7 +332,14 @@ Curl_addrinfo *Curl_ipv4_resolve_r(const
      if(buf) /* used a *_r() function */
        free(buf);
    }
