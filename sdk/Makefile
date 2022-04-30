@@ -36,8 +36,7 @@ VERSION_LIBPNG := 1.6.37
 # http://libjpeg.sourceforge.net/
 VERSION_LIBJPEG := 8d
 # https://libjpeg-turbo.org/
-# libjpeg turbo have dropped autotools support VERSION_LIBJPEG_TURBO := 2.1.3
-VERSION_LIBJPEG_TURBO := 1.5.3
+VERSION_LIBJPEG_TURBO := 2.1.3
 # https://developers.google.com/speed/webp/
 VERSION_LIBWEBP := 1.2.2
 # https://c-ares.haxx.se/
@@ -81,6 +80,19 @@ TARGET := $(shell $(cc__) -dumpmachine)
 # Newer autotools objects to -I appearing in CFLAGS
 cleanenv := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" RANLIB="$(ranlib__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
 env := $(cleanenv) CFLAGS="$(cflags__)"
+
+# Cross-compiling CMake invocation.
+NS_SDK_CMAKE_CMD=cmake \
+		-DCMAKE_INSTALL_PREFIX="$(GCCSDK_INSTALL_ENV)" \
+		-DBUILD_SHARED_LIBS=OFF \
+		-DCMAKE_COLOR_MAKEFILE=OFF \
+		-DBUILD_DOC=OFF \
+		-DBUILD_DOCS=OFF \
+		-DBUILD_EXAMPLE=OFF \
+		-DBUILD_EXAMPLES=OFF \
+		-DBUILD_TEST=OFF \
+		-DBUILD_TESTS=OFF \
+		-DBUILD_TESTING=OFF \
 
 RECIPES := $(CURDIR)/recipes
 SOURCEDIR := $(CURDIR)/sources
@@ -432,7 +444,6 @@ $(BUILDSTEPS)/libjpeg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/jpegsrc.v$(V
 $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz:
 	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://ijg.org/files/$(subst $(SOURCEDIR)/,,$@)" $@
 
-
 # libjpegturbo
 $(BUILDSTEPS)/libjpeg-turbo.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-turbo-src.d
 	mkdir -p $(LIBJPEG_TURBO_BUILDDIR)
@@ -441,8 +452,12 @@ $(BUILDSTEPS)/libjpeg-turbo.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libjpeg-tu
 ifneq ($(realpath $(RECIPES)/patches/libjpegturbo/$(TARGET)),)
 	for p in `ls $(RECIPES)/patches/libjpegturbo/$(TARGET)/*.p` ; do $(PATCH) -d $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) -p0 <$$p ; done
 endif
-	cd $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) && $(env) $(LIBJPEG_TURBO_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
-	cd $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO) && $(env) make install
+	mkdir -p $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO)/ns-sdk-build
+	cd $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO)/ns-sdk-build && $(env) $(LIBJPEG_TURBO_ENV) $(NS_SDK_CMAKE_CMD) \
+			-DENABLE_STATIC=ON \
+			-DENABLE_SHARED=OFF \
+			..
+	cd $(LIBJPEG_TURBO_BUILDDIR)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO)/ns-sdk-build && $(env) make install VERBOSE=1
 	touch $@
 
 $(BUILDSTEPS)/libjpeg-turbo-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libjpeg-turbo-src-$(VERSION_LIBJPEG_TURBO).tar.gz
