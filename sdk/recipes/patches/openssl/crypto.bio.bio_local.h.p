@@ -1,6 +1,6 @@
---- crypto/bio/bio_lcl.h.orig	2017-10-17 16:19:36.908150231 +0100
-+++ crypto/bio/bio_lcl.h	2017-10-17 16:19:52.056631064 +0100
-@@ -36,7 +36,7 @@
+--- crypto/bio/bio_local.h.orig	2017-10-17 16:19:36.908150231 +0100
++++ crypto/bio/bio_local.h	2017-10-17 16:19:52.056631064 +0100
+@@ -37,7 +37,7 @@
  /*
   * Undefine AF_UNIX on systems that define it but don't support it.
   */

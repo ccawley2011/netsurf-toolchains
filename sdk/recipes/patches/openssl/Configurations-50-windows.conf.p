@@ -1,7 +1,7 @@
 --- /dev/null	2017-10-10 15:19:45.611896396 +0100
 +++ Configurations/50-windows.conf	2017-10-17 15:42:25.304921197 +0100
 @@ -0,0 +1,25 @@
-+%targets = (
++my %targets = (
 +
 +    "i686-w64-mingw32" => {
 +        inherit_from     => [ "BASE_unix", asm("x86_asm"),
