@@ -30,7 +30,7 @@ VERSION_LIBICONV := 1.17
 # https://laurikari.net/tre/
 VERSION_LIBTRE := 0.8.0
 # https://www.openssl.org/
-VERSION_OPENSSL := 1.1.1o
+VERSION_OPENSSL := 3.0.3
 # http://www.libpng.org/pub/png/libpng.html
 VERSION_LIBPNG := 1.6.37
 # http://libjpeg.sourceforge.net/

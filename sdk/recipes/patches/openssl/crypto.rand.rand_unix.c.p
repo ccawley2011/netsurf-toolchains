@@ -1,6 +1,6 @@
---- crypto/rand/rand_unix.c.orig	2017-11-22 11:25:03.096636507 +0000
-+++ crypto/rand/rand_unix.c	2017-11-22 11:25:52.649406308 +0000
-@@ -122,7 +122,8 @@
+--- providers/implementations/rands/seeding/rand_unix.c.orig	2017-11-22 11:25:03.096636507 +0000
++++ providers/implementations/rands/seeding/rand_unix.c	2017-11-22 11:25:52.649406308 +0000
+@@ -109,7 +109,8 @@
  
  #if !(defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32) \
      || defined(OPENSSL_SYS_VMS) || defined(OPENSSL_SYS_VXWORKS) \

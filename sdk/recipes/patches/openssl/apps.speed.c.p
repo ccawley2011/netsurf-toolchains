@@ -1,7 +1,7 @@
 --- apps/speed.c.orig	2017-11-22 08:07:53.851790744 +0000
 +++ apps/speed.c	2017-11-22 08:15:49.608768064 +0000
-@@ -99,6 +99,12 @@
- #endif
+@@ -62,6 +62,12 @@
+ #include "./testdsa.h"
  #include <openssl/modes.h>
  
 +
@@ -13,7 +13,7 @@
  #ifndef HAVE_FORK
  # if defined(OPENSSL_SYS_VMS) || defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_VXWORKS)
  #  define HAVE_FORK 0
-@@ -220,8 +226,10 @@
+@@ -134,8 +240,10 @@
  static double Time_F(int s)
  {
      double ret = app_tminterval(s, usertime);
