@@ -24,37 +24,41 @@ endif
 
 # Upstream package versions
 # https://zlib.net/
-VERSION_ZLIB := 1.2.11
+VERSION_ZLIB := 1.2.12
 # https://www.gnu.org/software/libiconv/
-VERSION_LIBICONV := 1.16
+VERSION_LIBICONV := 1.17
 # https://laurikari.net/tre/
 VERSION_LIBTRE := 0.8.0
 # https://www.openssl.org/
-VERSION_OPENSSL := 1.1.0l
+VERSION_OPENSSL := 1.1.1o
 # http://www.libpng.org/pub/png/libpng.html
 VERSION_LIBPNG := 1.6.37
 # http://libjpeg.sourceforge.net/
 VERSION_LIBJPEG := 8d
 # https://libjpeg-turbo.org/
-# libjpeg turbo have dropped autotools support VERSION_LIBJPEG_TURBO := 2.0.2
+# libjpeg turbo have dropped autotools support VERSION_LIBJPEG_TURBO := 2.1.3
 VERSION_LIBJPEG_TURBO := 1.5.3
 # https://developers.google.com/speed/webp/
+# 1.2.2
 VERSION_LIBWEBP := 1.0.3
 # https://c-ares.haxx.se/
-VERSION_LIBCARES := 1.15.0
+VERSION_LIBCARES := 1.18.1
 # https://curl.haxx.se/
-VERSION_LIBCURL := 7.76.1
+VERSION_LIBCURL := 7.83.1
 VERSION_LIBGNURX := 2.5.1
 # http://mission-base.com/peter/source/
+# 1.7.0: https://github.com/peterGraf/pbl/releases
 VERSION_LIBPBL := 1_04
+# Git-20170304
 VERSION_LIBCF := CVS-20130415
 # https://github.com/libexpat/libexpat
-VERSION_LIBEXPAT := 2.2.9
-VERSION_LDG := 2.32
+VERSION_LIBEXPAT := 2.4.8
+VERSION_LDG := 2.35
 VERSION_WINDOM := 2.0.1
+# https://github.com/berkus/hermes-pixel-format/archive/refs/tags/v1.3.3.tar.gz
 VERSION_HERMES := 1.3.3
 # https://www.freetype.org/
-VERSION_FREETYPE := 2.10.1
+VERSION_FREETYPE := 2.12.1
 
 # Path
 path__ := $(GCCSDK_INSTALL_CROSSBIN):$(PATH)
@@ -189,7 +193,7 @@ endif
 	touch $@
 
 $(SOURCEDIR)/zlib-$(VERSION_ZLIB).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://zlib.net/$(subst $(SOURCEDIR)/,,$@)" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://zlib.net/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libiconv
 $(BUILDSTEPS)/libiconv.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libiconv-src.d
@@ -207,7 +211,7 @@ $(BUILDSTEPS)/libiconv-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libiconv-$(
 	touch $@
 
 $(SOURCEDIR)/libiconv-$(VERSION_LIBICONV).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ftp.gnu.org/pub/gnu/libiconv/$(subst $(SOURCEDIR)/,,$@)" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://ftp.gnu.org/pub/gnu/libiconv/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libgnurx
 $(BUILDSTEPS)/libgnurx.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libgnurx-src.d
@@ -227,7 +231,7 @@ $(BUILDSTEPS)/libgnurx-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libgnurx-$(
 	touch $@
 
 $(SOURCEDIR)/libgnurx-$(VERSION_LIBGNURX).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://downloads.sourceforge.net/project/mingw/Other/UserContributed/regex/mingw-regex-$(VERSION_LIBGNURX)/mingw-libgnurx-$(VERSION_LIBGNURX)-src.tar.gz" $@
 
 # atari cf library
 $(BUILDSTEPS)/libcf.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libcf-src.d
@@ -245,7 +249,7 @@ $(BUILDSTEPS)/libcf-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libcf-$(VERSIO
 	touch $@
 
 $(SOURCEDIR)/libcf-$(VERSION_LIBCF).tar.bz2:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/cflib-$(VERSION_LIBCF).tar.bz2" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://vincent.riviere.free.fr/soft/m68k-atari-mint/archives/cflib-$(VERSION_LIBCF).tar.bz2" $@
 
 # atari windom library
 $(BUILDSTEPS)/windom.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/windom-src.d
@@ -263,7 +267,7 @@ $(BUILDSTEPS)/windom-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/windom-$(VERS
 	touch $@
 
 $(SOURCEDIR)/windom-$(VERSION_WINDOM).zip:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/windom/windom/$(VERSION_WINDOM)/windom-$(VERSION_WINDOM)-1.zip" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://downloads.sourceforge.net/project/windom/windom/$(VERSION_WINDOM)/windom-$(VERSION_WINDOM)-1.zip" $@
 
 # atari ldg library
 $(BUILDSTEPS)/ldg.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/ldg-src.d
@@ -280,7 +284,7 @@ $(BUILDSTEPS)/ldg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/ldg-$(VERSION_LD
 	touch $@
 
 $(SOURCEDIR)/ldg-$(VERSION_LDG).zip:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ldg.org.free.fr/distrib/ldg-$(VERSION_LDG).zip" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://downloads.sourceforge.net/project/ldg/ldg-$(VERSION_LDG).zip" $@
 
 # hermes bitmap lib
 $(BUILDSTEPS)/hermes.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/hermes-src.d
@@ -319,7 +323,7 @@ endif
 	touch $@
 
 $(SOURCEDIR)/freetype-$(VERSION_FREETYPE).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://download.savannah.gnu.org/releases/freetype/freetype-$(VERSION_FREETYPE).tar.gz" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://download.savannah.gnu.org/releases/freetype/freetype-$(VERSION_FREETYPE).tar.gz" $@
 
 # amiga roadshow sdk
 $(BUILDSTEPS)/roadshow.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/roadshow-src.d
@@ -348,7 +352,7 @@ $(BUILDSTEPS)/libtre-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/tre-$(VERSION
 	touch $@
 
 $(SOURCEDIR)/tre-$(VERSION_LIBTRE).tar.bz2:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://laurikari.net/tre/$(subst $(SOURCEDIR)/,,$@)" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://laurikari.net/tre/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libpbl
 $(BUILDSTEPS)/libpbl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libpbl-src.d
@@ -365,7 +369,7 @@ $(BUILDSTEPS)/libpbl-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/pbl_$(VERSION
 	touch $@
 
 $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://www.mission-base.com/peter/source/$(subst $(SOURCEDIR)/,,$@)" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://www.mission-base.com/peter/source/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
@@ -391,7 +395,7 @@ endif
 
 # get the openssl source tar
 $(SOURCEDIR)/openssl-$(VERSION_OPENSSL).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://www.openssl.org/source/$(subst $(SOURCEDIR)/,,$@)" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://www.openssl.org/source/$(subst $(SOURCEDIR)/,,$@)" $@
 
 # libPNG
 $(BUILDSTEPS)/libpng.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/libpng-src.d
@@ -408,7 +412,7 @@ $(BUILDSTEPS)/libpng-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libpng-$(VERS
 	touch $@
 
 $(SOURCEDIR)/libpng-$(VERSION_LIBPNG).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/libpng/$(subst $(SOURCEDIR)/,,$@)" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://downloads.sourceforge.net/libpng/$(subst $(SOURCEDIR)/,,$@)" $@
 
 
 # libjpeg
@@ -427,7 +431,7 @@ $(BUILDSTEPS)/libjpeg-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/jpegsrc.v$(V
 	touch $@
 
 $(SOURCEDIR)/jpegsrc.v$(VERSION_LIBJPEG).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://ijg.org/files/$(subst $(SOURCEDIR)/,,$@)" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://ijg.org/files/$(subst $(SOURCEDIR)/,,$@)" $@
 
 
 # libjpegturbo
@@ -446,7 +450,7 @@ $(BUILDSTEPS)/libjpeg-turbo-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/libjpe
 	touch $@
 
 $(SOURCEDIR)/libjpeg-turbo-src-$(VERSION_LIBJPEG_TURBO).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://sourceforge.net/projects/libjpeg-turbo/files/$(VERSION_LIBJPEG_TURBO)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO).tar.gz/download" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://sourceforge.net/projects/libjpeg-turbo/files/$(VERSION_LIBJPEG_TURBO)/libjpeg-turbo-$(VERSION_LIBJPEG_TURBO).tar.gz/download" $@
 
 
 # libwebp
@@ -484,7 +488,7 @@ $(BUILDSTEPS)/libcares-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/c-ares-$(VE
 	touch $@
 
 $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://c-ares.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://c-ares.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)" $@
 
 
 # libcurl
@@ -503,7 +507,7 @@ endif
 	touch $@
 
 $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://curl.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://curl.haxx.se/download/$(subst $(SOURCEDIR)/,,$@)" $@
 
 
 # libexpat
@@ -518,5 +522,5 @@ $(BUILDSTEPS)/libexpat-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/expat-$(VER
 	touch $@
 
 $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2:
-	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "http://downloads.sourceforge.net/project/expat/expat/$(VERSION_LIBEXPAT)/expat-$(VERSION_LIBEXPAT).tar.bz2" $@
+	$(FETCHSRC) sdk $(subst $(SOURCEDIR)/,,$@) "https://downloads.sourceforge.net/project/expat/expat/$(VERSION_LIBEXPAT)/expat-$(VERSION_LIBEXPAT).tar.bz2" $@
 

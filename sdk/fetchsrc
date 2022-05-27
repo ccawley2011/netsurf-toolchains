@@ -6,7 +6,7 @@ set -x
 
 # Usage fetchsrc <target> <source> <upstream> <output>
 
-NSSRV="http://ci.netsurf-browser.org/toolchain/"
+NSSRV="https://ci.netsurf-browser.org/toolchain/"
 
 wget -q -O ${4} ${NSSRV}/${1}/${2}
 if [ $? -ne 0 ];then
