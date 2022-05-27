@@ -39,8 +39,7 @@ VERSION_LIBJPEG := 8d
 # libjpeg turbo have dropped autotools support VERSION_LIBJPEG_TURBO := 2.1.3
 VERSION_LIBJPEG_TURBO := 1.5.3
 # https://developers.google.com/speed/webp/
-# 1.2.2
-VERSION_LIBWEBP := 1.0.3
+VERSION_LIBWEBP := 1.2.2
 # https://c-ares.haxx.se/
 VERSION_LIBCARES := 1.18.1
 # https://curl.haxx.se/
