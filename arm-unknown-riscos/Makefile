@@ -1,5 +1,5 @@
 # Use a tested trunk version of GCCSDK
-UPSTREAM_GCCSDK_VERSION := release_4_7_4_v2
+UPSTREAM_GCCSDK_VERSION := release_4_7_4_v6
 UPSTREAM_GCCSDK_TARBALL := gcc4$(UPSTREAM_GCCSDK_VERSION).tar.gz
 UPSTREAM_GCCSDK_URI := svn://svn.riscos.info/gccsdk/tags/$(UPSTREAM_GCCSDK_VERSION)
 
@@ -26,7 +26,7 @@ UPSTREAM_SQUEEZE_URI := git://git.netsurf-browser.org/squeeze.git
 # Infozip
 UPSTREAM_INFOZIP_VERSION := 30
 UPSTREAM_INFOZIP_TARBALL := zip$(UPSTREAM_INFOZIP_VERSION).tar.gz
-UPSTREAM_INFOZIP_URI := http://downloads.sourceforge.net/project/infozip/Zip%203.x%20%28latest%29/3.0/$(UPSTREAM_INFOZIP_TARBALL)
+UPSTREAM_INFOZIP_URI := https://downloads.sourceforge.net/project/infozip/Zip%203.x%20%28latest%29/3.0/$(UPSTREAM_INFOZIP_TARBALL)
 
 TOP := $(CURDIR)
 RECIPES := $(TOP)/recipes
