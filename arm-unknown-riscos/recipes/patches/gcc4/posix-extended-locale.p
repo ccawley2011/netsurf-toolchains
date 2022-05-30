@@ -2,12 +2,17 @@ Index: gcc4/recipe/files/gcc/libunixlib/Makefile.am
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/Makefile.am	(revision 7698)
 +++ gcc4/recipe/files/gcc/libunixlib/Makefile.am	(working copy)
-@@ -587,7 +587,7 @@
+@@ -583,11 +583,11 @@
+ else
+ locale_src = \
+ 	locale/localeconv.c \
++	locale/newlocale.c \
+ 	locale/nl_langinfo.c \
  	locale/setlocale.c \
  	locale/strcoll.c \
- 	locale/strxfrm.c \
+-	locale/strxfrm.c \
 -	locale/territory.c
-+	locale/newlocale.c
++	locale/strxfrm.c
  endif
  locale_src += \
  	locale/iconv.c
@@ -461,8 +466,8 @@ Index: gcc4/recipe/files/gcc/libunixlib/incl-local/locale.h
  __END_DECLS
 Index: gcc4/recipe/files/gcc/libunixlib/include/bits/locale_t.h
 ===================================================================
---- gcc4/recipe/files/gcc/libunixlib/include/bits/locale_t.h    (nonexistent)
-+++ gcc4/recipe/files/gcc/libunixlib/include/bits/locale_t.h    (working copy)
+--- gcc4/recipe/files/gcc/libunixlib/include/bits/locale_t.h	(nonexistent)
++++ gcc4/recipe/files/gcc/libunixlib/include/bits/locale_t.h	(working copy)
 @@ -0,0 +1,10 @@
 +/*
 + * Copyright (c) 2022 UnixLib Developers
@@ -561,6 +566,32 @@ Index: gcc4/recipe/files/gcc/libunixlib/include/ctype.h
  #  endif
  #endif
  
+Index: gcc4/recipe/files/gcc/libunixlib/include/langinfo.h
+===================================================================
+--- gcc4/recipe/files/gcc/libunixlib/include/langinfo.h	(revision 7698)
++++ gcc4/recipe/files/gcc/libunixlib/include/langinfo.h	(working copy)
+@@ -580,18 +580,12 @@
+ extern char *nl_langinfo (nl_item __item) __THROW;
+ 
+ 
+-#if 0
+-#ifdef	__USE_GNU
+-/* This interface is for the extended locale model.  See <locale.h> for
+-   more information.  */
++#ifdef	__USE_XOPEN2K8
++# include <bits/locale_t.h>
+ 
+-/* Get locale datatype definition.  */
+-# include <xlocale.h>
+-
+ /* Just like nl_langinfo but get the information from the locale object L.  */
+-extern char *nl_langinfo_l (nl_item __item, __locale_t l);
++extern char *nl_langinfo_l (nl_item __item, locale_t __l);
+ #endif
+-#endif
+ 
+ __END_DECLS
+ 
 Index: gcc4/recipe/files/gcc/libunixlib/include/locale.h
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/include/locale.h	(revision 7698)
@@ -601,11 +632,14 @@ Index: gcc4/recipe/files/gcc/libunixlib/include/locale.h
  extern locale_t uselocale(locale_t newloc);
  
  extern void freelocale(locale_t locobj);
-@@ -127,7 +130,8 @@
+@@ -127,7 +130,11 @@
  
  extern locale_t newlocale(int category_mask, const char *locale,
                            locale_t base);
 -# define LC_GLOBAL_LOCALE        ((locale_t) -1L)
++
++extern locale_t duplocale(locale_t locobj);
++
 +#    define LC_GLOBAL_LOCALE        ((locale_t) -1L)
 +#  endif
  #endif
@@ -615,7 +649,24 @@ Index: gcc4/recipe/files/gcc/libunixlib/include/string.h
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/include/string.h	(revision 7698)
 +++ gcc4/recipe/files/gcc/libunixlib/include/string.h	(working copy)
-@@ -281,6 +281,17 @@
+@@ -93,6 +93,16 @@
+ 		       const char *__restrict __src, size_t __n)
+      __THROW __nonnull ((2));
+ 
++#ifdef __USE_XOPEN2K8
++#include <bits/locale_t.h>
++
++extern int strcoll_l (const char *__s1, const char *__s2, locale_t __l)
++     __THROW __attribute_pure__ __nonnull ((1, 2, 3));
++
++extern size_t strxfrm_l (char *__dest, const char *__src, size_t __n,
++			 locale_t __l) __THROW __nonnull ((2, 4));
++#endif
++
+ /* Find the first occurrence of c in s. */
+ extern char *strchr (const char *__s, int __c)
+      __THROW __attribute_pure__ __nonnull ((1)) __wur;
+@@ -281,6 +291,17 @@
  /* Compare no more than N chars of S1 and S2, ignoring case.  */
  extern int strncasecmp (const char *__s1, const char *__s2, size_t __n)
       __THROW __attribute_pure__ __nonnull ((1, 2)) __wur;
@@ -633,6 +684,18 @@ Index: gcc4/recipe/files/gcc/libunixlib/include/string.h
  #endif /* Use BSD.  */
  
  #if defined __USE_XOPEN2K || defined __USE_MISC
+@@ -289,6 +310,11 @@
+      __THROW __nonnull ((2));
+ #endif
+ 
++#ifdef __USE_XOPEN2K8
++/* Translate error number to string according to the locale L.  */
++extern char *strerror_l (int __errnum, locale_t __l) __THROW;
++#endif
++
+ #ifndef __TARGET_SCL__
+ # ifndef basename
+ /* Return the file name within directory of FILENAME.  We don't
 Index: gcc4/recipe/files/gcc/libunixlib/include/strings.h
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/include/strings.h	(revision 7698)
@@ -655,6 +718,207 @@ Index: gcc4/recipe/files/gcc/libunixlib/include/strings.h
  /* Return the position of the first bit set in I, or 0 if none are set.
     The least-significant bit is position 1, the most-significant 32.  */
  extern int ffs (int __i);
+Index: gcc4/recipe/files/gcc/libunixlib/include/wchar.h
+===================================================================
+--- gcc4/recipe/files/gcc/libunixlib/include/wchar.h	(revision 7698)
++++ gcc4/recipe/files/gcc/libunixlib/include/wchar.h	(working copy)
+@@ -1,7 +1,7 @@
+ /*
+  * File taken from glibc 2.11.
+  * Following changes were made:
+- *   - Disabled non-standard reentrant locale prototypes.
++ *   - None
+  */
+ 
+ /* Copyright (C) 1995-2008, 2009 Free Software Foundation, Inc.
+@@ -172,7 +172,6 @@
+ __END_NAMESPACE_STD
+ #endif
+ 
+-#if 0
+ #ifdef __USE_XOPEN2K8
+ /* Compare S1 and S2, ignoring case.  */
+ extern int wcscasecmp (__const wchar_t *__s1, __const wchar_t *__s2) __THROW;
+@@ -183,15 +182,14 @@
+ 
+ /* Similar to the two functions above but take the information from
+    the provided locale and not the global locale.  */
+-# include <xlocale.h>
++# include <bits/locale_t.h>
+ 
+ extern int wcscasecmp_l (__const wchar_t *__s1, __const wchar_t *__s2,
+-			 __locale_t __loc) __THROW;
++			 locale_t __loc) __THROW;
+ 
+ extern int wcsncasecmp_l (__const wchar_t *__s1, __const wchar_t *__s2,
+-			  size_t __n, __locale_t __loc) __THROW;
++			  size_t __n, locale_t __loc) __THROW;
+ #endif
+-#endif
+ 
+ __BEGIN_NAMESPACE_STD
+ /* Compare S1 and S2, both interpreted as appropriate to the
+@@ -205,7 +203,6 @@
+ __END_NAMESPACE_STD
+ 
+ #ifdef __USE_XOPEN2K8
+-#if 0
+ /* Similar to the two functions above but take the information from
+    the provided locale and not the global locale.  */
+ 
+@@ -212,14 +209,13 @@
+ /* Compare S1 and S2, both interpreted as appropriate to the
+    LC_COLLATE category of the given locale.  */
+ extern int wcscoll_l (__const wchar_t *__s1, __const wchar_t *__s2,
+-		      __locale_t __loc) __THROW;
++		      locale_t __loc) __THROW;
+ 
+ /* Transform S2 into array pointed to by S1 such that if wcscmp is
+    applied to two transformed strings the result is the as applying
+    `wcscoll' to the original strings.  */
+ extern size_t wcsxfrm_l (wchar_t *__s1, __const wchar_t *__s2,
+-			 size_t __n, __locale_t __loc) __THROW;
+-#endif
++			 size_t __n, locale_t __loc) __THROW;
+ 
+ #ifndef __TARGET_SCL__
+ /* Duplicate S, returning an identical malloc'd string.  */
+Index: gcc4/recipe/files/gcc/libunixlib/include/wctype.h
+===================================================================
+--- gcc4/recipe/files/gcc/libunixlib/include/wctype.h	(revision 7698)
++++ gcc4/recipe/files/gcc/libunixlib/include/wctype.h	(working copy)
+@@ -3,7 +3,6 @@
+  * Following changes were made:
+  *  - Replaced "#include <bits/types.h>" into "#include <unixlib/types.h>"
+  *  - Add wint_t typedef when it hasn't been defined in stddef.h.
+- *  - Disabled non-standard reentrant locale prototypes.
+  */
+ 
+ /* Copyright (C) 1996-2002,2005,2007,2008,2009 Free Software Foundation, Inc.
+@@ -191,7 +190,6 @@
+ /* Determine whether the wide-character WC has the property described by
+    DESC.  */
+ extern int iswctype (wint_t __wc, wctype_t __desc) __THROW;
+-#define iswctype_l(c, d, l) iswctype(c, d)
+ 
+ __END_NAMESPACE_C99
+ 
+@@ -241,73 +239,71 @@
+ extern wint_t towctrans (wint_t __wc, wctrans_t __desc) __THROW;
+ __END_NAMESPACE_C99
+ 
+-#if 0
+ # ifdef __USE_XOPEN2K8
+-/* Declare the interface to extended locale model.  */
+-#  include <xlocale.h>
++#  include <bits/locale_t.h>
+ 
+ /* Test for any wide character for which `iswalpha' or `iswdigit' is
+    true.  */
+-extern int iswalnum_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswalnum_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any wide character for which `iswupper' or 'iswlower' is
+    true, or any wide character that is one of a locale-specific set of
+    wide-characters for which none of `iswcntrl', `iswdigit',
+    `iswpunct', or `iswspace' is true.  */
+-extern int iswalpha_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswalpha_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any control wide character.  */
+-extern int iswcntrl_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswcntrl_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any wide character that corresponds to a decimal-digit
+    character.  */
+-extern int iswdigit_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswdigit_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any wide character for which `iswprint' is true and
+    `iswspace' is false.  */
+-extern int iswgraph_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswgraph_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any wide character that corresponds to a lowercase letter
+    or is one of a locale-specific set of wide characters for which
+    none of `iswcntrl', `iswdigit', `iswpunct', or `iswspace' is true.  */
+-extern int iswlower_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswlower_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any printing wide character.  */
+-extern int iswprint_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswprint_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any printing wide character that is one of a
+    locale-specific et of wide characters for which neither `iswspace'
+    nor `iswalnum' is true.  */
+-extern int iswpunct_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswpunct_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any wide character that corresponds to a locale-specific
+    set of wide characters for which none of `iswalnum', `iswgraph', or
+    `iswpunct' is true.  */
+-extern int iswspace_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswspace_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any wide character that corresponds to an uppercase letter
+    or is one of a locale-specific set of wide character for which none
+    of `iswcntrl', `iswdigit', `iswpunct', or `iswspace' is true.  */
+-extern int iswupper_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswupper_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any wide character that corresponds to a hexadecimal-digit
+    character equivalent to that performed be the functions described
+    in the previous subclause.  */
+-extern int iswxdigit_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswxdigit_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Test for any wide character that corresponds to a standard blank
+    wide character or a locale-specific set of wide characters for
+    which `iswalnum' is false.  */
+-extern int iswblank_l (wint_t __wc, __locale_t __locale) __THROW;
++extern int iswblank_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Construct value that describes a class of wide characters identified
+    by the string argument PROPERTY.  */
+-extern wctype_t wctype_l (__const char *__property, __locale_t __locale)
++extern wctype_t wctype_l (__const char *__property, locale_t __locale)
+      __THROW;
+ 
+ /* Determine whether the wide-character WC has the property described by
+    DESC.  */
+-extern int iswctype_l (wint_t __wc, wctype_t __desc, __locale_t __locale)
++extern int iswctype_l (wint_t __wc, wctype_t __desc, locale_t __locale)
+      __THROW;
+ 
+ 
+@@ -316,22 +312,21 @@
+  */
+ 
+ /* Converts an uppercase letter to the corresponding lowercase letter.  */
+-extern wint_t towlower_l (wint_t __wc, __locale_t __locale) __THROW;
++extern wint_t towlower_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Converts an lowercase letter to the corresponding uppercase letter.  */
+-extern wint_t towupper_l (wint_t __wc, __locale_t __locale) __THROW;
++extern wint_t towupper_l (wint_t __wc, locale_t __locale) __THROW;
+ 
+ /* Construct value that describes a mapping between wide characters
+    identified by the string argument PROPERTY.  */
+-extern wctrans_t wctrans_l (__const char *__property, __locale_t __locale)
++extern wctrans_t wctrans_l (__const char *__property, locale_t __locale)
+      __THROW;
+ 
+ /* Map the wide character WC using the mapping described by DESC.  */
+ extern wint_t towctrans_l (wint_t __wc, wctrans_t __desc,
+-			   __locale_t __locale) __THROW;
++			   locale_t __locale) __THROW;
+ 
+ # endif /* Use POSIX 2008.  */
+-#endif
+ 
+ __END_DECLS
+ 
 Index: gcc4/recipe/files/gcc/libunixlib/locale/localeconv.c
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/locale/localeconv.c	(revision 7698)
@@ -865,27 +1129,31 @@ Index: gcc4/recipe/files/gcc/libunixlib/locale/newlocale.c
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/locale/newlocale.c	(revision 7698)
 +++ gcc4/recipe/files/gcc/libunixlib/locale/newlocale.c	(working copy)
-@@ -1,15 +1,15 @@
+@@ -1,17 +1,17 @@
  /* Copyright (c) 2019 UnixLib Developers
   */
  
 +#include <ctype.h>
++#include <errno.h>
++#include <locale.h>
  #include <stdlib.h>
- #include <locale.h>
+-#include <locale.h>
  #include <stdio.h>
+-#include <errno.h>
 +#include <string.h>
- #include <errno.h>
-+
-+#include <internal/unix.h>
  
 -struct _locale {
 -  struct lconv lc;
 -};
--
- /* This is supposed to be per-thread.  */
- static locale_t current_locale;
++#include <internal/unix.h>
  
-@@ -27,20 +27,71 @@
+ /* This is supposed to be per-thread.  */
+-static locale_t current_locale;
++static locale_t current_locale = LC_GLOBAL_LOCALE;
+ 
+ locale_t uselocale(locale_t newloc)
+ {
+@@ -27,20 +27,94 @@
  
  void freelocale(locale_t locobj)
  {
@@ -901,20 +1169,17 @@ Index: gcc4/recipe/files/gcc/libunixlib/locale/newlocale.c
  {
 -  locale_t loc = (locale_t)malloc(sizeof(*loc));
 -  if (!loc) {
--    __set_errno (ENOMEM);
 +  struct _locale tmp;
 +
 +  PTHREAD_UNSAFE
 +
 +  if ((category_mask & ~LC_ALL_MASK) || locale == NULL) {
 +    __set_errno (EINVAL);
-     return 0;
-   }
- 
--  loc->lc = *localeconv();
++    return 0;
++  }
++
 +  /* The locale provided will be verified by __setlocale_l() */
- 
--  return loc;
++
 +  /* Prepare the temporary locale we will modify */
 +  if (base != 0 && base != LC_GLOBAL_LOCALE) {
 +    memcpy(&tmp, base, sizeof(tmp));
@@ -962,7 +1227,46 @@ Index: gcc4/recipe/files/gcc/libunixlib/locale/newlocale.c
 +  base->lc_needs_refresh = 1;
 +
 +  return base;
++}
++
++locale_t duplocale(locale_t locobj)
++{
++  locale_t loc;
++
++  loc = (locale_t) malloc(sizeof(*loc));
++  if (loc == NULL) {
+     __set_errno (ENOMEM);
+     return 0;
+   }
+ 
+-  loc->lc = *localeconv();
++  if (locobj == LC_GLOBAL_LOCALE) {
++    memcpy(loc, &__locale_global, sizeof(*loc));
++  } else {
++    memcpy(loc, locobj, sizeof(*loc));
++  }
+ 
++  /* Invalidate lconv in the copy */
++  __localeconv_lconv_init(&loc->lc);
++  loc->lc_needs_refresh = 1;
++
+   return loc;
  }
+Index: gcc4/recipe/files/gcc/libunixlib/locale/nl_langinfo.c
+===================================================================
+--- gcc4/recipe/files/gcc/libunixlib/locale/nl_langinfo.c	(revision 7698)
++++ gcc4/recipe/files/gcc/libunixlib/locale/nl_langinfo.c	(working copy)
+@@ -24,3 +24,10 @@
+ 
+   return (char *)value;
+ }
++
++char *
++nl_langinfo_l (nl_item item, locale_t l)
++{
++  (void) l;
++  return nl_langinfo(item);
++}
 Index: gcc4/recipe/files/gcc/libunixlib/locale/setlocale.c
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/locale/setlocale.c	(revision 7698)
@@ -1106,25 +1410,46 @@ Index: gcc4/recipe/files/gcc/libunixlib/locale/strcoll.c
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/locale/strcoll.c	(revision 7698)
 +++ gcc4/recipe/files/gcc/libunixlib/locale/strcoll.c	(working copy)
-@@ -13,7 +13,7 @@
+@@ -11,9 +11,15 @@
+ int
+ strcoll (const char *s1, const char *s2)
  {
++  return strcoll_l (s1, s2, &__locale_global);
++}
++
++int
++strcoll_l (const char *s1, const char *s2, locale_t l)
++{
    int regs[10];
  
 -  regs[0] = __locale_territory[LC_COLLATE];
-+  regs[0] = __locale_global.locale_territory[LC_COLLATE];
++  regs[0] = l->locale_territory[LC_COLLATE];
    regs[1] = (int)s1;
    regs[2] = (int)s2;
    regs[3] = 0;
+@@ -21,3 +27,4 @@
+   __os_swi (Territory_Collate, regs);
+   return regs[0];
+ }
++
 Index: gcc4/recipe/files/gcc/libunixlib/locale/strxfrm.c
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/locale/strxfrm.c	(revision 7698)
 +++ gcc4/recipe/files/gcc/libunixlib/locale/strxfrm.c	(working copy)
-@@ -13,7 +13,7 @@
+@@ -11,9 +11,15 @@
+ size_t
+ strxfrm (char *to, const char *from, size_t size)
  {
++  return strxfrm_l (to, from, size, &__locale_global);
++}
++
++size_t
++strxfrm_l (char *to, const char *from, size_t size, locale_t l)
++{
    int regs[10];
  
 -  regs[0] = __locale_territory[LC_COLLATE];
-+  regs[0] = __locale_global.locale_territory[LC_COLLATE];
++  regs[0] = l->locale_territory[LC_COLLATE];
    regs[1] = (int)to;
    regs[2] = (int)from;
    regs[3] = size;
@@ -1174,7 +1499,7 @@ Index: gcc4/recipe/files/gcc/libunixlib/string/stricmp.c
 +    {
 +      result = tolower_l (*p1, locobj) - tolower_l (*p2, locobj);
 +      if (*p1++ == '\0')
-+	break;
++        break;
 +      p2 ++;
 +    }
 +
@@ -1215,6 +1540,21 @@ Index: gcc4/recipe/files/gcc/libunixlib/string/strnicmp.c
 +  return i - j;
 +}
 +
+Index: gcc4/recipe/files/gcc/libunixlib/sys/errlist.c
+===================================================================
+--- gcc4/recipe/files/gcc/libunixlib/sys/errlist.c	(revision 7698)
++++ gcc4/recipe/files/gcc/libunixlib/sys/errlist.c	(working copy)
+@@ -211,3 +211,10 @@
+ 
+   return 0;
+ }
++
++char *
++strerror_l (int errnum, locale_t l)
++{
++  (void) l;
++  return strerror (errnum);
++}
 Index: gcc4/recipe/files/gcc/libunixlib/time/broken.c
 ===================================================================
 --- gcc4/recipe/files/gcc/libunixlib/time/broken.c	(revision 7698)
@@ -1350,3 +1690,231 @@ Index: gcc4/recipe/files/gcc/libunixlib/vscript
       __sdirinit;
       __sfixinit;
       __sfixfind;
+Index: gcc4/recipe/files/gcc/libunixlib/wchar/wctype.c
+===================================================================
+--- gcc4/recipe/files/gcc/libunixlib/wchar/wctype.c	(revision 7698)
++++ gcc4/recipe/files/gcc/libunixlib/wchar/wctype.c	(working copy)
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include <ctype.h>
++#include <locale.h>
+ #include <wctype.h>
+ 
+ int
+@@ -71,3 +72,69 @@
+ {
+   return isxdigit (wc);
+ }
++
++int
++iswalnum_l (wint_t wc, locale_t locale)
++{
++  return isalnum_l (wc, locale);
++}
++
++int
++iswalpha_l (wint_t wc, locale_t locale)
++{
++  return isalpha_l (wc, locale);
++}
++
++int
++iswcntrl_l (wint_t wc, locale_t locale)
++{
++  return iscntrl_l (wc, locale);
++}
++
++int
++iswdigit_l (wint_t wc, locale_t locale)
++{
++  return isdigit_l (wc, locale);
++}
++
++int
++iswgraph_l (wint_t wc, locale_t locale)
++{
++  return isgraph_l (wc, locale);
++}
++
++int
++iswprint_l (wint_t wc, locale_t locale)
++{
++  return isprint_l (wc, locale);
++}
++
++int
++iswpunct_l (wint_t wc, locale_t locale)
++{
++  return ispunct_l (wc, locale);
++}
++
++int
++iswspace_l (wint_t wc, locale_t locale)
++{
++  return isspace_l (wc, locale);
++}
++
++int
++iswxdigit_l (wint_t wc, locale_t locale)
++{
++  return isxdigit_l (wc, locale);
++}
++
++wint_t
++towlower_l (wint_t wc, locale_t locale)
++{
++  return tolower_l (wc, locale);
++}
++
++wint_t
++towupper_l (wint_t wc, locale_t locale)
++{
++  return toupper_l (wc, locale);
++}
+Index: gcc4/recipe/files/gcc/libunixlib/wchar/wmissing.c
+===================================================================
+--- gcc4/recipe/files/gcc/libunixlib/wchar/wmissing.c	(revision 7698)
++++ gcc4/recipe/files/gcc/libunixlib/wchar/wmissing.c	(working copy)
+@@ -1,7 +1,7 @@
++#include <locale.h>
++#include <stdio.h>
+ #include <stdlib.h>
+ #include <wctype.h>
+-#include <wctype.h>
+-#include <stdio.h>
+ 
+ int iswupper (wint_t __wc)
+ {
+@@ -9,13 +9,26 @@
+   abort();
+ }
+ 
+-unsigned long int wcstoul (__const wchar_t *__restrict __nptr,
+-				  wchar_t **__restrict __endptr, int __base)
++int
++iswupper_l (wint_t wc, locale_t locale)
+ {
+   printf("%s: Not implemented\n", __func__);
+   abort();
+ }
+ 
++int iswlower (wint_t __wc)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
++int
++iswlower_l (wint_t wc, locale_t locale)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
+ int wcscoll (__const wchar_t *__s1, __const wchar_t *__s2)
+ {
+   printf("%s: Not implemented\n", __func__);
+@@ -22,12 +35,47 @@
+   abort();
+ }
+ 
+-int iswlower (wint_t __wc)
++int wcscoll_l (__const wchar_t *__s1, __const wchar_t *__s2,
++		locale_t loc)
+ {
+   printf("%s: Not implemented\n", __func__);
+   abort();
+ }
+ 
++int wcscasecmp (__const wchar_t *__s1, __const wchar_t *__s2)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
++int wcsncasecmp (__const wchar_t *__s1, __const wchar_t *__s2,
++		size_t __n)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
++int wcscasecmp_l (__const wchar_t *__s1, __const wchar_t *__s2,
++		 locale_t __loc)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
++int wcsncasecmp_l (__const wchar_t *__s1, __const wchar_t *__s2,
++		size_t __n, locale_t __loc)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
++unsigned long int wcstoul (__const wchar_t *__restrict __nptr,
++				  wchar_t **__restrict __endptr, int __base)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
+ long long int wcstoll (__const wchar_t *__restrict __nptr,
+ 			      wchar_t **__restrict __endptr, int __base)
+ {
+@@ -63,6 +111,13 @@
+   abort();
+ }
+ 
++size_t wcsxfrm_l (wchar_t *__s1, __const wchar_t *__s2,
++		size_t __n, locale_t __loc)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
+ float wcstof (__const wchar_t *__restrict __nptr,
+ 		     wchar_t **__restrict __endptr)
+ {
+@@ -83,6 +138,13 @@
+   abort();
+ }
+ 
++int
++iswblank_l (wint_t __wc, locale_t __locale)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
+ int iswctype (wint_t __wc, wctype_t __desc)
+ {
+   printf("%s: Not implemented\n", __func__);
+@@ -89,6 +151,12 @@
+   abort();
+ }
+ 
++int iswctype_l (wint_t __wc, wctype_t __desc, locale_t __locale)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
+ unsigned long long int wcstoull (__const wchar_t *__restrict __nptr,
+ 					wchar_t **__restrict __endptr,
+ 					int __base)
+@@ -116,6 +184,12 @@
+   abort();
+ }
+ 
++wctype_t wctype_l (__const char *__property, locale_t __locale)
++{
++  printf("%s: Not implemented\n", __func__);
++  abort();
++}
++
+ wint_t ungetwc(wint_t wc, FILE *stream)
+ {
+   printf("%s: Not implemented\n", __func__);
