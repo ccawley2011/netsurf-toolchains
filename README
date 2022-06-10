@@ -3,9 +3,9 @@ NetSurf Toolchain builds
 Pre-requisites for Debian systems
 ---------------------------------
 
-	$ apt-get install build-essential autoconf automake autogen flex bison
-	$ apt-get install libtool texinfo help2man subversion cvs git
-	$ apt-get install lhasa unzip autoconf2.64 automake1.11
+	$ apt-get install build-essential autoconf automake autogen flex bison \
+	                  libtool texinfo help2man subversion cvs git \
+	                  lhasa unzip autoconf2.64 automake1.11 zlib1g-dev
 
  If you've not got automake 1.15 by default, you'll need:
 
