@@ -66,6 +66,7 @@ cc__ := $(word 1,$(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*gcc))
 cxx__ := $(word 1,$(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*g++))
 ar__ := $(word 1,$(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ar))
 ranlib__ := $(word 1,$(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*ranlib))
+windres__ := $(word 1,$(wildcard $(GCCSDK_INSTALL_CROSSBIN)/*windres))
 
 # Flags
 cflags__ := -I$(GCCSDK_INSTALL_ENV)/include
@@ -78,7 +79,7 @@ TARGET := $(shell $(cc__) -dumpmachine)
 
 # Environment
 # Newer autotools objects to -I appearing in CFLAGS
-cleanenv := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" RANLIB="$(ranlib__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
+cleanenv := PATH="$(path__)" CC="$(cc__)" CXX="$(cxx__)" AR="$(ar__)" RANLIB="$(ranlib__)" WINDRES="$(windres__)" CPPFLAGS="$(cppflags__)" LDFLAGS="$(ldflags__)" PKG_CONFIG_LIBDIR="$(pkg_config_libdir__)"
 env := $(cleanenv) CFLAGS="$(cflags__)"
 
 # Cross-compiling CMake invocation.
@@ -112,6 +113,7 @@ COMMON_SDK_ITEMS := zlib.d openssl.d libpng.d libcares.d libcurl.d libexpat.d
 LIBCURL_SSL := openssl
 LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap ldaps mqtt rtsp telnet gopher tftp pop3 imap smb smtp manual)
 FREETYPE_ENV := LIBPNG_CFLAGS=$$($(GCCSDK_INSTALL_ENV)/bin/libpng-config --cflags) LIBPNG_LDFLAGS=$$($(GCCSDK_INSTALL_ENV)/bin/libpng-config --ldflags)
+OPENSSL_TARGET := $(TARGET)
 
 # per target environments
 LIBJPEG_TURBO_BUILDDIR:=$(BUILDDIR)/libjpegturbo
@@ -153,6 +155,7 @@ ifeq ($(TARGET),i686-w64-mingw32)
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap --without-random
   LIBCURL_ENV := CFLAGS="-DCARES_STATICLIB" LIBS="-lgdi32 -lcrypt32"
   EXTRAARGS_OPENSSL := no-asm enable-capieng
+  OPENSSL_TARGET := mingw
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
@@ -397,7 +400,7 @@ $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
 ifeq ($(LIBCURL_SSL),openssl)
-	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) $(OPENSSL_ENV) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-threads $(EXTRAARGS_OPENSSL)
+	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) $(OPENSSL_ENV) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(OPENSSL_TARGET) no-shared no-threads $(EXTRAARGS_OPENSSL)
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) make install
 endif
 	touch $@

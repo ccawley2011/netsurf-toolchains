@@ -2,28 +2,27 @@
 
 # Build cross toolchain for i686 processor with a win32 (mingw) ABI
 
-UPSTREAM_GCC_VERSION := 4.8.4
-UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION).tar.bz2
+UPSTREAM_GCC_VERSION := 12.2.0
+UPSTREAM_GCC_TARBALL := gcc-$(UPSTREAM_GCC_VERSION).tar.xz
 UPSTREAM_GCC_URI := http://ftpmirror.gnu.org/gcc/gcc-$(UPSTREAM_GCC_VERSION)/$(UPSTREAM_GCC_TARBALL)
 
-UPSTREAM_BINUTILS_VERSION := 2.25
-UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION).tar.bz2
+UPSTREAM_BINUTILS_VERSION := 2.39
+UPSTREAM_BINUTILS_TARBALL := binutils-$(UPSTREAM_BINUTILS_VERSION).tar.xz
 UPSTREAM_BINUTILS_URI := http://ftpmirror.gnu.org/binutils/$(UPSTREAM_BINUTILS_TARBALL)
 
-UPSTREAM_GMP_VERSION := 5.0.5
-UPSTREAM_GMP_TARBALL := gmp-$(UPSTREAM_GMP_VERSION).tar.bz2
+UPSTREAM_GMP_VERSION := 6.2.1
+UPSTREAM_GMP_TARBALL := gmp-$(UPSTREAM_GMP_VERSION).tar.xz
 UPSTREAM_GMP_URI := https://gmplib.org/download/gmp-$(UPSTREAM_GMP_VERSION)/$(UPSTREAM_GMP_TARBALL)
 
-# Would use 3.0.0, but that dislikes in-tree gmp sources
-UPSTREAM_MPFR_VERSION := 2.4.2
-UPSTREAM_MPFR_TARBALL := mpfr-$(UPSTREAM_MPFR_VERSION).tar.bz2
+UPSTREAM_MPFR_VERSION := 4.1.0
+UPSTREAM_MPFR_TARBALL := mpfr-$(UPSTREAM_MPFR_VERSION).tar.xz
 UPSTREAM_MPFR_URI := http://www.mpfr.org/mpfr-$(UPSTREAM_MPFR_VERSION)/$(UPSTREAM_MPFR_TARBALL)
 
-UPSTREAM_MPC_VERSION := 0.8.2
+UPSTREAM_MPC_VERSION := 1.2.1
 UPSTREAM_MPC_TARBALL := mpc-$(UPSTREAM_MPC_VERSION).tar.gz
 UPSTREAM_MPC_URI := http://www.multiprecision.org/downloads/$(UPSTREAM_MPC_TARBALL)
 
-UPSTREAM_MINGW_VERSION := 3.3.0
+UPSTREAM_MINGW_VERSION := 10.0.0
 UPSTREAM_MINGW_TARBALL := mingw-w64-v$(UPSTREAM_MINGW_VERSION).tar.bz2
 UPSTREAM_MINGW_URI := "http://downloads.sourceforge.net/project/mingw-w64/mingw-w64/mingw-w64-release/$(UPSTREAM_MINGW_TARBALL)?r=http%3A%2F%2Fmingw-w64.sourceforge.net%2Fdownload.php&ts=1426088797&use_mirror=cznic"
 
@@ -80,7 +79,9 @@ $(BUILDSTEPS)/mingw-headers.d: $(BUILDSTEPS)/mingw-srcdir.d
 	mkdir -p $(BUILDDIR)/mingw-headers
 	cd $(BUILDDIR)/mingw-headers && PATH="$(PREFIX)/bin:$(PATH)" \
 		$(MINGW_SRCDIR)/mingw-w64-headers/configure \
-		--prefix=$(PREFIX)/$(TARGET_NAME) --host=$(TARGET_NAME)
+		--prefix=$(PREFIX)/$(TARGET_NAME) --host=$(TARGET_NAME) \
+		--with-default-msvcrt=msvcrt \
+		--with-default-win32-winnt=0x0500
 	cd $(BUILDDIR)/mingw-headers && PATH="$(PREFIX)/bin:$(PATH)" make
 	cd $(BUILDDIR)/mingw-headers && PATH="$(PREFIX)/bin:$(PATH)" make install
 	touch $@
@@ -89,7 +90,9 @@ $(BUILDSTEPS)/mingw-crt.d: $(BUILDSTEPS)/mingw-srcdir.d
 	mkdir -p $(BUILDDIR)/mingw-crt
 	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" \
 		$(MINGW_SRCDIR)/configure \
-		--prefix=$(PREFIX)/$(TARGET_NAME) --host=$(TARGET_NAME)
+		--prefix=$(PREFIX)/$(TARGET_NAME) --host=$(TARGET_NAME) \
+		--with-default-msvcrt=msvcrt \
+		--with-default-win32-winnt=0x0500
 	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" make
 	cd $(BUILDDIR)/mingw-crt && PATH="$(PREFIX)/bin:$(PATH)" make install
 	touch $@
@@ -104,7 +107,6 @@ $(BUILDSTEPS)/mingw-srcdir.d: $(SOURCESDIR)/$(UPSTREAM_MINGW_TARBALL)
 ###
 
 $(BUILDSTEPS)/srcdir-step3.d: $(BUILDSTEPS)/srcdir-step2.d
-	for p in `ls $(RECIPES)/patches/gcc4/*.p` ; do patch -d $(GCC_SRCDIR) -p0 <$$p ; done
 	touch $@
 
 $(BUILDSTEPS)/srcdir-step2.d: $(BUILDSTEPS)/srcdir-step1.d $(SOURCESDIR)/$(UPSTREAM_GMP_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPFR_TARBALL) $(SOURCESDIR)/$(UPSTREAM_MPC_TARBALL)
