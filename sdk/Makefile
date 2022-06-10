@@ -154,8 +154,10 @@ ifeq ($(TARGET),i686-w64-mingw32)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap --without-random
   LIBCURL_ENV := CFLAGS="-DCARES_STATICLIB" LIBS="-lgdi32 -lcrypt32"
-  EXTRAARGS_OPENSSL := no-asm enable-capieng
+  EXTRAARGS_OPENSSL := no-asm no-async enable-capieng
   OPENSSL_TARGET := mingw
+  # TODO: Add patches for c-ares 1.18.0 or later on Windows XP or earlier
+  VERSION_LIBCARES := 1.17.2
 endif
 
 ifeq ($(TARGET),m68k-unknown-amigaos)
