@@ -24,7 +24,7 @@ endif
 
 # Upstream package versions
 # https://zlib.net/
-VERSION_ZLIB := 1.2.12
+VERSION_ZLIB := 1.2.13
 # https://www.gnu.org/software/libiconv/
 VERSION_LIBICONV := 1.17
 # https://laurikari.net/tre/
@@ -32,17 +32,17 @@ VERSION_LIBTRE := 0.8.0
 # https://www.openssl.org/
 VERSION_OPENSSL := 3.0.7
 # http://www.libpng.org/pub/png/libpng.html
-VERSION_LIBPNG := 1.6.37
+VERSION_LIBPNG := 1.6.38
 # http://libjpeg.sourceforge.net/
 VERSION_LIBJPEG := 8d
 # https://libjpeg-turbo.org/
-VERSION_LIBJPEG_TURBO := 2.1.3
+VERSION_LIBJPEG_TURBO := 2.1.4
 # https://developers.google.com/speed/webp/
-VERSION_LIBWEBP := 1.2.2
+VERSION_LIBWEBP := 1.2.4
 # https://c-ares.haxx.se/
 VERSION_LIBCARES := 1.18.1
 # https://curl.haxx.se/
-VERSION_LIBCURL := 7.83.1
+VERSION_LIBCURL := 7.86.0
 VERSION_LIBGNURX := 2.5.1
 # http://mission-base.com/peter/source/
 # 1.7.0: https://github.com/peterGraf/pbl/releases
@@ -50,7 +50,7 @@ VERSION_LIBPBL := 1_04
 # Git-20170304
 VERSION_LIBCF := CVS-20130415
 # https://github.com/libexpat/libexpat
-VERSION_LIBEXPAT := 2.4.8
+VERSION_LIBEXPAT := 2.5.0
 VERSION_LDG := 2.35
 VERSION_WINDOM := 2.0.1
 # https://github.com/berkus/hermes-pixel-format/archive/refs/tags/v1.3.3.tar.gz
