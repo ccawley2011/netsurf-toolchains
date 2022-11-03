@@ -158,7 +158,7 @@ ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, roadshow.d libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS) libjpeg.d)
   EXTRAARGS_LIBCARES := --disable-shared --without-random
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver --with-amissl --with-zlib --disable-rt --disable-ipv6
-  LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
+  LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024 -DRLIMIT_NOFILE=6"
   LIBJPEG_ENV := LDFLAGS="-lm"
   LIBJPEG_TURBO_ENV := LDFLAGS="-lm"
   LIBCURL_ENV := CFLAGS="-I$(GCCSDK_INSTALL_ENV)/netinclude -D__NO_NET_API" LIBS="-lm"
