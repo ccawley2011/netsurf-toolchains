@@ -171,7 +171,10 @@ ifeq ($(TARGET),m68k-unknown-amigaos)
   else
     LIBCURL_ENV := CFLAGS="-I$(GCCSDK_INSTALL_ENV)/netinclude -D__NO_NET_API" LIBS="-lm"
   endif
-  LIBEXPAT_ENV := LDFLAGS="-lm"
+  # XXX: libgcc is meant to be implied, but for some reason that
+  # results in ld evaluating it after libm and thus failing to find symbols.
+  # Hack around it by forcing the link order here.
+  LIBEXPAT_ENV := LDFLAGS="-lgcc -lm"
 endif
 
 ifeq ($(SDK_ITEMS),)
