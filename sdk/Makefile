@@ -109,6 +109,7 @@ SDK_ITEMS :=
 
 COMMON_SDK_ITEMS := zlib.d openssl.d libpng.d libcares.d libcurl.d libexpat.d
 
+LIBCURL_SSL := openssl
 LIBCURL_DISABLES := $(patsubst %,--disable-%,ftp file dict ldap ldaps mqtt rtsp telnet gopher tftp pop3 imap smb smtp manual)
 FREETYPE_ENV := LIBPNG_CFLAGS=$$($(GCCSDK_INSTALL_ENV)/bin/libpng-config --cflags) LIBPNG_LDFLAGS=$$($(GCCSDK_INSTALL_ENV)/bin/libpng-config --ldflags)
 
@@ -157,11 +158,19 @@ endif
 ifeq ($(TARGET),m68k-unknown-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, roadshow.d libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS) libjpeg.d)
   EXTRAARGS_LIBCARES := --disable-shared --without-random
-  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver --with-amissl --with-zlib --disable-rt --disable-ipv6
+  # XXX: reinstate amissl when there's v5 sdk?
+  #LIBCURL_SSL := amissl
+  EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver --with-zlib --disable-rt --disable-ipv6
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024 -DRLIMIT_NOFILE=6"
   LIBJPEG_ENV := LDFLAGS="-lm"
   LIBJPEG_TURBO_ENV := LDFLAGS="-lm"
-  LIBCURL_ENV := CFLAGS="-I$(GCCSDK_INSTALL_ENV)/netinclude -D__NO_NET_API" LIBS="-lm"
+  # XXX: build openssl against bsdsocket.library?
+  #OPENSSL_ENV := CFLAGS="-I$(GCCSDK_INSTALL_ENV)/netinclude" CPPFLAGS="-D__NO_NET_API"
+  ifeq ($(LIBCURL_SSL),openssl)
+    LIBCURL_ENV := LIBS="-lm -lnet"
+  else
+    LIBCURL_ENV := CFLAGS="-I$(GCCSDK_INSTALL_ENV)/netinclude -D__NO_NET_API" LIBS="-lm"
+  endif
   LIBEXPAT_ENV := LDFLAGS="-lm"
 endif
 
@@ -384,8 +393,8 @@ $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
 
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
-ifneq ($(TARGET),m68k-unknown-amigaos)
-	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-threads $(EXTRAARGS_OPENSSL)
+ifeq ($(LIBCURL_SSL),openssl)
+	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) $(OPENSSL_ENV) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(TARGET) no-shared no-threads $(EXTRAARGS_OPENSSL)
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) make install
 endif
 	touch $@
@@ -507,7 +516,7 @@ $(SOURCEDIR)/c-ares-$(VERSION_LIBCARES).tar.gz:
 
 # libcurl
 $(BUILDSTEPS)/libcurl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl.d $(BUILDSTEPS)/libcares.d $(BUILDSTEPS)/libcurl-src.d
-	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) CFLAGS="" $(LIBCURL_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --with-openssl --without-libidn2 ${EXTRAARGS_LIBCURL}
+	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) CFLAGS="" $(LIBCURL_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared --with-$(LIBCURL_SSL) --without-libidn2 ${EXTRAARGS_LIBCURL}
 	cd $(BUILDDIR)/libcurl/curl-$(VERSION_LIBCURL) && $(env) make install
 	touch $@
 
