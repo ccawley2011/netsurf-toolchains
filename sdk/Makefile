@@ -535,13 +535,16 @@ $(SOURCEDIR)/curl-$(VERSION_LIBCURL).tar.bz2:
 
 # libexpat
 $(BUILDSTEPS)/libexpat.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/libexpat-src.d
-	mkdir -p $(BUILDDIR)/libexpat
-	cd $(BUILDDIR)/libexpat && tar xaf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2
 	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) $(LIBEXPAT_ENV) ./configure --prefix=$(GCCSDK_INSTALL_ENV) --target=$(TARGET) --host=$(TARGET) --disable-shared
 	cd $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) && $(env) $(LIBEXPAT_ENV) make install
 	touch $@
 
 $(BUILDSTEPS)/libexpat-src.d: $(BUILDSTEPS)/sourcedir.d $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2
+	mkdir -p $(BUILDDIR)/libexpat
+	cd $(BUILDDIR)/libexpat && tar xaf $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2
+ifneq ($(realpath $(RECIPES)/patches/libexpat/$(TARGET)),)
+	for p in `ls $(RECIPES)/patches/libexpat/$(TARGET)/*.p` ; do $(PATCH) -d $(BUILDDIR)/libexpat/expat-$(VERSION_LIBEXPAT) -p0 <$$p ; done
+endif
 	touch $@
 
 $(SOURCEDIR)/expat-$(VERSION_LIBEXPAT).tar.bz2:
