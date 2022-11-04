@@ -123,7 +123,7 @@ ifeq ($(TARGET),arm-unknown-riscos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, $(COMMON_SDK_ITEMS) libjpeg-turbo.d libwebp.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --with-random="/dev/urandom" $(LIBCURL_DISABLES)
-  EXTRAARGS_OPENSSL := no-asm
+  EXTRAARGS_OPENSSL := no-threads no-asm
 endif
 
 ifeq ($(TARGET),m68k-atari-mint)
@@ -132,6 +132,7 @@ ifeq ($(TARGET),m68k-atari-mint)
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver 
   EXTRAARGS_LIBICONV := --enable-extra-encodings
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
+  EXTRAARGS_OPENSSL := no-threads
 endif
 
 ifeq ($(TARGET),m5475-atari-mint)
@@ -140,13 +141,14 @@ ifeq ($(TARGET),m5475-atari-mint)
   EXTRAARGS_LIBCURL := --enable-optimize --enable-nonblocking --enable-ares --with-random="/dev/urandom" --disable-manual --disable-curldebug --disable-thread --disable-threaded-resolver
   EXTRAARGS_LIBICONV := --enable-extra-encodings
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024"
-  EXTRAARGS_OPENSSL := no-asm
+  EXTRAARGS_OPENSSL := no-threads no-asm
 endif
 
 ifeq ($(TARGET),ppc-amigaos)
   SDK_ITEMS := $(addprefix $(BUILDSTEPS)/, libiconv.d libtre.d libpbl.d $(COMMON_SDK_ITEMS) libjpeg-turbo.d)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --enable-threaded-resolver --disable-ipv6 LIBS=-lpthread
+  EXTRAARGS_OPENSSL := no-threads
 endif
 
 ifeq ($(TARGET),i686-w64-mingw32)
@@ -154,7 +156,7 @@ ifeq ($(TARGET),i686-w64-mingw32)
   EXTRAARGS_LIBCARES := --disable-shared
   EXTRAARGS_LIBCURL := --enable-nonblocking --enable-ares --disable-ldap --without-random
   LIBCURL_ENV := CFLAGS="-DCARES_STATICLIB" LIBS="-lgdi32 -lcrypt32"
-  EXTRAARGS_OPENSSL := no-asm no-async enable-capieng
+  EXTRAARGS_OPENSSL := no-async enable-capieng
   OPENSSL_TARGET := mingw
   # TODO: Add patches for c-ares 1.18.0 or later on Windows XP or earlier
   VERSION_LIBCARES := 1.17.2
@@ -166,6 +168,7 @@ ifeq ($(TARGET),m68k-unknown-amigaos)
   # XXX: reinstate amissl when there's v5 sdk?
   #LIBCURL_SSL := amissl
   EXTRAARGS_LIBCURL := --disable-ntlm-wb --without-random --disable-threaded-resolver --with-zlib --disable-rt --disable-ipv6
+  EXTRAARGS_OPENSSL := no-threads
   LIBICONV_ENV := CFLAGS="-DPATH_MAX=1024 -DRLIMIT_NOFILE=6"
   LIBJPEG_ENV := LDFLAGS="-lm"
   LIBJPEG_TURBO_ENV := LDFLAGS="-lm"
@@ -402,7 +405,7 @@ $(SOURCEDIR)/pbl_$(VERSION_LIBPBL).tar.gz:
 # OpenSSL
 $(BUILDSTEPS)/openssl.d: $(BUILDSTEPS)/builddir.d $(BUILDSTEPS)/zlib.d $(BUILDSTEPS)/openssl-src.d
 ifeq ($(LIBCURL_SSL),openssl)
-	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) $(OPENSSL_ENV) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(OPENSSL_TARGET) no-shared no-threads $(EXTRAARGS_OPENSSL)
+	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) $(OPENSSL_ENV) ./Configure --prefix=$(GCCSDK_INSTALL_ENV) $(OPENSSL_TARGET) no-shared $(EXTRAARGS_OPENSSL)
 	cd $(BUILDDIR)/openssl/openssl-$(VERSION_OPENSSL) && $(env) make install
 endif
 	touch $@
